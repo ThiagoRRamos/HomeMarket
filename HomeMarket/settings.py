@@ -1,7 +1,7 @@
 # Django settings for HomeMarket project.
 import dj_database_url
 import os
-from django.conf.locale import da
+
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 DEBUG = True
@@ -65,6 +65,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    PROJECT_PATH + '/static/',
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -105,7 +106,6 @@ WSGI_APPLICATION = 'HomeMarket.wsgi.application'
 
 TEMPLATE_DIRS = (
     PROJECT_PATH + '/templates/'
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
@@ -154,11 +154,12 @@ LOGGING = {
 if not DATABASES['default']:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/home/thiagorramos/HomeMarket/homemarket/HomeMarket/sqlite.db',
+        'NAME': PROJECT_PATH + '/sqlite.db',
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
     }
+
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
