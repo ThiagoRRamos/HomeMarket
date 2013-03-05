@@ -2,3 +2,4 @@ venv
 *.pyc
 *.project
 *.pydevproject
+*.db
