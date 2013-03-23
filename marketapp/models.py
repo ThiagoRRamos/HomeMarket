@@ -15,10 +15,11 @@ class Produto(models.Model):
                 ('L', 'L'),
                 ('g', 'g'),
                 ('un', 'un'),
-                ('kg', 'kg'))
+                ('Kg', 'Kg'))
+    imagem = models.ImageField(upload_to="produtos")
     nome = models.CharField(max_length=50)
     descricao = models.TextField()
-    codigo_de_barras = models.CharField(max_length=15)
+    codigo_de_barras = models.CharField(max_length=15, unique=True)
     categoria = models.ForeignKey(Categoria)
     quantidade = models.IntegerField()
     quantidade_unidade = models.CharField(max_length=5,
@@ -28,8 +29,32 @@ class Produto(models.Model):
         return self.nome
 
 
+class Estado(models.Model):
+    codigo = models.CharField(max_length=2)
+    nome = models.CharField(max_length=20)
+
+
+class Cidade(models.Model):
+    estado = models.ForeignKey(Estado)
+    nome = models.CharField(max_length=50)
+
+
+class Endereco(models.Model):
+    cep = models.CharField(max_length=9)
+    rua = models.CharField(max_length=100)
+    numero = models.IntegerField()
+    bairro = models.CharField(max_length=100)
+    cidade = models.ForeignKey(Cidade)
+
+
 class Consumidor(models.Model):
+
+    class Meta:
+        verbose_name_plural = u'Consumidores'
+
     usuario = models.OneToOneField(User)
+    endereco = models.ForeignKey(Endereco)
+    cpf = models.CharField(max_length=20)
 
     def __unicode__(self):
         return self.usuario.username
@@ -48,6 +73,9 @@ class Supermercado(models.Model):
 
 
 class ListaCompras(models.Model):
+    class Meta:
+        verbose_name = u'Lista de Compras'
+        verbose_name_plural = u'Listas de Compras'
     nome = models.CharField(max_length=50)
     consumidor = models.ForeignKey(Consumidor)
     produtos = models.ManyToManyField(Produto, through='AdicaoProduto')
@@ -63,6 +91,9 @@ class ListaCompras(models.Model):
 
 
 class AdicaoProduto(models.Model):
+    class Meta:
+        verbose_name = u'Produto em Lista'
+        verbose_name_plural = u'Produtos em Lista'
     lista_compras = models.ForeignKey(ListaCompras)
     produto = models.ForeignKey(Produto)
     quantidade = models.IntegerField()
@@ -70,9 +101,9 @@ class AdicaoProduto(models.Model):
 
 class Compra(models.Model):
     PAGAMENTOS_POSSIVEIS = (
-                            ('cc',u'Cartao de Credito'),
-                            ('cd',u'Cartao de Debito'),
-                            ('di',u'Dinheiro'))
+                            ('cc', u'Cartao de Credito'),
+                            ('cd', u'Cartao de Debito'),
+                            ('di', u'Dinheiro'))
     comprador = models.ForeignKey(Consumidor)
     supermercado = models.ForeignKey(Supermercado)
     produtos = models.ManyToManyField(Produto, through='CompraProduto')
@@ -87,13 +118,31 @@ class Compra(models.Model):
 
 
 class CompraProduto(models.Model):
+    class Meta:
+        verbose_name = u'Produto Comprado'
+        verbose_name_plural = u'Produtos Comprados'
     compra = models.ForeignKey(Compra)
     produto = models.ForeignKey(Produto)
     quantidade = models.IntegerField()
+    preco_unitario = models.DecimalField(decimal_places=2, max_digits=5)
+
+    def __unicode__(self):
+        return "{} na compra {}".format(self.produto,
+                                        self.compra.id)
+
+    def preco_total(self):
+        return self.preco_unitario * self.quantidade
 
 
 class ProdutoSupermercado(models.Model):
     produto = models.ForeignKey(Produto)
     supermercado = models.ForeignKey(Supermercado)
+    preco = models.DecimalField(decimal_places=2, max_digits=5)
     quantidade = models.IntegerField()
     limite_venda = models.DateField(blank=True)
+    data_adicao = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return "{} em {} em {}".format(self.produto,
+                                       self.supermercado,
+                                       self.data_adicao)
