@@ -107,7 +107,7 @@ class Compra(models.Model):
     comprador = models.ForeignKey(Consumidor)
     supermercado = models.ForeignKey(Supermercado)
     produtos = models.ManyToManyField(Produto, through='CompraProduto')
-    modo_pagamento = models.CharField(max_length=5,
+    modo_pagamento = models.CharField(max_length=3,
                                       choices=PAGAMENTOS_POSSIVEIS)
     data_compra = models.DateField(auto_now_add=True)
 
