@@ -17,4 +17,3 @@ if settings.DEBUG:
          {'document_root': settings.MEDIA_ROOT}),
         (r'^contas/', include('allauth.urls')),
     )
-
