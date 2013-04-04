@@ -1,13 +1,8 @@
 from django.shortcuts import render, redirect
 from marketapp.models import Produto
-<<<<<<< HEAD
 from django.forms.models import ModelForm
 from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, ProdutoSupermercadoFormPreco
 from marketapp.autorizacao import apenas_supermercado, apenas_cliente
-=======
-from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm
-from marketapp.autorizacao import apenas_supermercado
->>>>>>> 83490397e058207db973ec206c9b3c6b1a35e100
 
 
 def home(request):
@@ -68,7 +63,7 @@ def adicionar_produto_existente(request, codigo):
             prod.save()
     return render(request, 'adicao_produto.html',
                   {'form': form})
-<<<<<<< HEAD
+
     
 def modificar_preco_existente(request, codigo):
     form = ProdutoSupermercadoFormPreco()
@@ -84,5 +79,3 @@ def modificar_preco_existente(request, codigo):
 
         
     
-=======
->>>>>>> 83490397e058207db973ec206c9b3c6b1a35e100
