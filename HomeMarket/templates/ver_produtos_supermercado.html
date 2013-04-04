@@ -1,0 +1,23 @@
+{% extends 'chrome.html' %}
+{% block title %} Home {% endblock %}
+{% block content %}
+<h4>Produtos de {{supermercado.nome_exibicao}}</h4>
+<table class="table span7">
+    <tr>
+        <th class="span3">Nome</th>
+        <th class="span2">Imagem</th>
+        <th class="span3">Preco</th>
+        <th class="span3">Descricao</th>
+        <th class="span1"></th>
+    </tr>
+{% for produtosupermercado in produtos %}
+    <tr>
+        <td>{{produtosupermercado.produto.nome}}</td>
+        <td><img src="{{produtosupermercado.produto.imagem.url}}" class="span12"></img></td>
+        <td>R$ {{produtosupermercado.preco|floatformat:2}}</td>
+        <td>{{produtosupermercado.produto.descricao}}</td>
+        <td><a class="btn btn-info">Adicionar ao Carrinho</a></td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}
