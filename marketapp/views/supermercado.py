@@ -1,23 +1,19 @@
 from django.shortcuts import render, redirect
 from marketapp.models import Produto
-from django.forms.models import ModelForm
 from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm
-from marketapp.autorizacao import apenas_supermercado, apenas_cliente
+from marketapp.autorizacao import apenas_supermercado
 
 
-@apenas_cliente()
 def home(request):
     return render(request, 'home.html')
 
 
-@apenas_supermercado()
+@apenas_supermercado
 def adicionar_produto(request):
     if request.method == 'POST':
         codigo = request.POST['codigo']
         try:
             produto = Produto.objects.get(codigo_de_barras=codigo)
-            produto.nome = "nome"
-            produto.save()
             return redirect('/adicionar-produto-existente/' + codigo)
         except Produto.DoesNotExist:
             return redirect('/criar_produto')
