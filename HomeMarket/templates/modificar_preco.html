@@ -1,0 +1,8 @@
+{% extends 'chrome.html' %}
+{% block title %} Modificacao do preco {% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="codigo"/>
+</form>
+{% endblock %}

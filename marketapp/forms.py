@@ -16,3 +16,10 @@ class ProdutoSupermercadoForm(ModelForm):
     class Meta:
         model = ProdutoSupermercado
         exclude = ('produto','supermercado')
+        
+
+class ProdutoSupermercadoFormPreco(ModelForm):
+    class Meta:
+        model = ProdutoSupermercado
+        exclude = ('produto','supermercado','quantidade','limite_venda')
+        
