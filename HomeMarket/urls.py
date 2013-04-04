@@ -14,6 +14,8 @@ urlpatterns = patterns('',
     url(r'^adicionar-produto-existente/(?P<codigo>.*)', 'marketapp.views.supermercado.adicionar_produto_existente'),
     url(r'^modificar-preco-existente/(?P<codigo>.*)', 'marketapp.views.supermercado.modificar_preco_existente'),
     url(r'^modificar_preco', 'marketapp.views.supermercado.modificar_preco'),
+    url(r'^supermercado/(?P<nome>.*)$','marketapp.views.cliente.ver_produtos_supermercado')
+
 )
 
 if settings.DEBUG:
