@@ -16,7 +16,13 @@ def adicionar_produto(request, produto_supermercado, quantidade=1):
     except CarrinhoCompras.DoesNotExist:
         carrinho = CarrinhoCompras.objects.create(usuario=request.user,
                                        supermercado=produto_supermercado.supermercado)
-    if produto_supermercado.supermercado == carrinho.supermercado:
-        return ProdutoCarrinho.objects.create(produto=produto_supermercado,
-                                              carrinho=carrinho,
-                                              quantidade=quantidade)
+    try:
+        produto_carrinho = ProdutoCarrinho.objects.get(produto=produto_supermercado,
+                                                          carrinho=carrinho)
+        produto_carrinho.quantidade+=1
+        produto_carrinho.save()
+    except ProdutoCarrinho.DoesNotExist:
+        if produto_supermercado.supermercado == carrinho.supermercado:
+            return ProdutoCarrinho.objects.create(produto=produto_supermercado,
+                                                  carrinho=carrinho,
+                                                  quantidade=quantidade)
