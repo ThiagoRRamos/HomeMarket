@@ -150,7 +150,7 @@ class ProdutoSupermercado(models.Model):
 
 
 class CarrinhoCompras(models.Model):
-    supermercado = models.ForeignKey(Supermercado)
+    supermercado = models.ForeignKey(Supermercado, null=True)
     usuario = models.OneToOneField(User)
     produtos = models.ManyToManyField(ProdutoSupermercado, through='ProdutoCarrinho')
 

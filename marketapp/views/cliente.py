@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from marketapp.models import Supermercado, ProdutoSupermercado, Produto
+from marketapp.models import Supermercado, ProdutoSupermercado
 from django.http.response import Http404
 import marketapp.services.carrinho as carrinho_service
-from marketapp.autorizacao import apenas_cliente
+from marketapp.utils.autorizacao import apenas_cliente
 
 
 def home(request):

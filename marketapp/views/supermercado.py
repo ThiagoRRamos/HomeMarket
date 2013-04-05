@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from marketapp.models import Produto, ProdutoSupermercado
 from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm,\
     ProdutoSupermercadoFormPreco
-from marketapp.autorizacao import apenas_supermercado
+from marketapp.utils.autorizacao import apenas_supermercado
 
 
 def home(request):
