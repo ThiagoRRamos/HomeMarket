@@ -3,6 +3,7 @@ from marketapp.models import Supermercado, ProdutoSupermercado
 from django.http.response import Http404
 import marketapp.services.carrinho as carrinho_service
 from marketapp.utils.autorizacao import apenas_cliente
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -29,8 +30,9 @@ def adicionar_produto_carrinho(request, produto_id):
     return redirect('/meu-carrinho')
 
 
+@login_required
 def ver_carrinho(request):
-    carrinho = carrinho_service.get_carrinho_usuario(request)
+    carrinho = carrinho_service.get_carrinho_usuario(request.user)
     return render(request,
                   'carrinho.html',
                   {'carrinho': carrinho})
