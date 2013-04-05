@@ -16,7 +16,7 @@
         <td><img src="{{produtosupermercado.produto.imagem.url}}" class="span12"></img></td>
         <td>R$ {{produtosupermercado.preco|floatformat:2}}</td>
         <td>{{produtosupermercado.produto.descricao}}</td>
-        <td><a class="btn btn-info">Adicionar ao Carrinho</a></td>
+        <td><a href="/colocar-no-carrinho/{{produtosupermercado.id}}" class="btn btn-info">Adicionar ao Carrinho</a></td>
     </tr>
 {% endfor %}
 </table>

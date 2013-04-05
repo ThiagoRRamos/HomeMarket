@@ -2,11 +2,11 @@ from django.contrib.auth.decorators import user_passes_test
 
 
 def _eh_cliente(user):
-    return not hasattr(user, 'supermercado')
+    return user.is_authenticated() and not hasattr(user, 'supermercado')
 
 
 def _eh_supermercado(user):
-    return hasattr(user, 'supermercado')
+    return user.is_authenticated() and hasattr(user, 'supermercado')
 
 
 def apenas_supermercado(function=None):
