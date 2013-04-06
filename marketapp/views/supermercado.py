@@ -15,7 +15,10 @@ def home(request):
 @apenas_supermercado()
 def funcionalidades_supermercado(request):
     nome = request.user.supermercado
-    
+    if request.method == 'POST':
+        botao = request.POST['opcao1']
+        return redirect('/' + botao+'/')
+        print botao
     return render(request, 'supermercado_funcionalidades.html',{'nome' :nome})
 
 
