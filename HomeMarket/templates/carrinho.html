@@ -1,0 +1,26 @@
+{% extends 'chrome.html' %}
+{% block title %} Home {% endblock %}
+{% block content %}
+<dl>
+  <dt> Supermercado</dt>
+  <dd> {{carrinho.supermercado}}</dd>
+</dl>
+
+<table class="table table-striped">
+    <tr>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+    </tr>
+    {% for produto in carrinho.produtocarrinho_set.all %}
+        <tr>
+            <td>{{produto.produto.produto}}</td>
+            <td>{{produto.produto.produto.categoria}}</td>
+            <td>R$ {{produto.produto.preco|floatformat:2}}</td>
+            <td>{{produto.quantidade}}</td>
+        </tr>
+    {% endfor %}
+</table>
+{{carrinho.gerar_botao_pagamento}}
+{% endblock %}

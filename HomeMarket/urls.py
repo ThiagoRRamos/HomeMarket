@@ -16,8 +16,10 @@ urlpatterns = patterns('',
     url(r'^modificar_preco', 'marketapp.views.supermercado.modificar_preco'),
     url(r'^supermercado/(?P<nome>.*)$','marketapp.views.cliente.ver_produtos_supermercado'),
     url(r'^funcionalidades_supermercado', 'marketapp.views.supermercado.funcionalidades_supermercado'),
-    
-    
+    url(r'^colocar-no-carrinho/(?P<produto_id>\d+)',
+        'marketapp.views.cliente.adicionar_produto_carrinho'),
+    url(r'^meu-carrinho/$','marketapp.views.cliente.ver_carrinho')
+
 
 )
 
