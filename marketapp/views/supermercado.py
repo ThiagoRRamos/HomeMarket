@@ -11,8 +11,8 @@ def home(request):
 @apenas_supermercado()
 def funcionalidades_supermercado(request):
     nome = request.user.supermercado
+    
     return render(request, 'supermercado_funcionalidades.html',{'nome' :nome})
-
 
 
 @apenas_supermercado
