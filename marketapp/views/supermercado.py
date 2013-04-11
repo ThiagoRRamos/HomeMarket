@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect
 
-from marketapp.models import Produto
-from django.forms.models import ModelForm
 from marketapp.models import Produto, ProdutoSupermercado
-from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm,\
+from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, \
     ProdutoSupermercadoFormPreco
 from marketapp.utils.autorizacao import apenas_supermercado
 
@@ -17,9 +15,9 @@ def funcionalidades_supermercado(request):
     nome = request.user.supermercado
     if request.method == 'POST':
         botao = request.POST['opcao1']
-        return redirect('/' + botao+'/')
+        return redirect('/' + botao + '/')
         print botao
-    return render(request, 'supermercado_funcionalidades.html',{'nome' :nome})
+    return render(request, 'supermercado_funcionalidades.html', {'nome' : nome})
 
 
 @apenas_supermercado
@@ -72,7 +70,6 @@ def adicionar_produto_existente(request, codigo):
 
 
 @apenas_supermercado()
-
 def modificar_preco_existente(request, codigo):
     produto_supermercado = ProdutoSupermercado.objects.get(produto=Produto.objects.get(codigo_de_barras=codigo),
                                                            supermercado=request.user.supermercado)
@@ -84,6 +81,4 @@ def modificar_preco_existente(request, codigo):
             prod.supermercado = request.user.supermercado
             prod.produto = Produto.objects.get(codigo_de_barras=codigo)
             prod.save()
-    return render(request, 'modificacao_preco.html',                  {'form': form})
-
-
+    return render(request, 'modificacao_preco.html', {'form': form})

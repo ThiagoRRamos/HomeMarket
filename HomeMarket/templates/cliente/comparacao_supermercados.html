@@ -1,0 +1,18 @@
+{% extends 'chrome.html' %}
+{% block title %} Comparação de preços {% endblock %}
+{% block content %}
+<table class="table">
+    <tr>
+        <th>Produto</th>
+        <th>{{s1.nome_exibicao}}</th>
+        <th>{{s2.nome_exibicao}}</th>
+    </tr>
+    {% for p in produtos %}
+        <tr>
+            <td>{{p.produto}}</td>
+            <td>R$ {{p.ps1.preco|floatformat:2}}</td>
+            <td>R$ {{p.ps2.preco|floatformat:2}}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
