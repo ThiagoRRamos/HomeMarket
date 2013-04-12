@@ -6,10 +6,10 @@ from marketapp.models import Produto, Categoria, Supermercado, \
 import datetime
 
 
-class CarrinhoTestCase(TestCase):
+class TestCarrinho(TestCase):
 
     def setUp(self):
-        super(CarrinhoTestCase, self).setUp()
+        super(TestCarrinho, self).setUp()
         self.usuario = self.gerar_usuario_cliente()
 
     def gerar_usuario_cliente(self, name='usuario'):

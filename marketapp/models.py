@@ -156,7 +156,7 @@ class CarrinhoCompras(models.Model):
 
     def gerar_botao_pagamento(self):
         context = Context({'carrinho': self})
-        return get_template('_carrinho-form.html').render(context)
+        return get_template('cliente/_carrinho-form.html').render(context)
 
 
 class ProdutoCarrinho(models.Model):

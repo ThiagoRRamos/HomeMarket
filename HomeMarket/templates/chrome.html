@@ -29,8 +29,10 @@
             <ul class="nav pull-right">
                 {% if request.user.is_authenticated %}
                     {% if request.user.supermercado %}
+                        <li><a href="/contas/logout">Logout</a></li>
                     {% else %}
                         <li><a href="/meu-carrinho">Meu Carrinho</a></li>
+                        <li><a href="/contas/logout">Logout</a></li>
                     {% endif %}
                 {% else %}
                     <li><a href="/contas/login">Login</a></li>
