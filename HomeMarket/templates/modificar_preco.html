@@ -1,9 +1,8 @@
 {% extends 'chrome.html' %}
-{% block title %} Adicao de produto {% endblock %}
+{% block title %} Modificacao do preco {% endblock %}
 {% block content %}
 <form method="post">
     {% csrf_token %}
-    <label>Código de barras:</label>
     <input type="text" name="codigo"/>
 </form>
 {% endblock %}

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from marketapp.models import Categoria, Produto, Consumidor, Supermercado,\
     ListaCompras, AdicaoProduto, Compra, ProdutoSupermercado, CompraProduto,\
-    Endereco
+    Endereco, CarrinhoCompras, ProdutoCarrinho
 
 admin.site.register(Categoria)
 admin.site.register(Produto)
@@ -13,3 +13,5 @@ admin.site.register(Compra)
 admin.site.register(ProdutoSupermercado)
 admin.site.register(CompraProduto)
 admin.site.register(Endereco)
+admin.site.register(CarrinhoCompras)
+admin.site.register(ProdutoCarrinho)

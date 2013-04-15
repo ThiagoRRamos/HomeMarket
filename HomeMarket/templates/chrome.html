@@ -2,35 +2,66 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>{% block title %}{{ title }}{% endblock %}</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>{% block title %}{{ title }}{% endblock %}</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width">
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-        <link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css">
-        <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap.css">
-        <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css">
-        <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.2.min.js"></script>
-    </head>
-    <body>
-        <!--[if lt IE 7]>
+<link rel="stylesheet" href="/static/css/normalize.css">
+<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="/static/css/main.css">
+<script src="/static/js/vendor/modernizr-2.6.2.min.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">MyHomeMarket</a>
+            <ul class="nav">
+                <li><a href="/">Home</a></li>
+            </ul>
+            <ul class="nav pull-right">
+                {% if request.user.is_authenticated %}
+                    {% if request.user.supermercado %}
+                        <li><a href="/contas/logout">Logout</a></li>
+                    {% else %}
+                        <li><a href="/meu-carrinho">Meu Carrinho</a></li>
+                        <li><a href="/contas/logout">Logout</a></li>
+                    {% endif %}
+                {% else %}
+                    <li><a href="/contas/login">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
 
-        {% block content %}
-        <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.</p>
-        {% endblock %}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            {% block content %}
+            <!-- Add your site or application content here -->
+            <p>Hello world! This is HTML5 Boilerplate.</p>
+            {% endblock %}
+        </div>
+    </div>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="{{STATIC_URL}}js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
-        <script src="{{STATIC_URL}}js/plugins.js"></script>
-        <script src="{{STATIC_URL}}js/main.js"></script>
-        <script src="{{STATIC_URL}}bootstrap/js/bootstrap.js"></script>
-    </body>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script>
+					window.jQuery
+							|| document
+									.write('<script src="/static/js/vendor/jquery-1.9.0.min.js"><\/script>')
+				</script>
+    <script src="/static/js/plugins.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.js"></script>
+</body>
 </html>

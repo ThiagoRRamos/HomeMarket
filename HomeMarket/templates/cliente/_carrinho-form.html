@@ -1,0 +1,15 @@
+<form name="bcash" action="https://www.bcash.com.br/checkout/pay/" method="post">
+
+    <input name="email_loja" type="hidden" value="{{carrinho.supermercado.usuario.email}}" />
+    {% for produto in carrinho.produtocarrinho_set.all %}
+        <input name="produto_codigo_{{forloop.counter}}" type="hidden" value="{{produto.produto.id}}" />
+        <input name="produto_descricao_{{forloop.counter}}" type="hidden" value="{{produto.produto.produto.nome}}"/>
+        <input name="produto_qtde_{{forloop.counter}}" type="hidden" value="{{produto.quantidade}}"/>
+        <input name="produto_valor_{{forloop.counter}}" type="hidden" value="{{produto.produto.preco}}"/>
+    {% endfor %}
+    <input name="tipo_integracao" type="hidden" value="PAD"/>
+    <input name="frete" type="hidden" value="2"/>
+    <input name="url_retorno" type="hidden" value="http://127.0.0.1:8000/produtos/{{produto.id}}/comprar/confirmacao/">
+    <input type="image" class="pull-right" src="https://a248.e.akamai.net/f/248/96284/12h/www.bcash.com.br/webroot/img/bt_comprar.gif" value="Comprar" alt="Comprar" border="0" align="absbottom">
+
+</form>

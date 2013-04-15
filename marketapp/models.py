@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.template.context import Context
+from django.template.loader import get_template
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=50)
@@ -146,3 +147,19 @@ class ProdutoSupermercado(models.Model):
         return "{} em {} em {}".format(self.produto,
                                        self.supermercado,
                                        self.data_adicao)
+
+
+class CarrinhoCompras(models.Model):
+    supermercado = models.ForeignKey(Supermercado, null=True)
+    usuario = models.OneToOneField(User)
+    produtos = models.ManyToManyField(ProdutoSupermercado, through='ProdutoCarrinho')
+
+    def gerar_botao_pagamento(self):
+        context = Context({'carrinho': self})
+        return get_template('cliente/_carrinho-form.html').render(context)
+
+
+class ProdutoCarrinho(models.Model):
+    produto = models.ForeignKey(ProdutoSupermercado)
+    carrinho = models.ForeignKey(CarrinhoCompras)
+    quantidade = models.IntegerField()
