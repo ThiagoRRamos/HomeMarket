@@ -3,6 +3,5 @@ venv
 *.project
 *.pydevproject
 *.db
-HomeMarket/media/*
 /build
 *~

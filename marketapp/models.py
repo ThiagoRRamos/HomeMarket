@@ -17,7 +17,7 @@ class Produto(models.Model):
                 ('g', 'g'),
                 ('un', 'un'),
                 ('Kg', 'Kg'))
-    imagem = models.ImageField(upload_to="produtos")
+    imagem = models.ImageField(upload_to="produtos", default="examples/produto.jpg")
     nome = models.CharField(max_length=50)
     descricao = models.TextField()
     codigo_de_barras = models.CharField(max_length=15, unique=True)
