@@ -12,7 +12,7 @@ class TestesSelenium(unittest.TestCase):
         self.base_url = "http://localhost:8000/"
         self.verificationErrors = []
         self.accept_next_alert = True
-    
+
     def test_es_selenium(self):
         driver = self.driver
         driver.get(self.base_url + "")
