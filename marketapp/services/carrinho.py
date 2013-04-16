@@ -17,6 +17,9 @@ def get_carrinho_usuario(usuario):
 def adicionar_produto(usuario, produto_supermercado, quantidade=1):
     try:
         carrinho = CarrinhoCompras.objects.get(usuario=usuario)
+        if carrinho.supermercado is None:
+            carrinho.supermercado = produto_supermercado.supermercado
+            carrinho.save()
     except CarrinhoCompras.DoesNotExist:
         carrinho = CarrinhoCompras.objects.create(usuario=usuario,
                                        supermercado=produto_supermercado.supermercado)

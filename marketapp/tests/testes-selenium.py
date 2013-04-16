@@ -15,11 +15,16 @@ class TestesSelenium(unittest.TestCase):
     
     def test_es_selenium(self):
         driver = self.driver
-        driver.get(self.base_url + "/")
-    
+        driver.get(self.base_url + "")
+
     def tearDown(self):
         self.driver.quit()
         self.assertEqual([], self.verificationErrors)
+
+    def test_supermercado_table_exist(self):
+        self.driver.get(self.base_url + "")
+        table = self.driver.find_element_by_tag_name('table')
+        self.assertIn("Supermercados", table.text)
 
 if __name__ == "__main__":
     unittest.main()

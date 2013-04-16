@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 
-from marketapp.models import Produto, ProdutoSupermercado
+from marketapp.models import Produto, ProdutoSupermercado, Supermercado
 from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, \
     ProdutoSupermercadoFormPreco
 from marketapp.utils.autorizacao import apenas_supermercado
 
 
 def home(request):
-    return render(request, 'home.html')
+    supermercados = Supermercado.objects.all()
+    return render(request, 'home.html', {'supermercados' : supermercados})
 
 
 @apenas_supermercado()

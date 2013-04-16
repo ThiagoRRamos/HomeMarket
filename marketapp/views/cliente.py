@@ -27,7 +27,7 @@ def ver_produtos_supermercado(request, nome):
 @apenas_cliente()
 def adicionar_produto_carrinho(request, produto_id):
     produto = get_object_or_404(ProdutoSupermercado, id=produto_id)
-    carrinho_service.adicionar_produto(request, produto)
+    carrinho_service.adicionar_produto(request.user, produto)
     return redirect('marketapp.views.cliente.ver_carrinho')
 
 
