@@ -23,5 +23,5 @@ def get_produtos_que_estejam_em_dois_supermercados(supermercado_um, supermercado
             yield {'produto': produto_supermercado_1.produto,
                    'ps1': produto_supermercado_1,
                    'ps2': produto_supermercado_2}
-            i1+=1
-            i2+=1
+            i1 += 1
+            i2 += 1
