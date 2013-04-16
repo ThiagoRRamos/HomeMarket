@@ -6,17 +6,34 @@ from marketapp.models import Produto, Categoria, Supermercado, \
     ProdutoSupermercado
 import datetime
 import random
+from django.core.exceptions import ValidationError
 
 
 class TestCarrinho(TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        super(TestCarrinho, cls).setUpClass()
+        cls.usuario = cls.gerar_usuario_cliente()
+        cls.supermercado = Supermercado.objects.create(usuario=cls.gerar_usuario_cliente('super'),
+                                                       nome_exibicao="Supermercado")
+        cls.categoria = Categoria.objects.create()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.supermercado.delete()
+        cls.categoria.delete()
+        cls.usuario.delete()
+        super(TestCarrinho, cls).tearDownClass()
+
     def setUp(self):
         super(TestCarrinho, self).setUp()
-        self.usuario = self.gerar_usuario_cliente()
-        self.supermercado = Supermercado.objects.create(usuario=self.gerar_usuario_cliente('super'))
-        self.categoria = Categoria.objects.create()
 
-    def gerar_usuario_cliente(self, name='usuario'):
+    def tearDown(self):
+        super(TestCarrinho, self).tearDown()
+
+    @classmethod
+    def gerar_usuario_cliente(cls, name='usuario'):
         try:
             return User.objects.get(username=name)
         except User.DoesNotExist:
@@ -36,10 +53,14 @@ class TestCarrinho(TestCase):
                                                   limite_venda=datetime.datetime(2014, 01, 01))
 
     def gerar_produto_randomico(self):
-        cod_barras = str(random.randint(0, 1000000000))
-        return Produto.objects.create(categoria=self.categoria,
-                                      quantidade=1,
-                                      codigo_de_barras=cod_barras)
+        while 1:
+            try:
+                cod_barras = str(random.randint(0, 1000000000))
+                return Produto.objects.create(categoria=self.categoria,
+                                              quantidade=1,
+                                              codigo_de_barras=cod_barras)
+            except ValidationError:
+                pass
 
     def test_unicidade_carrinho(self):
         carrinho = get_carrinho_usuario(self.usuario)

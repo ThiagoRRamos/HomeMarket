@@ -8,33 +8,46 @@ from django.contrib.auth.models import User
 from marketapp.models import Supermercado, Categoria, Produto, ProdutoSupermercado
 
 class TestAdicaoProduto(LiveServerTestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super(TestAdicaoProduto, cls).setUpClass()
+        cls.user = cls.gerar_usuario_cliente('lucasclient')
+        cls.supermercado = Supermercado.objects.create(usuario=cls.gerar_usuario_cliente('super'), nome_exibicao='Villarreal', nome_url='villarreal')
+        cls.categoria = cls.gerar_categoria('comida', 'foda-se descricao')
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.supermercado.delete()
+        cls.categoria.delete()
+        cls.user.delete()
+        super(TestAdicaoProduto, cls).tearDownClass()
+
     def setUp(self):
         super(TestAdicaoProduto, self).setUp()
         self.driver = webdriver.Firefox()
         self.driver.implicitly_wait(30)
         self.base_url = self.live_server_url
         self.verificationErrors = []
-        self.user = self.gerar_usuario_cliente('lucasclient')
-        self.supermercado = Supermercado.objects.create(usuario=self.gerar_usuario_cliente('super'), nome_exibicao='Villarreal', nome_url='villarreal')
-        self.categoria = self.gerar_categoria('comida', 'foda-se descricao')
         self.gerar_produto_supermercado(self.gerar_produto_randomico('Cafe'))
         self.accept_next_alert = True
-    
+
     def test_supermercado_table_exist(self):
         self.driver.get(self.base_url + "")
         table = self.driver.find_element_by_tag_name('table')
         self.assertIn("Supermercados", table.text)
 
-    def gerar_usuario_cliente(self, name='usuario'):
+    @classmethod
+    def gerar_usuario_cliente(cls, name='usuario'):
         try:
             return User.objects.get(username=name)
         except User.DoesNotExist:
             return User.objects.create_user(username=name, password='123456')
 
-
-    def gerar_produto_supermercado(self, produto, preco=10, quantidade=2, supermercado=None):
+    @classmethod
+    def gerar_produto_supermercado(cls, produto, preco=10, quantidade=2, supermercado=None):
         if supermercado is None:
-            return ProdutoSupermercado.objects.create(supermercado=self.supermercado,
+            return ProdutoSupermercado.objects.create(supermercado=cls.supermercado,
                                                       produto=produto,
                                                       preco=preco,
                                                       quantidade=quantidade,
@@ -45,18 +58,17 @@ class TestAdicaoProduto(LiveServerTestCase):
                                                   quantidade=quantidade,
                                                   limite_venda=datetime.datetime(2014, 01, 01))
 
-
-    def gerar_produto_randomico(self, nome='leite'):
+    @classmethod
+    def gerar_produto_randomico(cls, nome='leite'):
         cod_barras = str(random.randint(0, 1000000000))
         return Produto.objects.create(nome=nome,
-                                      categoria=self.categoria,
+                                      categoria=cls.categoria,
                                       quantidade=1,
                                       codigo_de_barras=cod_barras)
 
-    
-    def gerar_categoria(self, nome, descricao):
-        return Categoria.objects.create(nome = nome, descricao = descricao)
-
+    @classmethod
+    def gerar_categoria(cls, nome, descricao):
+        return Categoria.objects.create(nome=nome, descricao=descricao)
 
     def test_adicao_produto(self):
         driver = self.driver
@@ -71,12 +83,12 @@ class TestAdicaoProduto(LiveServerTestCase):
         driver.find_element_by_xpath("/html/body/div/div/table/tbody/tr[2]/td[5]/a").click()
         assert driver.find_element_by_xpath("//table/tbody/tr[2]/td[1]").text == produto
 
-
     def is_element_present(self, how, what):
-        try: self.driver.find_element(by=how, value=what)
+        try:
+            self.driver.find_element(by=how, value=what)
         except NoSuchElementException, e: return False
         return True
-    
+
     def close_alert_and_get_its_text(self):
         try:
             alert = self.driver.switch_to_alert()
@@ -85,8 +97,9 @@ class TestAdicaoProduto(LiveServerTestCase):
             else:
                 alert.dismiss()
             return alert.text
-        finally: self.accept_next_alert = True
-    
+        finally:
+            self.accept_next_alert = True
+
     def tearDown(self):
         self.driver.quit()
         self.assertEqual([], self.verificationErrors)
