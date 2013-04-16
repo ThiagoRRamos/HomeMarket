@@ -1,12 +1,14 @@
-from django.contrib.auth.models import User
-from marketapp.services.carrinho import get_carrinho_usuario, adicionar_produto,\
-    limpar_carrinho, CarrinhoComOutroSupermercado
-from django.test import TestCase
-from marketapp.models import Produto, Categoria, Supermercado, \
-    ProdutoSupermercado
 import datetime
 import random
+
+from django.test import TestCase
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+
+from marketapp.services.carrinho import get_carrinho_usuario, adicionar_produto, \
+    limpar_carrinho, CarrinhoComOutroSupermercado
+from marketapp.models import Produto, Categoria, Supermercado, \
+    ProdutoSupermercado
 
 
 class TestCarrinho(TestCase):
@@ -96,7 +98,7 @@ class TestCarrinho(TestCase):
         produto2 = self.gerar_produto_randomico()
         ps1 = self.gerar_produto_supermercado(produto1)
         supermercado2 = Supermercado.objects.create(usuario=self.gerar_usuario_cliente("ola"))
-        ps2 = self.gerar_produto_supermercado(produto2,supermercado=supermercado2)
+        ps2 = self.gerar_produto_supermercado(produto2, supermercado=supermercado2)
         adicionar_produto(self.usuario, ps1)
         try:
             adicionar_produto(self.usuario, ps2)
@@ -108,7 +110,7 @@ class TestCarrinho(TestCase):
         produto1 = self.gerar_produto_randomico()
         ps1 = self.gerar_produto_supermercado(produto1)
         supermercado2 = Supermercado.objects.create(usuario=self.gerar_usuario_cliente("ola"))
-        ps2 = self.gerar_produto_supermercado(produto1,supermercado=supermercado2)
+        ps2 = self.gerar_produto_supermercado(produto1, supermercado=supermercado2)
         adicionar_produto(self.usuario, ps1)
         try:
             adicionar_produto(self.usuario, ps2)
@@ -120,6 +122,6 @@ class TestCarrinho(TestCase):
         produto1 = self.gerar_produto_randomico()
         ps1 = self.gerar_produto_supermercado(produto1)
         supermercado2 = Supermercado.objects.create(usuario=self.gerar_usuario_cliente("ola"))
-        ps2 = self.gerar_produto_supermercado(produto1,supermercado=supermercado2)
+        ps2 = self.gerar_produto_supermercado(produto1, supermercado=supermercado2)
         adicionar_produto(self.usuario, ps1)
         adicionar_produto(supermercado2.usuario, ps2)

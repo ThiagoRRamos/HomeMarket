@@ -3,21 +3,30 @@ Created on Apr 11, 2013
 
 @author: thiagorramos
 '''
+from django.test import TestCase
 from django.utils import unittest
+from marketapp.models import Supermercado
 
 
-class ProdutoTest(unittest.TestCase):
+class TestProdutoRepository(TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        super(TestProdutoRepository, cls).setUpClass()
+
+    @classmethod
+    def tearDownClass(cls):
+        super(TestProdutoRepository, cls).tearDownClass()
 
     def setUp(self):
-        pass
-
+        super(TestProdutoRepository, self).setUp()
+        self.super1 = Supermercado.objects.create()
+        self.super2 = Supermercado.objects.create()
 
     def tearDown(self):
-        pass
+        super(TestProdutoRepository, self).tearDown()
 
-
-    def testName(self):
+    def testProdutoEmDoisSupermercadosVazio(self):
         pass
 
 
