@@ -8,17 +8,17 @@ from marketapp.utils.autorizacao import apenas_supermercado
 
 def home(request):
     supermercados = Supermercado.objects.all()
-    return render(request, 'home.html', {'supermercados' : supermercados})
+    return render(request, 'home.html', {'supermercados': supermercados})
 
 
-@apenas_supermercado()
+@apenas_supermercado
 def funcionalidades_supermercado(request):
     nome = request.user.supermercado
     if request.method == 'POST':
         botao = request.POST['opcao1']
         return redirect('/' + botao + '/')
         print botao
-    return render(request, 'supermercado_funcionalidades.html', {'nome' : nome})
+    return render(request, 'supermercado_funcionalidades.html', {'nome': nome})
 
 
 @apenas_supermercado
@@ -33,7 +33,7 @@ def adicionar_produto(request):
     return render(request, 'inicio_adicao.html')
 
 
-@apenas_supermercado()
+@apenas_supermercado
 def modificar_preco(request):
     if request.method == 'POST':
         codigo = request.POST['codigo']
@@ -70,7 +70,7 @@ def adicionar_produto_existente(request, codigo):
                   {'form': form})
 
 
-@apenas_supermercado()
+@apenas_supermercado
 def modificar_preco_existente(request, codigo):
     produto_supermercado = ProdutoSupermercado.objects.get(produto=Produto.objects.get(codigo_de_barras=codigo),
                                                            supermercado=request.user.supermercado)

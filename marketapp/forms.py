@@ -15,11 +15,11 @@ class ProdutoForm(ModelForm):
 class ProdutoSupermercadoForm(ModelForm):
     class Meta:
         model = ProdutoSupermercado
-        exclude = ('produto','supermercado')
-        
+        exclude = ('produto', 'supermercado')
+
 
 class ProdutoSupermercadoFormPreco(ModelForm):
     class Meta:
         model = ProdutoSupermercado
-        exclude = ('produto','supermercado','quantidade','limite_venda')
-        
+        exclude = ('produto', 'supermercado', 'quantidade', 'limite_venda')
+
