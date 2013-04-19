@@ -57,7 +57,7 @@ def comparar_supermercados(request):
                   {'produtos':produtos,
                    's1':supermercado_1,
                    's2':supermercado_2})
-    
+
 @login_required
 def comparar_produto_preco(request):
     if request.method == 'POST':
@@ -65,10 +65,10 @@ def comparar_produto_preco(request):
         try:
             produto = Produto.objects.get(codigo_de_barras=codigo)
             supermercados = produto_repository.get_supermercados_produto(produto)
-            return render(request,'cliente/comparar_precos.html',{'sp': supermercados,
+            return render(request, 'cliente/comparar_precos.html', {'sp': supermercados,
                                                                   'produto': produto})
         except Produto.DoesNotExist:
             return redirect('/criar_produto')
     return render(request, 'inicio_comparacao.html')
-    
-    
+
+
