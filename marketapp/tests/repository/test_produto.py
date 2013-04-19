@@ -65,11 +65,30 @@ class TestProdutoRepository(TestCase):
 
     def testProdutoEmDoisSupermercadosUmProduto(self):
         produto1 = self.gerar_produto_randomico()
-        self.gerar_produto_supermercado(produto1, supermercado=self.super1)
-        self.gerar_produto_supermercado(produto1, supermercado=self.super2)
+        self.gerar_produto_supermercado(produto1, preco=20, supermercado=self.super1)
+        self.gerar_produto_supermercado(produto1, preco=10, supermercado=self.super2)
         dados = list(get_produtos_que_estejam_em_dois_supermercados(self.super1, self.super2))
         self.assertEqual(len(dados), 1)
         self.assertEqual(dados[0]['produto'], produto1)
+        self.assertEqual(dados[0]['ps1'].preco, 20)
+        self.assertEqual(dados[0]['ps2'].preco, 10)
+
+    def testProdutoEmDoisSupermercadosAlgunsProduto(self):
+        produto1 = self.gerar_produto_randomico()
+        produto2 = self.gerar_produto_randomico()
+        produto3 = self.gerar_produto_randomico()
+        produto4 = self.gerar_produto_randomico()
+        produto5 = self.gerar_produto_randomico()
+        self.gerar_produto_supermercado(produto1, supermercado=self.super1)
+        self.gerar_produto_supermercado(produto2, supermercado=self.super1)
+        self.gerar_produto_supermercado(produto3, supermercado=self.super1)
+        self.gerar_produto_supermercado(produto2, supermercado=self.super2)
+        self.gerar_produto_supermercado(produto3, supermercado=self.super2)
+        self.gerar_produto_supermercado(produto4, supermercado=self.super2)
+        self.gerar_produto_supermercado(produto5, supermercado=self.super2)
+        dados = list(get_produtos_que_estejam_em_dois_supermercados(self.super1, self.super2))
+        self.assertEqual(len(dados), 2)
+
     def gerar_produto_randomico(self):
         while 1:
             try:
