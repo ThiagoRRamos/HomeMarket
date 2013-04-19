@@ -3,7 +3,7 @@ Created on Apr 11, 2013
 
 @author: thiagorramos
 '''
-from marketapp.models import Produto, ProdutoSupermercado
+from marketapp.models import Produto, ProdutoSupermercado, Supermercado
 from django.db.models.query import QuerySet
 QuerySet
 
@@ -25,3 +25,14 @@ def get_produtos_que_estejam_em_dois_supermercados(supermercado_um, supermercado
                    'ps2': produto_supermercado_2}
             i1 += 1
             i2 += 1
+            
+def get_supermercados_produto(produtoP):
+    ps1 = ProdutoSupermercado.objects.filter(produto = produtoP).order_by("preco")
+    i1=0
+    while i1 < len(ps1):
+        produto_supermercado_1 = ps1[i1]
+        yield {'supermercado': produto_supermercado_1.supermercado,
+               'ps1': produto_supermercado_1}
+        i1 += 1
+                     
+            

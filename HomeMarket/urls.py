@@ -28,7 +28,9 @@ urlpatterns = patterns('',
     url(r'^meu-carrinho/$',
         'marketapp.views.cliente.ver_carrinho'),
     url(r'^comparar-supermercados/$',
-        'marketapp.views.cliente.comparar_supermercados')
+        'marketapp.views.cliente.comparar_supermercados'),
+    url(r'^comparar-preco-supermercados/$',
+        'marketapp.views.cliente.comparar_produto_preco')                   
 
 
 )

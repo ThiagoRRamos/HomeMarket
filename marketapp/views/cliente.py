@@ -1,12 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
-from marketapp.models import Supermercado, ProdutoSupermercado
+from marketapp.models import Supermercado, ProdutoSupermercado, Produto
 import marketapp.services.carrinho as carrinho_service
 from marketapp.utils.autorizacao import apenas_cliente
 
 import marketapp.repository.produto as produto_repository
-
 
 def home(request):
     return render(request, 'home.html')
@@ -58,3 +57,18 @@ def comparar_supermercados(request):
                   {'produtos':produtos,
                    's1':supermercado_1,
                    's2':supermercado_2})
+    
+@login_required
+def comparar_produto_preco(request):
+    if request.method == 'POST':
+        codigo = request.POST['codigo']
+        try:
+            produto = Produto.objects.get(codigo_de_barras=codigo)
+            supermercados = produto_repository.get_supermercados_produto(produto)
+            return render(request,'cliente/comparar_precos.html',{'sp': supermercados,
+                                                                  'produto': produto})
+        except Produto.DoesNotExist:
+            return redirect('/criar_produto')
+    return render(request, 'inicio_comparacao.html')
+    
+    

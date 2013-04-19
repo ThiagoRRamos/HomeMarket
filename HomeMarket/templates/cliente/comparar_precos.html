@@ -1,0 +1,18 @@
+{% extends 'chrome.html' %}
+{% block title %} Comparar precos supermercados {% endblock %}
+{% block content %}
+<table class="table">
+    <tr>
+        <th>{{produto}}</th>
+        <th>Preco(R$)</th>
+        <th>Supermercado</th>
+    </tr>
+    {% for p in sp %}
+        <tr>
+            <td>Imagem</td>
+            <td>R$ {{p.ps1.preco|floatformat:2}}</td>
+            <td> {{p.supermercado.nome_exibicao}}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
