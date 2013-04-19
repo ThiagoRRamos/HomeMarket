@@ -88,6 +88,8 @@ class TestProdutoRepository(TestCase):
         self.gerar_produto_supermercado(produto5, supermercado=self.super2)
         dados = list(get_produtos_que_estejam_em_dois_supermercados(self.super1, self.super2))
         self.assertEqual(len(dados), 2)
+        for da in dados:
+            self.assertTrue(da['produto'] in [produto2,produto3])
 
     def gerar_produto_randomico(self):
         while 1:
