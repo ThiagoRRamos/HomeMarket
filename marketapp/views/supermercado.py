@@ -1,18 +1,14 @@
 from django.shortcuts import render, redirect
 
-from marketapp.models import Produto, ProdutoSupermercado, Supermercado
+from marketapp.models import Produto, ProdutoSupermercado
 from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, \
     ProdutoSupermercadoFormPreco
 from marketapp.utils.autorizacao import apenas_supermercado
-
-
-def home(request):
-    supermercados = Supermercado.objects.all()
-    return render(request, 'home.html', {'supermercados': supermercados})
+import marketapp.repository.produto as produto_repository
 
 
 @apenas_supermercado
-def funcionalidades_supermercado(request):
+def home(request):
     nome = request.user.supermercado
     if request.method == 'POST':
         botao = request.POST['opcao1']
@@ -26,7 +22,7 @@ def adicionar_produto(request):
     if request.method == 'POST':
         codigo = request.POST['codigo']
         try:
-            produto = Produto.objects.get(codigo_de_barras=codigo)
+            Produto.objects.get(codigo_de_barras=codigo)
             return redirect('/adicionar-produto-existente/' + codigo)
         except Produto.DoesNotExist:
             return redirect('/criar_produto')
@@ -39,7 +35,6 @@ def modificar_preco(request):
         codigo = request.POST['codigo']
         try:
             produto = Produto.objects.get(codigo_de_barras=codigo)
-            produto.nome = "nome"
             produto.save()
             return redirect('/modificar-preco-existente/' + codigo)
         except Produto.DoesNotExist:
@@ -83,3 +78,19 @@ def modificar_preco_existente(request, codigo):
             prod.produto = Produto.objects.get(codigo_de_barras=codigo)
             prod.save()
     return render(request, 'modificacao_preco.html', {'form': form})
+
+
+@apenas_supermercado
+def comparar_produto_preco(request):
+    if request.method == 'POST':
+        codigo = request.POST['codigo']
+        try:
+            produto = Produto.objects.get(codigo_de_barras=codigo)
+            supermercados = produto_repository.get_supermercados_produto(produto)
+            return render(request,
+                          'cliente/comparar_precos.html',
+                          {'sp': supermercados,
+                           'produto': produto})
+        except Produto.DoesNotExist:
+            return redirect('/criar_produto')
+    return render(request, 'inicio_comparacao.html')

@@ -10,7 +10,7 @@
     {% for p in sp %}
         <tr>
             <td>Imagem</td>
-            <td>R$ {{p.ps1.preco|floatformat:2}}</td>
+            <td>R$ {{p.preco|floatformat:2}}</td>
             <td> {{p.supermercado.nome_exibicao}}</td>
         </tr>
     {% endfor %}

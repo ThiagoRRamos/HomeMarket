@@ -6,7 +6,7 @@ import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', 'marketapp.views.supermercado.home', name='home'),
+    url(r'^$', 'marketapp.views.geral.home', name='home'),
     url(r'^admin/', include(admin.site.urls)),
     (r'^contas/', include('allauth.urls')),
     url(r'^criar/$',
@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     url(r'^supermercado/(?P<nome>.*)$',
         'marketapp.views.cliente.ver_produtos_supermercado'),
     url(r'^funcionalidades_supermercado',
-        'marketapp.views.supermercado.funcionalidades_supermercado'),
+        'marketapp.views.supermercado.home'),
     url(r'^colocar-no-carrinho/(?P<produto_id>\d+)',
         'marketapp.views.cliente.adicionar_produto_carrinho'),
     url(r'^meu-carrinho/$',
@@ -30,9 +30,7 @@ urlpatterns = patterns('',
     url(r'^comparar-supermercados/$',
         'marketapp.views.cliente.comparar_supermercados'),
     url(r'^comparar-preco-supermercados/$',
-        'marketapp.views.cliente.comparar_produto_preco')                   
-
-
+        'marketapp.views.supermercado.comparar_produto_preco')
 )
 
 if settings.DEBUG:

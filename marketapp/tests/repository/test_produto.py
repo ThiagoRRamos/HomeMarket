@@ -4,15 +4,12 @@ Created on Apr 11, 2013
 @author: thiagorramos
 '''
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils import unittest
-from marketapp.models import Supermercado, ProdutoSupermercado, Produto, \
-    Categoria
-from marketapp.repository.produto import \
-    get_produtos_que_estejam_em_dois_supermercados
-import datetime
-import random
+from marketapp.models import Supermercado, Categoria
+from marketapp.repository.produto import get_produtos_que_estejam_em_dois_supermercados
+from marketapp.tests.utilidades.gerador import gerar_produto_supermercado, \
+    gerar_produto_randomico
 
 
 class TestProdutoRepository(TestCase):
@@ -33,13 +30,6 @@ class TestProdutoRepository(TestCase):
         self.super2 = Supermercado.objects.create(usuario=user2)
         self.categoria = Categoria.objects.create()
 
-    def gerar_produto_supermercado(self, produto, preco=10, quantidade=2, supermercado=None):
-        return ProdutoSupermercado.objects.create(supermercado=supermercado,
-                                                  produto=produto,
-                                                  preco=preco,
-                                                  quantidade=quantidade,
-                                                  limite_venda=datetime.datetime(2014, 01, 01))
-
     def tearDown(self):
         super(TestProdutoRepository, self).tearDown()
 
@@ -48,25 +38,25 @@ class TestProdutoRepository(TestCase):
         self.assertEqual(len(dados), 0)
 
     def testProdutoEmDoisSupermercadosSomenteUmSupermercado(self):
-        produto1 = self.gerar_produto_randomico()
-        produto2 = self.gerar_produto_randomico()
-        self.gerar_produto_supermercado(produto1, supermercado=self.super1)
-        self.gerar_produto_supermercado(produto2, supermercado=self.super1)
+        produto1 = gerar_produto_randomico(categoria=self.categoria)
+        produto2 = gerar_produto_randomico(categoria=self.categoria)
+        gerar_produto_supermercado(produto1, supermercado=self.super1)
+        gerar_produto_supermercado(produto2, supermercado=self.super1)
         dados = list(get_produtos_que_estejam_em_dois_supermercados(self.super1, self.super2))
         self.assertEqual(len(dados), 0)
 
     def testProdutoEmDoisSupermercadosProdutosDiferentes(self):
-        produto1 = self.gerar_produto_randomico()
-        produto2 = self.gerar_produto_randomico()
-        self.gerar_produto_supermercado(produto1, supermercado=self.super1)
-        self.gerar_produto_supermercado(produto2, supermercado=self.super2)
+        produto1 = gerar_produto_randomico(categoria=self.categoria)
+        produto2 = gerar_produto_randomico(categoria=self.categoria)
+        gerar_produto_supermercado(produto1, supermercado=self.super1)
+        gerar_produto_supermercado(produto2, supermercado=self.super2)
         dados = list(get_produtos_que_estejam_em_dois_supermercados(self.super1, self.super2))
         self.assertEqual(len(dados), 0)
 
     def testProdutoEmDoisSupermercadosUmProduto(self):
-        produto1 = self.gerar_produto_randomico()
-        self.gerar_produto_supermercado(produto1, preco=20, supermercado=self.super1)
-        self.gerar_produto_supermercado(produto1, preco=10, supermercado=self.super2)
+        produto1 = gerar_produto_randomico(categoria=self.categoria)
+        gerar_produto_supermercado(produto1, preco=20, supermercado=self.super1)
+        gerar_produto_supermercado(produto1, preco=10, supermercado=self.super2)
         dados = list(get_produtos_que_estejam_em_dois_supermercados(self.super1, self.super2))
         self.assertEqual(len(dados), 1)
         self.assertEqual(dados[0]['produto'], produto1)
@@ -74,32 +64,22 @@ class TestProdutoRepository(TestCase):
         self.assertEqual(dados[0]['ps2'].preco, 10)
 
     def testProdutoEmDoisSupermercadosAlgunsProduto(self):
-        produto1 = self.gerar_produto_randomico()
-        produto2 = self.gerar_produto_randomico()
-        produto3 = self.gerar_produto_randomico()
-        produto4 = self.gerar_produto_randomico()
-        produto5 = self.gerar_produto_randomico()
-        self.gerar_produto_supermercado(produto1, supermercado=self.super1)
-        self.gerar_produto_supermercado(produto2, supermercado=self.super1)
-        self.gerar_produto_supermercado(produto3, supermercado=self.super1)
-        self.gerar_produto_supermercado(produto2, supermercado=self.super2)
-        self.gerar_produto_supermercado(produto3, supermercado=self.super2)
-        self.gerar_produto_supermercado(produto4, supermercado=self.super2)
-        self.gerar_produto_supermercado(produto5, supermercado=self.super2)
+        produto1 = gerar_produto_randomico(categoria=self.categoria)
+        produto2 = gerar_produto_randomico(categoria=self.categoria)
+        produto3 = gerar_produto_randomico(categoria=self.categoria)
+        produto4 = gerar_produto_randomico(categoria=self.categoria)
+        produto5 = gerar_produto_randomico(categoria=self.categoria)
+        gerar_produto_supermercado(produto1, supermercado=self.super1)
+        gerar_produto_supermercado(produto2, supermercado=self.super1)
+        gerar_produto_supermercado(produto3, supermercado=self.super1)
+        gerar_produto_supermercado(produto2, supermercado=self.super2)
+        gerar_produto_supermercado(produto3, supermercado=self.super2)
+        gerar_produto_supermercado(produto4, supermercado=self.super2)
+        gerar_produto_supermercado(produto5, supermercado=self.super2)
         dados = list(get_produtos_que_estejam_em_dois_supermercados(self.super1, self.super2))
         self.assertEqual(len(dados), 2)
         for da in dados:
-            self.assertTrue(da['produto'] in [produto2,produto3])
-
-    def gerar_produto_randomico(self):
-        while 1:
-            try:
-                cod_barras = str(random.randint(0, 1000000000))
-                return Produto.objects.create(categoria=self.categoria,
-                                              quantidade=1,
-                                              codigo_de_barras=cod_barras)
-            except ValidationError:
-                pass
+            self.assertTrue(da['produto'] in [produto2, produto3])
 
 
 if __name__ == "__main__":
