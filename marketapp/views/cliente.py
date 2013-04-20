@@ -8,7 +8,6 @@ from marketapp.utils.autorizacao import apenas_cliente
 import marketapp.repository.produto as produto_repository
 
 
-@apenas_cliente
 def ver_produtos_supermercado(request, nome):
     supermercado = get_object_or_404(Supermercado, nome_url=nome)
     produtos = ProdutoSupermercado.objects.filter(supermercado=supermercado)
@@ -41,11 +40,11 @@ def comparar_supermercados(request):
             supermercado_1 = Supermercado.objects.get(id=int(supermercados[0]))
             supermercado_2 = Supermercado.objects.get(id=int(supermercados[1]))
         except (KeyError, Supermercado.DoesNotExist):
-            supermercados = Supermercado.objects.all()
+            supermercados = Supermercado.objects.all()[:2]
             supermercado_1 = supermercados[0]
             supermercado_2 = supermercados[1]
     else:
-        supermercados = Supermercado.objects.all()
+        supermercados = Supermercado.objects.all()[:2]
         supermercado_1 = supermercados[0]
         supermercado_2 = supermercados[1]
     produtos = produto_repository.get_produtos_que_estejam_em_dois_supermercados(supermercado_1,

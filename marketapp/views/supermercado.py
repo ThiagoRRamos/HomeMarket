@@ -9,12 +9,10 @@ import marketapp.repository.produto as produto_repository
 
 @apenas_supermercado
 def home(request):
-    nome = request.user.supermercado
-    if request.method == 'POST':
-        botao = request.POST['opcao1']
-        return redirect('/' + botao + '/')
-        print botao
-    return render(request, 'supermercado_funcionalidades.html', {'nome': nome})
+    supermercado_atual = request.user.supermercado
+    return render(request,
+                  'supermercado/home.html',
+                  {'nome': supermercado_atual})
 
 
 @apenas_supermercado
@@ -26,29 +24,17 @@ def adicionar_produto(request):
             return redirect('/adicionar-produto-existente/' + codigo)
         except Produto.DoesNotExist:
             return redirect('/criar_produto')
-    return render(request, 'inicio_adicao.html')
-
-
-@apenas_supermercado
-def modificar_preco(request):
-    if request.method == 'POST':
-        codigo = request.POST['codigo']
-        try:
-            produto = Produto.objects.get(codigo_de_barras=codigo)
-            produto.save()
-            return redirect('/modificar-preco-existente/' + codigo)
-        except Produto.DoesNotExist:
-            return redirect('/criar_produto')
-    return render(request, 'modificar_preco.html')
+    return render(request, 'supermercado/inicio_adicao.html')
 
 
 def criar_produto(request):
-    form = ProdutoForm()
     if request.method == 'POST':
         form = ProdutoForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-    return render(request, 'criacao_produto.html',
+            produto = form.save()
+            return redirect('marketapp.views.supermercado.adicionar_produto_existente',
+                            codigo=produto.codigo_de_barras)
+    return render(request, 'supermercado/criacao_produto.html',
                   {'form': form})
 
 
@@ -61,8 +47,22 @@ def adicionar_produto_existente(request, codigo):
             prod.supermercado = request.user.supermercado
             prod.produto = Produto.objects.get(codigo_de_barras=codigo)
             prod.save()
-    return render(request, 'adicao_produto.html',
+    return render(request,
+                  'supermercado/adicao_produto.html',
                   {'form': form})
+
+
+@apenas_supermercado
+def modificar_preco(request):
+    if request.method == 'POST':
+        codigo = request.POST['codigo']
+        try:
+            produto = Produto.objects.get(codigo_de_barras=codigo)
+            produto.save()
+            return redirect('/modificar-preco-existente/' + codigo)
+        except Produto.DoesNotExist:
+            return redirect('/criar_produto')
+    return render(request, 'supermercado/modificar_preco.html')
 
 
 @apenas_supermercado
@@ -77,7 +77,9 @@ def modificar_preco_existente(request, codigo):
             prod.supermercado = request.user.supermercado
             prod.produto = Produto.objects.get(codigo_de_barras=codigo)
             prod.save()
-    return render(request, 'modificacao_preco.html', {'form': form})
+    return render(request,
+                  'supermercado/modificacao_preco.html',
+                  {'form': form})
 
 
 @apenas_supermercado
@@ -93,4 +95,5 @@ def comparar_produto_preco(request):
                            'produto': produto})
         except Produto.DoesNotExist:
             return redirect('/criar_produto')
-    return render(request, 'inicio_comparacao.html')
+    return render(request,
+                  'supermercado/inicio_comparacao.html')

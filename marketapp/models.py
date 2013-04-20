@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.template.context import Context
 from django.template.loader import get_template
 
+
 class Categoria(models.Model):
     nome = models.CharField(max_length=50)
     descricao = models.TextField()
