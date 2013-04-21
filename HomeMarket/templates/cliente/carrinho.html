@@ -1,10 +1,12 @@
 {% extends 'chrome.html' %}
 {% block title %} Home {% endblock %}
 {% block content %}
+{% if carrinho.supermercado %}
 <dl>
   <dt> Supermercado</dt>
   <dd> {{carrinho.supermercado}}</dd>
 </dl>
+{% endif %}
 
 <table class="table table-striped">
     <tr>
@@ -24,6 +26,7 @@
         </tr>
     {% endfor %}
 </table>
+<p>Custo: R$ {{carrinho.total|floatformat:2}}</p>
 <form name="bcash" action="https://www.bcash.com.br/checkout/pay/" method="post">
 	{{carrinho.gerar_botao_pagamento}}
     <input class="btn btn-success" type="submit" class="pull-left" value="Comprar">

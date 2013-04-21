@@ -4,16 +4,22 @@ Created on Apr 5, 2013
 @author: thiagorramos
 '''
 from marketapp.models import CarrinhoCompras, ProdutoCarrinho
+from marketapp.services.regiao_atendimento import atende
 
 
 class CarrinhoComOutroSupermercado(Exception):
+    pass
+
+class SupermercadoNaoAtendeUsuario(Exception):
     pass
 
 def gerar_lista_de_compras(carrinho):
     return carrinho.gerar_lista_de_compras()
 
 def limpar_carrinho(usuario):
-    CarrinhoCompras.objects.filter(usuario=usuario).delete()
+    carrinho = get_carrinho_usuario(usuario)
+    carrinho.produtocarrinho_set.all().delete()
+    carrinho.delete()
 
 
 def get_carrinho_usuario(usuario):
@@ -24,8 +30,11 @@ def adicionar_produto(usuario, produto_supermercado, quantidade=1):
     try:
         carrinho = CarrinhoCompras.objects.get(usuario=usuario)
         if carrinho.supermercado is None:
-            carrinho.supermercado = produto_supermercado.supermercado
-            carrinho.save()
+            if atende(produto_supermercado.supermercado,usuario):
+                carrinho.supermercado = produto_supermercado.supermercado
+                carrinho.save()
+            else:
+                raise SupermercadoNaoAtendeUsuario
     except CarrinhoCompras.DoesNotExist:
         carrinho = CarrinhoCompras.objects.create(usuario=usuario,
                                        supermercado=produto_supermercado.supermercado)

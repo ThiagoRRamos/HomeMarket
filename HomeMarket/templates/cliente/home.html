@@ -8,8 +8,7 @@
     <tbody>
         {% for supermerc in supermercados%}
         <tr>
-            <td><a href="{{ supermerc.get_absolute_url }}">{{
-                    supermerc.nome_exibicao }}</a></td>
+            <td><a href="{{supermerc.get_absolute_url}}">{{supermerc}}</a></td>
         </tr>
         {% endfor %}
     </tbody>

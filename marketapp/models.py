@@ -147,8 +147,10 @@ class CarrinhoCompras(models.Model):
         return get_template('cliente/_carrinho-form.html').render(context)
     
     def gerar_lista_compras(self):
-        pass
-
+        return []
+    
+    def total(self):
+        return sum((p.quantidade*p.produto.preco for p in self.produtocarrinho_set.all()))
 
 class ProdutoCarrinho(models.Model):
     produto = models.ForeignKey(ProdutoSupermercado)
