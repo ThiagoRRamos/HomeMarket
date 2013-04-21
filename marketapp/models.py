@@ -141,7 +141,6 @@ class ProdutoSupermercado(models.Model):
     supermercado = models.ForeignKey(Supermercado)
     preco = models.DecimalField(decimal_places=2, max_digits=5)
     quantidade = models.IntegerField()
-    limite_venda = models.DateField(blank=True)
     data_adicao = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
@@ -158,6 +157,9 @@ class CarrinhoCompras(models.Model):
     def gerar_botao_pagamento(self):
         context = Context({'carrinho': self})
         return get_template('cliente/_carrinho-form.html').render(context)
+    
+    def gerar_lista_compras(self):
+        pass
 
 
 class ProdutoCarrinho(models.Model):

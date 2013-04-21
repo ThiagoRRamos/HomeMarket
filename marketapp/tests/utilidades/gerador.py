@@ -5,8 +5,8 @@ Created on Apr 19, 2013
 '''
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from marketapp.models import ProdutoSupermercado, Produto, Supermercado
-import datetime
+from marketapp.models import ProdutoSupermercado, Produto, Supermercado, \
+    Categoria
 import random
 
 
@@ -14,8 +14,7 @@ def gerar_produto_supermercado(produto, preco=10, quantidade=2, supermercado=Non
     return ProdutoSupermercado.objects.create(supermercado=supermercado,
                                               produto=produto,
                                               preco=preco,
-                                              quantidade=quantidade,
-                                              limite_venda=datetime.datetime(2014, 01, 01))
+                                              quantidade=quantidade)
 
 
 def gerar_produto_randomico(**kwargs):
@@ -34,9 +33,11 @@ def gerar_supermercado(nome_exibicao):
         return Supermercado.objects.create(usuario=gerar_usuario_cliente(nome_exibicao),
                                            nome_exibicao=nome_exibicao)
 
+def gerar_categoria(nome, descricao):
+    return Categoria.objects.create(nome=nome, descricao=descricao)
 
-def gerar_usuario_cliente(name='usuario'):
+def gerar_usuario_cliente(name='usuario',password="senha"):
         try:
             return User.objects.get(username=name)
         except User.DoesNotExist:
-            return User.objects.create_user(username=name, password='senha')
+            return User.objects.create_user(username=name, password=password)

@@ -28,6 +28,7 @@ def adicionar_produto(request):
 
 
 def criar_produto(request):
+    form = ProdutoForm()
     if request.method == 'POST':
         form = ProdutoForm(request.POST, request.FILES)
         if form.is_valid():

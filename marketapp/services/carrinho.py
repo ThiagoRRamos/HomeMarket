@@ -9,6 +9,8 @@ from marketapp.models import CarrinhoCompras, ProdutoCarrinho
 class CarrinhoComOutroSupermercado(Exception):
     pass
 
+def gerar_lista_de_compras(carrinho):
+    return carrinho.gerar_lista_de_compras()
 
 def limpar_carrinho(usuario):
     CarrinhoCompras.objects.filter(usuario=usuario).delete()

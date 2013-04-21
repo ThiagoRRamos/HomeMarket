@@ -3,19 +3,13 @@ Created on Apr 18, 2013
 
 @author: Rhuan dos Anjos
 '''
-import datetime
-import random
-
 from django.test import TestCase
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-
-from marketapp.repository.produto import get_produtos_que_estejam_em_dois_supermercados, \
-    get_supermercados_produto
-from marketapp.models import Produto, Categoria, Supermercado, \
-    ProdutoSupermercado
+from marketapp.models import Categoria, Supermercado, ProdutoSupermercado
+from marketapp.repository.produto import get_supermercados_produto
 from marketapp.tests.utilidades.gerador import gerar_usuario_cliente, \
     gerar_produto_supermercado, gerar_produto_randomico, gerar_supermercado
+
+
 
 
 class TestProduto(TestCase):
@@ -41,19 +35,6 @@ class TestProduto(TestCase):
     def tearDown(self):
         super(TestProduto, self).tearDown()
 
-    def gerar_produto_supermercado(self, produto, preco=10, quantidade=2, supermercado=None):
-        if supermercado is None:
-            return ProdutoSupermercado.objects.create(supermercado=self.supermercado,
-                                                      produto=produto,
-                                                      preco=preco,
-                                                      quantidade=quantidade,
-                                                      limite_venda=datetime.datetime(2014, 01, 01))
-        return ProdutoSupermercado.objects.create(supermercado=supermercado,
-                                                  produto=produto,
-                                                  preco=preco,
-                                                  quantidade=quantidade,
-                                                  limite_venda=datetime.datetime(2014, 01, 01))
-
     def teste_cria_supermercado_e_produto(self):
         supermercado1 = gerar_supermercado("Super1")
         produto_aleatorio1 = gerar_produto_randomico(categoria=self.categoria)
@@ -77,9 +58,9 @@ class TestProduto(TestCase):
         supermercado3 = gerar_supermercado("Super3")
         produto_aleatorio1 = gerar_produto_randomico(categoria=self.categoria)
         produto_aleatorio2 = gerar_produto_randomico(categoria=self.categoria)
-        ps1 = self.gerar_produto_supermercado(produto_aleatorio1, supermercado=supermercado1)
-        ps2 = self.gerar_produto_supermercado(produto_aleatorio1, supermercado=supermercado2)
-        ps3 = self.gerar_produto_supermercado(produto_aleatorio2, supermercado=supermercado3)
+        ps1 = gerar_produto_supermercado(produto_aleatorio1, supermercado=supermercado1)
+        ps2 = gerar_produto_supermercado(produto_aleatorio1, supermercado=supermercado2)
+        ps3 = gerar_produto_supermercado(produto_aleatorio2, supermercado=supermercado3)
         dados = list(get_supermercados_produto(produto_aleatorio1))
         self.assertTrue(ps1 in dados)
         self.assertTrue(ps2 in dados)
