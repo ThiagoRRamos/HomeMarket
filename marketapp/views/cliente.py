@@ -1,11 +1,25 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
-from marketapp.models import Supermercado, ProdutoSupermercado
+from marketapp.models import Supermercado, ProdutoSupermercado, Compra, \
+    ListaCompras, ProdutoCarrinho
 import marketapp.services.carrinho as carrinho_service
 from marketapp.utils.autorizacao import apenas_cliente
 
 import marketapp.repository.produto as produto_repository
+from marketapp.services.regiao_atendimento import get_supermercados_que_atendem
+from marketapp.services.carrinho import limpar_carrinho
+
+@apenas_cliente
+def home(request):
+    compras = Compra.objects.filter(consumidor=request.user.consumidor)
+    listas_compras = ListaCompras.objects.filter(consumidor=request.user.consumidor)
+    supermercados = get_supermercados_que_atendem(request.user)
+    return render(request,
+                  'cliente/home.html',
+                  {'compras':compras,
+                   'listas_compras':listas_compras,
+                   'supermercados':supermercados})
 
 
 def ver_produtos_supermercado(request, nome):
@@ -30,6 +44,18 @@ def ver_carrinho(request):
     return render(request,
                   'cliente/carrinho.html',
                   {'carrinho': carrinho})
+    
+
+@login_required
+def apagar_carrinho(request):
+    limpar_carrinho(request.user)
+    return redirect('marketapp.views.cliente.ver_carrinho')
+
+
+@login_required
+def remover_produto_carrinho(request,produtocarrinho_id):
+    ProdutoCarrinho.objects.filter(id=produtocarrinho_id).delete()
+    return redirect('marketapp.views.cliente.ver_carrinho')
 
 
 @login_required

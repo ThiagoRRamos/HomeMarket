@@ -31,32 +31,14 @@ class Produto(models.Model):
         return self.nome
 
 
-class Estado(models.Model):
-    codigo = models.CharField(max_length=2)
-    nome = models.CharField(max_length=20)
-
-
-class Cidade(models.Model):
-    estado = models.ForeignKey(Estado)
-    nome = models.CharField(max_length=50)
-
-
-class Endereco(models.Model):
-    cep = models.CharField(max_length=9)
-    rua = models.CharField(max_length=100)
-    numero = models.IntegerField()
-    bairro = models.CharField(max_length=100)
-    cidade = models.ForeignKey(Cidade)
-
-
 class Consumidor(models.Model):
 
     class Meta:
         verbose_name_plural = u'Consumidores'
 
     usuario = models.OneToOneField(User)
-    endereco = models.ForeignKey(Endereco)
     cpf = models.CharField(max_length=20)
+    cep = models.CharField(max_length=10)
 
     def __unicode__(self):
         return self.usuario.username
@@ -74,13 +56,19 @@ class Supermercado(models.Model):
         return '/supermercado/{}'.format(self.nome_url)
 
 
+class RegiaoAtendida(models.Model):
+    supermercado = models.ForeignKey(Supermercado)
+    cep_inicio = models.CharField(max_length=10)
+    cep_final = models.CharField(max_length=10)
+
+
 class ListaCompras(models.Model):
     class Meta:
         verbose_name = u'Lista de Compras'
         verbose_name_plural = u'Listas de Compras'
     nome = models.CharField(max_length=50)
     consumidor = models.ForeignKey(Consumidor)
-    produtos = models.ManyToManyField(Produto, through='AdicaoProduto')
+    produtos = models.ManyToManyField(Produto, through='ProdutoLista')
     data_criacao = models.DateField(auto_now_add=True)
 
     def __unicode__(self):
@@ -92,7 +80,7 @@ class ListaCompras(models.Model):
         return '/minhas-listas/{}'.format(self.id)
 
 
-class AdicaoProduto(models.Model):
+class ProdutoLista(models.Model):
     class Meta:
         verbose_name = u'Produto em Lista'
         verbose_name_plural = u'Produtos em Lista'
@@ -106,9 +94,9 @@ class Compra(models.Model):
                             ('cc', u'Cartao de Credito'),
                             ('cd', u'Cartao de Debito'),
                             ('di', u'Dinheiro'))
-    comprador = models.ForeignKey(Consumidor)
+    consumidor = models.ForeignKey(Consumidor)
     supermercado = models.ForeignKey(Supermercado)
-    produtos = models.ManyToManyField(Produto, through='CompraProduto')
+    produtos = models.ManyToManyField(Produto, through='ProdutoCompra')
     modo_pagamento = models.CharField(max_length=3,
                                       choices=PAGAMENTOS_POSSIVEIS)
     data_compra = models.DateField(auto_now_add=True)
@@ -119,7 +107,7 @@ class Compra(models.Model):
                                                       self.data_compra)
 
 
-class CompraProduto(models.Model):
+class ProdutoCompra(models.Model):
     class Meta:
         verbose_name = u'Produto Comprado'
         verbose_name_plural = u'Produtos Comprados'

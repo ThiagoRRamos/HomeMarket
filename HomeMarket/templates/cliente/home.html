@@ -1,0 +1,45 @@
+{% extends 'chrome.html' %} {% block title %} Home {% endblock %} {% block content %}
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <td>Supermercados disponíveis</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for supermerc in supermercados%}
+        <tr>
+            <td><a href="{{ supermerc.get_absolute_url }}">{{
+                    supermerc.nome_exibicao }}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <td>Listas de Compras</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lista_compra in listas_compras%}
+        <tr>
+            <td>{{lista_compra}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <td>Compras feitas</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for compra in compras%}
+        <tr>
+            <td>{{compra}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
