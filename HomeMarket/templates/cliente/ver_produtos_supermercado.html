@@ -2,12 +2,12 @@
 {% block title %} Home {% endblock %}
 {% block content %}
 <h4>Produtos de {{supermercado.nome_exibicao}}</h4>
-<table class="table span7">
+<table class="table table-striped span11">
     <tr>
         <th class="span3">Nome</th>
         <th class="span2">Imagem</th>
-        <th class="span3">Preco</th>
-        <th class="span3">Descricao</th>
+        <th class="span2">Preco</th>
+        <th class="span4">Descricao</th>
         <th class="span1"></th>
     </tr>
 {% for produtosupermercado in produtos %}
