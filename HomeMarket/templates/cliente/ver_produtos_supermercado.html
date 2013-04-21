@@ -1,23 +1,35 @@
-{% extends 'chrome.html' %}
-{% block title %} Home {% endblock %}
-{% block content %}
+{% extends 'chrome.html' %} {% block title %} Home {% endblock %} {% block content %}
 <h4>Produtos de {{supermercado.nome_exibicao}}</h4>
-<table class="table table-striped span11">
-    <tr>
-        <th class="span3">Nome</th>
-        <th class="span2">Imagem</th>
-        <th class="span2">Preco</th>
-        <th class="span4">Descricao</th>
-        <th class="span1"></th>
-    </tr>
-{% for produtosupermercado in produtos %}
-    <tr>
-        <td>{{produtosupermercado.produto.nome}}</td>
-        <td><img src="{{produtosupermercado.produto.imagem.url}}" class="span12"></img></td>
-        <td>R$ {{produtosupermercado.preco|floatformat:2}}</td>
-        <td>{{produtosupermercado.produto.descricao}}</td>
-        <td><a href="/colocar-no-carrinho/{{produtosupermercado.id}}" class="btn btn-info">Adicionar</a></td>
-    </tr>
-{% endfor %}
-</table>
+{% regroup produtos by produto.categoria as produtos_por_categoria %}
+<div class="accordion" id="lista-categorias">
+    {% for categoria in produtos_por_categoria %}
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse"
+                data-parent="lista-categorias" href="#collapse{{forloop.counter}}">
+                {{categoria.grouper}} </a>
+        </div>
+        <div id="collapse{{forloop.counter}}" class="accordion-body collapse in">
+            <div class="accordion-inner">
+                {%for produtosupermercado in categoria.list %}
+                <div>
+                    <div class="span3">{{produtosupermercado.produto.nome}}</div>
+                    <div class="span2">
+                        <img src="{{produtosupermercado.produto.imagem.url}}"
+                            class="span12"></img>
+                    </div>
+                    <div class="span1">R$
+                        {{produtosupermercado.preco|floatformat:2}}</div>
+                    <div class="span3">{{produtosupermercado.produto.descricao}}</div>
+                    <div class="span3">
+                        <a href="/colocar-no-carrinho/{{produtosupermercado.id}}"
+                            class="btn btn-info">Adicionar</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

@@ -11,7 +11,7 @@ class TestAdicaoProduto(LiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super(TestAdicaoProduto, cls).setUpClass()
-        cls.user = gerar_usuario_cliente('lucasclient',password="123456")
+        cls.user = gerar_usuario_cliente('lucasclient', password="123456")
         cls.supermercado = Supermercado.objects.create(usuario=gerar_usuario_cliente('super'),
                                                        nome_exibicao='Villa',
                                                        nome_url='villa')
@@ -44,8 +44,8 @@ class TestAdicaoProduto(LiveServerTestCase):
         driver = self.driver
         driver.get(self.base_url + "")
         driver.find_element_by_link_text("Villa").click()
-        produto = driver.find_element_by_xpath("/html/body/div/div/table/tbody/tr[2]/td[1]").text
-        driver.find_element_by_xpath("/html/body/div/div/table/tbody/tr[2]/td[5]/a").click()
+        produto = driver.find_element_by_xpath("/html/body/div/div/div/div/div/div/div/div[1]").text
+        driver.find_element_by_xpath("/html/body/div/div/div/div/div/div/div/div[5]/a").click()
         driver.find_element_by_id("id_login").clear()
         driver.find_element_by_id("id_login").send_keys("lucasclient")
         driver.find_element_by_id("id_password").clear()

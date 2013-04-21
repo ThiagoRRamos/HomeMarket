@@ -4,7 +4,7 @@
 {% if carrinho.supermercado %}
 <dl>
   <dt> Supermercado</dt>
-  <dd> {{carrinho.supermercado}}</dd>
+  <dd> <a href="{{carrinho.supermercado.get_absolute_url}}">{{carrinho.supermercado}}</a></dd>
 </dl>
 {% endif %}
 
