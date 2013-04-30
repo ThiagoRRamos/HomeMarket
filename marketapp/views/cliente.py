@@ -10,6 +10,7 @@ import marketapp.repository.produto as produto_repository
 from marketapp.services.regiao_atendimento import get_supermercados_que_atendem
 from marketapp.services.carrinho import limpar_carrinho
 
+
 @apenas_cliente
 def home(request):
     compras = Compra.objects.filter(consumidor=request.user.consumidor)

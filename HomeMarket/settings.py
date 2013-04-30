@@ -182,6 +182,7 @@ LOGIN_REDIRECT_URL = '/contas/perfil'
 
 LOGIN_URL = '/contas/login'
 
+ACCOUNT_SIGNUP_FORM_CLASS = 'marketapp.forms.RegistroUsuario'
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
