@@ -6,7 +6,7 @@ Created on Apr 19, 2013
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from marketapp.models import ProdutoSupermercado, Produto, Supermercado, \
-    Categoria
+    Categoria, Consumidor
 import random
 
 
@@ -38,6 +38,13 @@ def gerar_categoria(nome, descricao):
 
 def gerar_usuario_cliente(name='usuario',password="senha"):
         try:
-            return User.objects.get(username=name)
+            user = User.objects.get(username=name)
         except User.DoesNotExist:
-            return User.objects.create_user(username=name, password=password)
+            user = User.objects.create_user(username=name, password=password)
+        if hasattr(user, 'consumidor'):
+            return user
+        Consumidor.objects.create(usuario=user,
+                                   cpf='123456789-98',
+                                   cep='55555-555',
+                                   telefone='1298765432')
+        return user

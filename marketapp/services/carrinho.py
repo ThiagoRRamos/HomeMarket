@@ -14,7 +14,7 @@ class SupermercadoNaoAtendeUsuario(Exception):
     pass
 
 def gerar_lista_de_compras(carrinho):
-    return carrinho.gerar_lista_de_compras()
+    return carrinho.gerar_lista_compras()
 
 def limpar_carrinho(usuario):
     carrinho = get_carrinho_usuario(usuario)

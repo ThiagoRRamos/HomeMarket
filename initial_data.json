@@ -3,7 +3,7 @@
 
 {"pk": 2, "model": "auth.user", "fields": {"username": "admin", "first_name": "", "last_name": "", "is_active": true, "is_superuser": true, "is_staff": true, "last_login": "2013-03-31T01:33:51.800Z", "groups": [], "user_permissions": [], "password": "pbkdf2_sha256$10000$FdyxiypoyzrZ$9Wkgn1UrcGSLqzq2r2oK/ZLJZ1WknMjNY4Nrlfrwp/s=", "email": "thiagorramos@gmail.com", "date_joined": "2013-03-23T06:57:48Z"}},
 {"pk": 3, "model": "auth.user", "fields": {"username": "user-villarreal", "first_name": "", "last_name": "", "is_active": true, "is_superuser": false, "is_staff": false, "last_login": "2013-03-31T01:33:51.800Z", "groups": [], "user_permissions": [], "password": "pbkdf2_sha256$10000$FdyxiypoyzrZ$9Wkgn1UrcGSLqzq2r2oK/ZLJZ1WknMjNY4Nrlfrwp/s=", "email": "villarreal@email.com", "date_joined": "2013-03-23T06:57:48Z"}}, 
-{"pk": 4, "model": "auth.user", "fields": {"username": "user-extra", "first_name": "", "last_name": "", "is_active": true, "is_superuser": false, "is_staff": false, "last_login": "2013-03-31T01:33:51.800Z", "groups": [], "user_permissions": [], "password": "pbkdf2_sha256$10000$FdyxiypoyzrZ$9Wkgn1UrcGSLqzq2r2oK/ZLJZ1WknMjNY4Nrlfrwp/s=", "email": "extra@email.com", "date_joined": "2013-03-23T06:57:48Z"}}, 
+{"pk": 4, "model": "auth.user", "fields": {"username": "user-extra", "first_name": "", "last_name": "", "is_active": true, "is_superuser": false, "is_staff": false, "last_login": "2013-03-31T01:33:51.800Z", "groups": [], "user_permissions": [], "password": "pbkdf2_sha256$10000$FdyxiypoyzrZ$9Wkgn1UrcGSLqzq2r2oK/ZLJZ1WknMjNY4Nrlfrwp/s=", "email": "thiagorramos@gmail.com", "date_joined": "2013-03-23T06:57:48Z"}}, 
 {"pk": 5, "model": "auth.user", "fields": {"username": "user-walmart", "first_name": "", "last_name": "", "is_active": true, "is_superuser": false, "is_staff": false, "last_login": "2013-03-31T01:33:51.800Z", "groups": [], "user_permissions": [], "password": "pbkdf2_sha256$10000$FdyxiypoyzrZ$9Wkgn1UrcGSLqzq2r2oK/ZLJZ1WknMjNY4Nrlfrwp/s=", "email": "walmart@email.com", "date_joined": "2013-03-23T06:57:48Z"}}, 
 {"pk": 6, "model": "auth.user", "fields": {"username": "user-bretas", "first_name": "", "last_name": "", "is_active": true, "is_superuser": false, "is_staff": false, "last_login": "2013-03-31T01:33:51.800Z", "groups": [], "user_permissions": [], "password": "pbkdf2_sha256$10000$FdyxiypoyzrZ$9Wkgn1UrcGSLqzq2r2oK/ZLJZ1WknMjNY4Nrlfrwp/s=", "email": "bretas@email.com", "date_joined": "2013-03-23T06:57:48Z"}},
 {"pk": 7, "model": "auth.user", "fields": {"username": "cliente", "first_name": "", "last_name": "", "is_active": true, "is_superuser": false, "is_staff": false, "last_login": "2013-03-31T01:33:51.800Z", "groups": [], "user_permissions": [], "password": "pbkdf2_sha256$10000$FdyxiypoyzrZ$9Wkgn1UrcGSLqzq2r2oK/ZLJZ1WknMjNY4Nrlfrwp/s=", "email": "cliente@email.com", "date_joined": "2013-03-23T06:57:48Z"}},
@@ -22,7 +22,9 @@
 {"pk": 1, "model": "marketapp.supermercado", "fields": {"nome_exibicao": "Villarreal", "nome_url": "villarreal", "usuario": 3}}, 
 {"pk": 2, "model": "marketapp.supermercado", "fields": {"nome_exibicao": "Extra", "nome_url": "extra", "usuario": 4}}, 
 {"pk": 3, "model": "marketapp.supermercado", "fields": {"nome_exibicao": "WalMart", "nome_url": "walmart", "usuario": 5}}, 
-{"pk": 4, "model": "marketapp.supermercado", "fields": {"nome_exibicao": "Bretas", "nome_url": "bretas", "usuario": 6}}, 
+{"pk": 4, "model": "marketapp.supermercado", "fields": {"nome_exibicao": "Bretas", "nome_url": "bretas", "usuario": 6}},
+
+{"pk": 1, "model": "marketapp.regiaoatendida", "fields": {"cep_inicio": "55555-000", "cep_final": "55555-999", "supermercado": 2}}, 
 
 {"pk": 1, "model": "marketapp.produto", "fields": {"categoria": 6,
                                                    "quantidade": 600,

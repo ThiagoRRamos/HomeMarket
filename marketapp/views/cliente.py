@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from marketapp.models import Supermercado, ProdutoSupermercado, Compra, \
-    ListaCompras, ProdutoCarrinho
+    ListaCompras, ProdutoCarrinho, ProdutoCompra
 import marketapp.services.carrinho as carrinho_service
 from marketapp.utils.autorizacao import apenas_cliente
 
@@ -81,3 +81,20 @@ def comparar_supermercados(request):
                   {'produtos': produtos,
                    's1': supermercado_1,
                    's2': supermercado_2})
+    
+@login_required
+def pagina_compra(request):
+    supermercado = carrinho_service.get_carrinho_usuario(request.user).supermercado
+    compra = Compra.objects.create(modo_pagamento='nn',
+                                   status_pagamento='pn',
+                                   consumidor=request.user.consumidor,
+                                   supermercado=supermercado)
+    for p in carrinho_service.get_carrinho_usuario(request.user).produtocarrinho_set.all():
+        ProdutoCompra.objects.create(compra=compra,
+                                     produto=p.produto,
+                                     quantidade=p.quantidade,
+                                     preco_unitario=p.produto.preco)
+    carrinho_service.gerar_lista_de_compras(carrinho_service.get_carrinho_usuario(request.user))
+    return render(request,
+                  'cliente/pagina_compra.html',
+                  {'compra':compra})
