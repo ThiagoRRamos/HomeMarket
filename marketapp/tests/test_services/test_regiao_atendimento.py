@@ -3,16 +3,17 @@ Created on 13/05/2013
 
 @author: User
 '''
-from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-
+from django.test import TestCase
+from marketapp.models import Produto, Categoria, Supermercado, RegiaoAtendida, \
+    ProdutoSupermercado
 from marketapp.services.carrinho import get_carrinho_usuario, adicionar_produto, \
     limpar_carrinho, CarrinhoComOutroSupermercado
-from marketapp.models import Produto, Categoria, Supermercado,RegiaoAtendida, ProdutoSupermercado
-    
 from marketapp.tests.utilidades.gerador import gerar_usuario_cliente, \
     gerar_produto_randomico, gerar_produto_supermercado, gerar_regiao
+
+    
 
 
 
