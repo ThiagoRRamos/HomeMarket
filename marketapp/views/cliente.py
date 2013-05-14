@@ -26,9 +26,14 @@ def home(request):
 def ver_produtos_supermercado(request, nome):
     supermercado = get_object_or_404(Supermercado, nome_url=nome)
     produtos = ProdutoSupermercado.objects.filter(supermercado=supermercado)
+    categorias = {}
+    for p in produtos:
+        if p.produto.categoria not in categorias:
+            categorias[p.produto.categoria] = []
+        categorias[p.produto.categoria].append(p)
     return render(request,
                   'cliente/ver_produtos_supermercado.html',
-                  {'produtos': produtos,
+                  {'categorias': categorias,
                    'supermercado': supermercado})
 
 

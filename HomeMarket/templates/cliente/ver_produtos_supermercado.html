@@ -1,35 +1,38 @@
-{% extends 'chrome.html' %} {% block title %} Home {% endblock %} {% block content %}
+{% extends 'chrome.html' %} {% block title %} Home {% endblock %}
+{% block content %}
 <h4>Produtos de {{supermercado.nome_exibicao}}</h4>
-{% regroup produtos by produto.categoria as produtos_por_categoria %}
 <div class="accordion" id="lista-categorias">
-    {% for categoria in produtos_por_categoria %}
-    <div class="accordion-group">
-        <div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse"
-                data-parent="lista-categorias" href="#collapse{{forloop.counter}}">
-                {{categoria.grouper}} </a>
-        </div>
-        <div id="collapse{{forloop.counter}}" class="accordion-body collapse in">
-            <div class="accordion-inner">
-                {%for produtosupermercado in categoria.list %}
-                <div>
-                    <div class="span3">{{produtosupermercado.produto.nome}}</div>
-                    <div class="span2">
-                        <img src="{{produtosupermercado.produto.imagem.url}}"
-                            class="span12"></img>
-                    </div>
-                    <div class="span1">R$
-                        {{produtosupermercado.preco|floatformat:2}}</div>
-                    <div class="span3">{{produtosupermercado.produto.descricao}}</div>
-                    <div class="span3">
-                        <a href="/colocar-no-carrinho/{{produtosupermercado.id}}"
-                            class="btn btn-info">Adicionar</a>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endfor %}
+	{% for categoria, produtos in categorias.items %}
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse"
+				data-parent="lista-categorias" href="#collapse{{forloop.counter}}">
+				{{categoria}} </a>
+		</div>
+		<div id="collapse{{forloop.counter}}"
+			class="accordion-body collapse in">
+			<div class="accordion-inner">
+				{%for produtosupermercado in produtos %}
+				<div class="span12" style="margin-left: 0px; margin-top: 5px;">
+					<div class="span3">{{produtosupermercado.produto.nome}}</div>
+					<div class="span2">
+						<img src="{{produtosupermercado.produto.imagem.url}}"
+							class="span12"></img>
+					</div>
+					<div class="span1">R$
+						{{produtosupermercado.preco|floatformat:2}}</div>
+					<div class="span3">
+						<p style="overflow: auto;">{{produtosupermercado.produto.descricao}}</p>
+					</div>
+					<div class="span3">
+						<a href="/colocar-no-carrinho/{{produtosupermercado.id}}"
+							class="btn btn-info">Adicionar</a>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	{% endfor %}
 </div>
 {% endblock %}
