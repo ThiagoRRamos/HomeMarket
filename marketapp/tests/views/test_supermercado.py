@@ -23,3 +23,4 @@ class TestSupermercado(TestCase):
     	self.client.login(username='cliente', password='senha')
         response = self.client.get('/definir-regiao/')
         self.assertEqual(response.status_code, 302)
+        self.client.logout()
