@@ -1,33 +1,65 @@
-{% extends 'chrome.html' %}
-{% block title %} Home {% endblock %}
-{% block content %}
-{% if carrinho.supermercado %}
+{% extends 'chrome.html' %} {% block title %} Home {% endblock %} 
+{% block content %} {% if carrinho.supermercado %}
 <dl>
-  <dt> Supermercado</dt>
-  <dd> <a href="{{carrinho.supermercado.get_absolute_url}}">{{carrinho.supermercado}}</a></dd>
+	<dt>Supermercado</dt>
+	<dd>
+		<a href="{{carrinho.supermercado.get_absolute_url}}">{{carrinho.supermercado}}</a>
+	</dd>
 </dl>
 {% endif %}
 
 <table class="table table-striped">
-    <tr>
-            <th class="span3">Nome</th>
-            <th class="span2">Categoria</th>
-            <th class="span1">Preço</th>
-            <th class="span1">Quantidade</th>
-            <th class="span1"></th>
-    </tr>
-    {% for produto in carrinho.produtocarrinho_set.all %}
-        <tr>
-            <td>{{produto.produto.produto}}</td>
-            <td>{{produto.produto.produto.categoria}}</td>
-            <td>R$ {{produto.produto.preco|floatformat:2}}</td>
-            <td>{{produto.quantidade}}</td>
-            <td><a href="/meu-carrinho/remover-produto/{{produto.id}}" class="btn btn-warning">Remover</a></td>
-        </tr>
-    {% endfor %}
+	<tr>
+		<th class="span3">Nome</th>
+		<th class="span2">Categoria</th>
+		<th class="span1">Preço</th>
+		<th class="span1">Quantidade</th>
+		<th class="span1"></th>
+	</tr>
+	{% for produto in carrinho.produtocarrinho_set.all %}
+	<tr>
+		<td>{{produto.produto.produto}}</td>
+		<td>{{produto.produto.produto.categoria}}</td>
+		<td>R$ {{produto.produto.preco|floatformat:2}}</td>
+		<td>{{produto.quantidade}}</td>
+		<td><a href="/meu-carrinho/remover-produto/{{produto.id}}"
+			class="btn btn-warning">Remover</a></td>
+	</tr>
+	{% endfor %}
 </table>
 <p>Custo: R$ {{carrinho.total|floatformat:2}}</p>
-    <a href="/comprar" class="btn btn-success" class="pull-left">Comprar</a>
-    <a href="#" class="btn btn-info"><i class="icon-list"></i>Salvar como Lista de Compras</a>
-    <a href="/meu-carrinho/apagar" class="btn btn-danger"><i class="icon-trash"></i>Limpar Carrinho</a>
+<a href="/comprar" class="btn btn-success" class="pull-left">Comprar</a>
+<a class="btn btn-info" href="#myModal" role="button"
+	data-toggle="modal"><i class="icon-list"></i>Salvar como Lista de
+	Compras</a>
+<a href="/meu-carrinho/apagar" class="btn btn-danger"><i
+	class="icon-trash"></i>Limpar Carrinho</a>
+
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Salvar Lista de Compras</h3>
+	</div>
+	<form style="margin-bottom: 0px;" method="post" action="/meu-carrinho/gerar-lista">
+		{% csrf_token %}
+		<div class="modal-body">
+
+			<input name="nome" placeholder="Nome da lista" type="text" />
+			<p>
+				Supermercado : <a href="{{carrinho.supermercado.get_absolute_url}}">{{carrinho.supermercado}}</a>
+			</p>
+			<p>Preço: R$ {{carrinho.total|floatformat:2}}</p>
+			<p>Quantidade de itens:
+				{{carrinho.produtocarrinho_set.all|length}}</p>
+
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<input type="submit" class="btn btn-primary" value="Salvar">
+		</div>
+	</form>
+</div>
 {% endblock %}

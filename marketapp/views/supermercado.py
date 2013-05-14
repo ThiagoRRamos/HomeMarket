@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.forms.models import inlineformset_factory
 
 from marketapp.models import Produto, ProdutoSupermercado, RegiaoAtendida, \
-    Supermercado
+    Supermercado, Compra
 from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, \
     ProdutoSupermercadoFormPreco
 from marketapp.utils.autorizacao import apenas_supermercado
@@ -115,3 +115,18 @@ def definir_regiao_atendida(request):
     return render(request,
                     'supermercado/definir_regiao.html',
                     {'formset' : formset})
+
+    
+@apenas_supermercado
+def status_compras(request):
+    compras = Compra.objects.filter(supermercado=request.user.supermercado)
+    return render(request,
+                  'supermercado/status_compras.html',
+                  {'compras':compras})
+
+@apenas_supermercado
+def atualizar_status(request, compra_id):
+    compra = get_object_or_404(Compra, id=compra_id, supermercado=request.user.supermercado)
+    compra.status_pagamento = request.GET['status']
+    compra.save()
+    return redirect('/status-compras')

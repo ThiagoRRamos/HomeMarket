@@ -98,3 +98,11 @@ def pagina_compra(request):
     return render(request,
                   'cliente/pagina_compra.html',
                   {'compra':compra})
+    
+@login_required
+def pagamento_dinheiro(request, compra_id):
+    compra = get_object_or_404(Compra,id=compra_id)
+    compra.modo_pagamento = 'di'
+    compra.status_pagamento = 'pd'
+    compra.save()
+    return redirect('marketapp.views.cliente.home')

@@ -31,12 +31,14 @@
     <thead>
         <tr>
             <td>Compras feitas</td>
+            <td>Status</td>
         </tr>
     </thead>
     <tbody>
         {% for compra in compras%}
         <tr>
             <td>{{compra}}</td>
+            <td>{{compra.get_status_pagamento_display}}</td>
         </tr>
         {% endfor %}
     </tbody>

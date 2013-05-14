@@ -110,7 +110,11 @@ class Compra(models.Model):
                          ('pi', 'Pagamento Iniciado'),
                          ('pa', 'Pagamento Aprovado'),
                          ('pc', 'Pagamento Cancelado'),
-                         ('ei', 'Entrega Iniciada'))
+                         ('pd', 'Pagamento em Dinheiro'),
+                         ('ei', 'Entrega Iniciada'),
+                         ('et', 'Entrega em Transporte'),
+                         ('ee', 'Entrega Entregue'),)
+    
     consumidor = models.ForeignKey(Consumidor)
     supermercado = models.ForeignKey(Supermercado)
     produtos = models.ManyToManyField(ProdutoSupermercado, through='ProdutoCompra')

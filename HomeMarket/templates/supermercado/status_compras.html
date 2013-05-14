@@ -1,0 +1,25 @@
+{% extends 'chrome.html' %}
+{% block title %} Status Compras {% endblock%} {% block content %}
+<table>
+	<tr>
+		<th class="span3">Compra</th>
+		<th class="span3">Status</th>
+		<th class="span2"></th>
+	</tr>
+	{% for compra in compras %}
+	<tr>
+		<td>{{compra}}</td>
+		<td>{{compra.get_status_pagamento_display}}</td>
+		<td>
+		{% if compra.status_pagamento == 'pd' %}
+			<a href="/atualizar-compra/{{compra.id}}?status=ei" class="btn btn-info">Marcar como Entrega Iniciada</a>
+		{% elif compra.status_pagamento == 'ei' %}
+			<a href="/atualizar-compra/{{compra.id}}?status=et" class="btn btn-info">Marcar como Entrega em Transporte</a>
+		{% elif compra.status_pagamento == 'et' %}
+			<a href="/atualizar-compra/{{compra.id}}?status=ee" class="btn btn-info">Marcar como Entrega Entregue</a>
+		{% endif %}
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}

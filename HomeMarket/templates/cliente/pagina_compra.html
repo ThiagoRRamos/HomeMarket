@@ -2,6 +2,7 @@
 {{compra}}
 <form name="bcash" action="https://www.bcash.com.br/checkout/pay/" method="post">
 	{{compra.gerar_botao_pagamento}}
-    <input class="btn btn-success" type="submit" class="pull-left" value="Comprar">
+    <input class="btn btn-info" type="submit" class="pull-left" value="Pagar via BCash">
+    <a class="btn btn-success" href="/comprar/dinheiro">Pagar com Dinheiro</a>
 </form>
 {% endblock %}

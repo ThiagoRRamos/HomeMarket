@@ -178,7 +178,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "allauth.socialaccount.context_processors.socialaccount",
 )
 
-LOGIN_REDIRECT_URL = '/contas/perfil'
+LOGIN_REDIRECT_URL = '/'
 
 LOGIN_URL = '/contas/login'
 

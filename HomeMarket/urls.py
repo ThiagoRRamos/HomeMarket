@@ -40,7 +40,13 @@ urlpatterns = patterns('',
     url(r'^comparar-preco-supermercados/$',
         'marketapp.views.supermercado.comparar_produto_preco'),
     url(r'^definir-regiao/$',
-        'marketapp.views.supermercado.definir_regiao_atendida')
+        'marketapp.views.supermercado.definir_regiao_atendida'),
+    url(r'^comprar/dinheiro/(?P<compra_id>\d+)$',
+        'marketapp.views.cliente.pagamento_dinheiro'),
+    url('^status-compras/$',
+        'marketapp.views.supermercado.status_compras'),
+    url('^atualizar-compra/(?P<compra_id>\d+)$',
+        'marketapp.views.supermercado.atualizar_status')
 )
 
 if settings.DEBUG:
