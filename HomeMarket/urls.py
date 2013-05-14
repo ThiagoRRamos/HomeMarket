@@ -38,7 +38,9 @@ urlpatterns = patterns('',
     url(r'^comparar-supermercados/$',
         'marketapp.views.cliente.comparar_supermercados'),
     url(r'^comparar-preco-supermercados/$',
-        'marketapp.views.supermercado.comparar_produto_preco')
+        'marketapp.views.supermercado.comparar_produto_preco'),
+    url(r'^definir-regiao/$',
+        'marketapp.views.supermercado.definir_regiao_atendida')
 )
 
 if settings.DEBUG:

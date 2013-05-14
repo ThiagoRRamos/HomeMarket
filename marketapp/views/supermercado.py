@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
+from django.forms.models import inlineformset_factory
 
-from marketapp.models import Produto, ProdutoSupermercado
+from marketapp.models import Produto, ProdutoSupermercado, RegiaoAtendida, \
+    Supermercado
 from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, \
     ProdutoSupermercadoFormPreco
 from marketapp.utils.autorizacao import apenas_supermercado
@@ -98,3 +100,18 @@ def comparar_produto_preco(request):
             return redirect('/criar_produto')
     return render(request,
                   'supermercado/inicio_comparacao.html')
+
+@apenas_supermercado
+def definir_regiao_atendida(request):
+    CFormset = inlineformset_factory(Supermercado, RegiaoAtendida)
+
+    if request.method == 'POST':
+        formset = CFormset(request.POST, instance=request.user.supermercado)
+        if formset.is_valid():
+            formset.save()
+    else:
+        formset = CFormset(instance=request.user.supermercado)  
+
+    return render(request,
+                    'supermercado/definir_regiao.html',
+                    {'formset' : formset})
