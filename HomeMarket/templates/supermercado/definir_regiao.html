@@ -1,0 +1,9 @@
+{% extends 'chrome.html' %}
+{% block title %} Definir Região Supermercado {% endblock %}
+{% block content %}
+	<form method="post">
+		{% csrf_token %}
+		{{ formset.as_table }}
+		<input type="submit" value="Adicionar"/>
+	</form>
+{% endblock %}
