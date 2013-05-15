@@ -1,6 +1,6 @@
-{% extends 'chrome.html' %}
+{% extends 'supermercado/chrome.html' %}
 {% block title %} Definir Região Supermercado {% endblock %}
-{% block content %}
+{% block center %}
 	<form method="post">
 		{% csrf_token %}
 		{{ formset.as_table }}

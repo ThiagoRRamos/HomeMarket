@@ -74,6 +74,7 @@ class RegiaoAtendida(models.Model):
     supermercado = models.ForeignKey(Supermercado)
     cep_inicio = models.CharField(max_length=10)
     cep_final = models.CharField(max_length=10)
+    preco = models.DecimalField(decimal_places=2, max_digits=4)
 
 
 class ListaCompras(models.Model):

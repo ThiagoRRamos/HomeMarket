@@ -29,6 +29,7 @@ def adicionar_produto(request):
     return render(request, 'supermercado/inicio_adicao.html')
 
 
+@apenas_supermercado
 def criar_produto(request):
     form = ProdutoForm()
     if request.method == 'POST':
@@ -65,7 +66,10 @@ def modificar_preco(request):
             return redirect('/modificar-preco-existente/' + codigo)
         except Produto.DoesNotExist:
             return redirect('/criar_produto')
-    return render(request, 'supermercado/modificar_preco.html')
+    produtos = ProdutoSupermercado.objects.filter(supermercado=request.user.supermercado)
+    return render(request,
+                  'supermercado/modificar_preco.html',
+                  {'produtos':produtos})
 
 
 @apenas_supermercado
@@ -87,8 +91,9 @@ def modificar_preco_existente(request, codigo):
 
 @apenas_supermercado
 def comparar_produto_preco(request):
-    if request.method == 'POST':
-        codigo = request.POST['codigo']
+    produtos = ProdutoSupermercado.objects.filter(supermercado=request.user.supermercado)
+    if 'codigo' in request.GET:
+        codigo = request.GET['codigo']
         try:
             produto = Produto.objects.get(codigo_de_barras=codigo)
             supermercados = produto_repository.get_supermercados_produto(produto)
@@ -99,7 +104,8 @@ def comparar_produto_preco(request):
         except Produto.DoesNotExist:
             return redirect('/criar_produto')
     return render(request,
-                  'supermercado/inicio_comparacao.html')
+                  'supermercado/inicio_comparacao.html',
+                  {'produtos':produtos})
 
 @apenas_supermercado
 def definir_regiao_atendida(request):

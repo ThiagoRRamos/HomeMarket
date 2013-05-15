@@ -24,7 +24,10 @@
 {"pk": 3, "model": "marketapp.supermercado", "fields": {"nome_exibicao": "WalMart", "nome_url": "walmart", "usuario": 5}}, 
 {"pk": 4, "model": "marketapp.supermercado", "fields": {"nome_exibicao": "Bretas", "nome_url": "bretas", "usuario": 6}},
 
-{"pk": 1, "model": "marketapp.regiaoatendida", "fields": {"cep_inicio": "55555-000", "cep_final": "55555-999", "supermercado": 2}}, 
+{"pk": 1, "model": "marketapp.regiaoatendida", "fields": {"cep_inicio": "55555-000",
+                                                          "cep_final": "55555-999",
+                                                          "supermercado": 2,
+                                                          "preco": 5}}, 
 
 {"pk": 1, "model": "marketapp.produto", "fields": {"categoria": 1,
                                                    "nome": "Detergente sabor limão",

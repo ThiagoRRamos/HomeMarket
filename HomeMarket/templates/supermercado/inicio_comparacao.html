@@ -1,9 +1,28 @@
-{% extends 'chrome.html' %}
+{% extends 'supermercado/chrome.html' %}
 {% block title %} Comparacao Supermercados {% endblock %}
-{% block content %}
-<form method="post">
-    {% csrf_token %}
+{% block center %}
+<form method="get">
     <label>Código de barras:</label>
     <input type="text" name="codigo"/>
 </form>
+<table>
+	<tr>
+		<th class="span1">Código de barras</th>
+		<th class="span2">Produto</th>
+		<th class="span2">Marca</th>
+		<th class="span2">Quantidade</th>
+		<th class="span1">Preço atual</th>
+		<th class="span2"></th>
+	</tr>
+	{% for produto in produtos %}
+	<tr>
+		<td>{{produto.produto.codigo_de_barras}}</td>
+		<td>{{produto.produto.nome}}</td>
+		<td>{{produto.produto.marca}}</td>
+		<td>{{produto.produto.quantidade}} {{produto.produto.quantidade_unidade}}</td>
+		<td>R$ {{produto.preco|floatformat:2}}</td>
+		<td><a href="/comparar-preco-supermercados?codigo={{produto.produto.codigo_de_barras}}" class="btn">Comparar</a></td>
+	</tr>
+	{% endfor %}
+</table>
 {% endblock %}

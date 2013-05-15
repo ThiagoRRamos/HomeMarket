@@ -1,6 +1,6 @@
-{% extends 'chrome.html' %}
+{% extends 'supermercado/chrome.html' %}
 {% block title %} Adicao de produto {% endblock %}
-{% block content %}
+{% block center %}
 <form method="post">
     {% csrf_token %}
     <label>Código de barras:</label>

@@ -18,3 +18,9 @@ def atende(supermercado, usuario):
     return RegiaoAtendida.objects.filter(supermercado=supermercado,
                                          cep_inicio__lte=cep,
                                          cep_final__gte=cep).exists()
+                                         
+def preco_frete(supermercado,usuario):
+    cep = usuario.consumidor.cep
+    return RegiaoAtendida.objects.filter(supermercado=supermercado,
+                                         cep_inicio__lte=cep,
+                                         cep_final__gte=cep)[0].preco
