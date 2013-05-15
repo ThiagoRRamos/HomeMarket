@@ -2,13 +2,15 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from marketapp.models import Supermercado, ProdutoSupermercado, Compra, \
-    ListaCompras, ProdutoCarrinho, ProdutoCompra
+    ListaCompras, ProdutoCarrinho
 import marketapp.services.carrinho as carrinho_service
+import marketapp.services.compras as compras_service
 from marketapp.utils.autorizacao import apenas_cliente
 
 import marketapp.repository.produto as produto_repository
 from marketapp.services.regiao_atendimento import get_supermercados_que_atendem
 from marketapp.services.carrinho import limpar_carrinho
+from django.http.response import Http404
 
 
 @apenas_cliente
@@ -89,17 +91,16 @@ def comparar_supermercados(request):
     
 @login_required
 def pagina_compra(request):
-    supermercado = carrinho_service.get_carrinho_usuario(request.user).supermercado
-    compra = Compra.objects.create(modo_pagamento='nn',
-                                   status_pagamento='pn',
-                                   consumidor=request.user.consumidor,
-                                   supermercado=supermercado)
-    for p in carrinho_service.get_carrinho_usuario(request.user).produtocarrinho_set.all():
-        ProdutoCompra.objects.create(compra=compra,
-                                     produto=p.produto,
-                                     quantidade=p.quantidade,
-                                     preco_unitario=p.produto.preco)
+    compra = compras_service.gerar_compra(request.user.consumidor,carrinho_service.get_carrinho_usuario(request.user).produtocarrinho_set.all())
     carrinho_service.gerar_lista_de_compras(carrinho_service.get_carrinho_usuario(request.user))
+    return redirect('marketapp.views.cliente.completar_compra',
+                    compra_id=compra.id)
+    
+@login_required
+def completar_compra(request,compra_id):
+    compra = get_object_or_404(Compra,id=compra_id)
+    if compra.status_pagamento != 'pn' or compra.consumidor!=request.user.consumidor:
+        raise Http404
     return render(request,
                   'cliente/pagina_compra.html',
                   {'compra':compra})
@@ -118,3 +119,7 @@ def gerar_lista(request):
     carrinho_service.gerar_lista_de_compras(carrinho_service.get_carrinho_usuario(request.user),nome_lista)
     carrinho_service.limpar_carrinho(request.user)
     return redirect('/')
+
+@apenas_cliente
+def ver_lista_compras(request,lista_id):
+    lista = get_object_or_404(ListaCompras,id=lista_id)
