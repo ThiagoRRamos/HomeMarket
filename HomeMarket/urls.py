@@ -46,7 +46,11 @@ urlpatterns = patterns('',
     url('^status-compras/$',
         'marketapp.views.supermercado.status_compras'),
     url('^atualizar-compra/(?P<compra_id>\d+)$',
-        'marketapp.views.supermercado.atualizar_status')
+        'marketapp.views.supermercado.atualizar_status'),
+    url('^ver-produto/(?P<produto_id>\d+)$',
+        'marketapp.views.geral.ver_produto'),
+    url('^meu-carrinho/gerar-lista$',
+        'marketapp.views.cliente.gerar_lista')
 )
 
 if settings.DEBUG:

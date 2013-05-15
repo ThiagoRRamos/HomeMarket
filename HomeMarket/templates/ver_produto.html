@@ -1,0 +1,29 @@
+{% extends 'chrome.html' %} {% block title %} Home {% endblock %}
+{% block content %}
+<div class="span4">
+	<img alt="" src="{{produto.imagem.url}}" />
+</div>
+<div class="span8">
+	<dl>
+		<dt>Nome</dt>
+		<dd>{{produto.nome}}</dd>
+		<dt>Marca</dt>
+		<dd>{{produto.marca}}</dd>
+		<dt>Quantidade</dt>
+		<dd>{{produto.quantidade}} {{produto.quantidade_unidade}}</dd>
+	</dl>
+	<p>{{produto.descricao}}</p>
+	<table class="span12">
+		<tr>
+			<th class="span1">Supermercado</th>
+			<th class="span1">Preco</th>
+		</tr>
+		{% for ps in pss %}
+		<tr>
+			<td>{{ps.supermercado}}</td>
+			<td>{{ps.preco}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}

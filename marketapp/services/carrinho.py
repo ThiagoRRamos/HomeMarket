@@ -13,8 +13,8 @@ class CarrinhoComOutroSupermercado(Exception):
 class SupermercadoNaoAtendeUsuario(Exception):
     pass
 
-def gerar_lista_de_compras(carrinho):
-    return carrinho.gerar_lista_compras()
+def gerar_lista_de_compras(carrinho, nome=None):
+    return carrinho.gerar_lista_compras(nome)
 
 def limpar_carrinho(usuario):
     carrinho = get_carrinho_usuario(usuario)

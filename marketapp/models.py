@@ -30,6 +30,9 @@ class Produto(models.Model):
 
     def __unicode__(self):
         return self.nome
+    
+    def get_absolute_url(self):
+        return '/ver-produto/{}'.format(self.id)
 
 
 class Consumidor(models.Model):
@@ -158,13 +161,16 @@ class CarrinhoCompras(models.Model):
     usuario = models.OneToOneField(User)
     produtos = models.ManyToManyField(ProdutoSupermercado, through='ProdutoCarrinho')
     
-    def gerar_lista_compras(self):
-        lista = ListaCompras.objects.create(nome=str(self),
+    def gerar_lista_compras(self,nome=None):
+        if not nome:
+            nome = "Lista de " + str(self)
+        lista = ListaCompras.objects.create(nome=nome,
                                             consumidor=self.usuario.consumidor)
         for p in self.produtocarrinho_set.all():
             ProdutoLista.objects.create(lista_compras=lista,
                                         produto=p.produto,
                                         quantidade=p.quantidade)
+        return lista
     
     def total(self):
         return sum((p.quantidade * p.produto.preco for p in self.produtocarrinho_set.all()))

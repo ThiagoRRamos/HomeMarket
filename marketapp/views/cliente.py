@@ -111,3 +111,10 @@ def pagamento_dinheiro(request, compra_id):
     compra.status_pagamento = 'pd'
     compra.save()
     return redirect('marketapp.views.cliente.home')
+
+@apenas_cliente
+def gerar_lista(request):
+    nome_lista = request.POST.get('nome','')
+    carrinho_service.gerar_lista_de_compras(carrinho_service.get_carrinho_usuario(request.user),nome_lista)
+    carrinho_service.limpar_carrinho(request.user)
+    return redirect('/')
