@@ -4,12 +4,10 @@ Created on Apr 18, 2013
 @author: Rhuan dos Anjos
 '''
 from django.test import TestCase
-from marketapp.models import Categoria, Supermercado, ProdutoSupermercado
+from marketapp.models import Categoria, Supermercado
 from marketapp.repository.produto import get_supermercados_produto
 from marketapp.tests.utilidades.gerador import gerar_usuario_cliente, \
     gerar_produto_supermercado, gerar_produto_randomico, gerar_supermercado
-
-
 
 
 class TestProduto(TestCase):

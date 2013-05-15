@@ -12,17 +12,17 @@
 					</dd>
 				{% endfor %}
 			{% else %}
-				<p>No author facets.</p>
+				<p>Sem marcas.</p>
 			{% endif %}
 			{% if facets.fields.categoria %}
 				<dt>Categoria</dt>
-				{% for author in facets.fields.categoria|slice:":5" %}
+				{% for categoria in facets.fields.categoria|slice:":5" %}
 					<dd>
-						<a href="{{ request.get_full_path }}&amp;selected_facets=categoria_exact:{{ author.0|urlencode }}">{{author.0 }}</a> ({{ author.1 }})
+						<a href="{{ request.get_full_path }}&amp;selected_facets=categoria_exact:{{ categoria.0|urlencode }}">{{categoria.0 }}</a> ({{ categoria.1 }})
 					</dd>
 				{% endfor %}
 			{% else %}
-				<p>No author facets.</p>
+				<p>Sem categorias.</p>
 			{% endif %}
 		</dl>
 	</div>
@@ -35,22 +35,24 @@
 		<button type="submit" class="btn">Buscar</button>
 	</form>
 	{% if query %}
-	<!-- Display results... -->
-	{% for result in page.object_list %}
-	<div class="searchresult span12">
-		<div class="span2">
-			<img alt="" src="{{result.object.imagem.url}}"/>
-		</div>
-		<div class="span10">
-		<h5>
-			<a href="{{ result.object.get_absolute_url }}">
-				{{result.object.nome }}</a>
-		</h5>
-		<p>{{ result.object.descricao|truncatewords:80 }}</p>
-		</div>
-	</div>
-	{% empty %}
-	<p>Sorry, no results found.</p>
-	{% endfor %} {% endif %}
+		<!-- Display results... -->
+		{% for result in page.object_list %}
+			<div class="searchresult span12">
+				<div class="span2">
+					<img alt="" src="{{result.object.imagem.url}}"/>
+				</div>
+				<div class="span10">
+					<h5>
+						<a href="{{ result.object.get_absolute_url }}">
+							{{result.object.nome }}
+						</a>
+					</h5>
+					<p>{{ result.object.descricao|truncatewords:80 }}</p>
+				</div>
+			</div>
+		{% empty %}
+			<p>Lamentamos, nenhum produto foi encontrado.</p>
+		{% endfor %}
+	{% endif %}
 </div>
 {% endblock %}

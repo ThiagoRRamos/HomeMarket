@@ -69,7 +69,7 @@ def modificar_preco(request):
     produtos = ProdutoSupermercado.objects.filter(supermercado=request.user.supermercado)
     return render(request,
                   'supermercado/modificar_preco.html',
-                  {'produtos':produtos})
+                  {'produtos': produtos})
 
 
 @apenas_supermercado
@@ -105,7 +105,8 @@ def comparar_produto_preco(request):
             return redirect('/criar_produto')
     return render(request,
                   'supermercado/inicio_comparacao.html',
-                  {'produtos':produtos})
+                  {'produtos': produtos})
+
 
 @apenas_supermercado
 def definir_regiao_atendida(request):
@@ -116,23 +117,25 @@ def definir_regiao_atendida(request):
         if formset.is_valid():
             formset.save()
     else:
-        formset = CFormset(instance=request.user.supermercado)  
+        formset = CFormset(instance=request.user.supermercado)
 
     return render(request,
                     'supermercado/definir_regiao.html',
-                    {'formset' : formset})
+                    {'formset': formset})
 
-    
+
 @apenas_supermercado
 def status_compras(request):
     compras = Compra.objects.filter(supermercado=request.user.supermercado)
     return render(request,
                   'supermercado/status_compras.html',
-                  {'compras':compras})
+                  {'compras': compras})
+
 
 @apenas_supermercado
 def atualizar_status(request, compra_id):
-    compra = get_object_or_404(Compra, id=compra_id, supermercado=request.user.supermercado)
+    compra = get_object_or_404(Compra, id=compra_id,
+                               supermercado=request.user.supermercado)
     compra.status_pagamento = request.GET['status']
     compra.save()
     return redirect('/status-compras')

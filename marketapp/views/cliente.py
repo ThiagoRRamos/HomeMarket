@@ -20,9 +20,9 @@ def home(request):
     supermercados = get_supermercados_que_atendem(request.user)
     return render(request,
                   'cliente/home.html',
-                  {'compras':compras,
-                   'listas_compras':listas_compras,
-                   'supermercados':supermercados})
+                  {'compras': compras,
+                   'listas_compras': listas_compras,
+                   'supermercados': supermercados})
 
 
 def ver_produtos_supermercado(request, nome):
@@ -52,7 +52,7 @@ def ver_carrinho(request):
     return render(request,
                   'cliente/carrinho.html',
                   {'carrinho': carrinho})
-    
+
 
 @login_required
 def apagar_carrinho(request):
@@ -61,7 +61,7 @@ def apagar_carrinho(request):
 
 
 @login_required
-def remover_produto_carrinho(request,produtocarrinho_id):
+def remover_produto_carrinho(request, produtocarrinho_id):
     ProdutoCarrinho.objects.filter(id=produtocarrinho_id).delete()
     return redirect('marketapp.views.cliente.ver_carrinho')
 
@@ -88,38 +88,49 @@ def comparar_supermercados(request):
                   {'produtos': produtos,
                    's1': supermercado_1,
                    's2': supermercado_2})
-    
+
+
 @login_required
 def pagina_compra(request):
-    compra = compras_service.gerar_compra(request.user.consumidor,carrinho_service.get_carrinho_usuario(request.user).produtocarrinho_set.all())
+    produtos = carrinho_service.get_carrinho_usuario(request.user).produtocarrinho_set.all()
+    compra = compras_service.gerar_compra(request.user.consumidor,
+                                          produtos)
     carrinho_service.gerar_lista_de_compras(carrinho_service.get_carrinho_usuario(request.user))
     return redirect('marketapp.views.cliente.completar_compra',
                     compra_id=compra.id)
-    
+
+
 @login_required
-def completar_compra(request,compra_id):
-    compra = get_object_or_404(Compra,id=compra_id)
-    if compra.status_pagamento != 'pn' or compra.consumidor!=request.user.consumidor:
+def completar_compra(request, compra_id):
+    compra = get_object_or_404(Compra, id=compra_id)
+    if compra.status_pagamento != 'pn' or compra.consumidor != request.user.consumidor:
         raise Http404
     return render(request,
                   'cliente/pagina_compra.html',
-                  {'compra':compra})
-    
+                  {'compra': compra})
+
+
 @login_required
 def pagamento_dinheiro(request, compra_id):
-    compra = get_object_or_404(Compra,id=compra_id)
+    compra = get_object_or_404(Compra, id=compra_id)
     compra.modo_pagamento = 'di'
     compra.status_pagamento = 'pd'
     compra.save()
     return redirect('marketapp.views.cliente.home')
 
+
 @apenas_cliente
 def gerar_lista(request):
-    nome_lista = request.POST.get('nome','')
-    carrinho_service.gerar_lista_de_compras(carrinho_service.get_carrinho_usuario(request.user),nome_lista)
+    nome_lista = request.POST.get('nome', '')
+    carrinho_service.gerar_lista_de_compras(carrinho_service.get_carrinho_usuario(request.user),
+                                            nome_lista)
     carrinho_service.limpar_carrinho(request.user)
     return redirect('/')
 
+
 @apenas_cliente
-def ver_lista_compras(request,lista_id):
-    lista = get_object_or_404(ListaCompras,id=lista_id)
+def ver_lista_compras(request, lista_id):
+    lista = get_object_or_404(ListaCompras, id=lista_id)
+    return render(request,
+                  '',
+                  {'lista': lista})
