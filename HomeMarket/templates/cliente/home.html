@@ -2,7 +2,7 @@
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
-            <td>Supermercados disponíveis</td>
+            <th>Supermercados disponíveis</th>
         </tr>
     </thead>
     <tbody>
@@ -16,7 +16,7 @@
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
-            <td>Listas de Compras</td>
+            <th>Listas de Compras</th>
         </tr>
     </thead>
     <tbody>
@@ -30,15 +30,23 @@
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
-            <td>Compras feitas</td>
-            <td>Status</td>
+            <th>Compras feitas</th>
+            <th>Status</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         {% for compra in compras%}
         <tr>
-            <td>{{compra}}</td>
+            <td>Compra em {{compra.supermercado}} em {{compra.data_compra|date:"c"}}</td>
             <td>{{compra.get_status_pagamento_display}}</td>
+            <td>
+            {% if compra.status_pagamento == 'pn' %}
+				<a href="/completar-compra/{{compra.id}}" class="btn btn-info">Pagar</a>
+			{% elif compra.status_pagamento == 'ee' %}
+				<a href="" class="btn btn-success">Avaliar Compra</a>
+			{% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>

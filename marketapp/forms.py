@@ -11,11 +11,13 @@ from django import forms
 class RegistroUsuario(forms.Form):
     cpf = forms.CharField()
     cep = forms.CharField()
+    telefone = forms.CharField()
 
     def save(self, user):
         Consumidor.objects.create(usuario=user,
                                   cpf=self.cleaned_data['cpf'],
-                                  cep=self.cleaned_data['cep'])
+                                  cep=self.cleaned_data['cep'],
+                                  telefone=self.cleaned_data['telefone'])
 
 
 class ProdutoForm(ModelForm):

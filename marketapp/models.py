@@ -18,7 +18,8 @@ class Produto(models.Model):
                 ('g', 'g'),
                 ('un', 'un'),
                 ('Kg', 'Kg'))
-    imagem = models.ImageField(upload_to="produtos", default="examples/produto.jpg")
+    imagem = models.ImageField(upload_to="produtos",
+                               default="examples/produto.jpg")
     nome = models.CharField(max_length=50)
     marca = models.CharField(max_length=50)
     descricao = models.TextField()
@@ -30,7 +31,7 @@ class Produto(models.Model):
 
     def __unicode__(self):
         return self.nome
-    
+
     def get_absolute_url(self):
         return '/ver-produto/{}'.format(self.id)
 
@@ -61,6 +62,7 @@ class Supermercado(models.Model):
     def get_absolute_url(self):
         return '/supermercado/{}'.format(self.nome_url)
 
+
 class ProdutoSupermercado(models.Model):
     produto = models.ForeignKey(Produto)
     supermercado = models.ForeignKey(Supermercado)
@@ -72,6 +74,7 @@ class ProdutoSupermercado(models.Model):
         return "{} em {} em {}".format(self.produto,
                                        self.supermercado,
                                        self.data_adicao)
+
 
 class RegiaoAtendida(models.Model):
     supermercado = models.ForeignKey(Supermercado)
@@ -86,7 +89,8 @@ class ListaCompras(models.Model):
         verbose_name_plural = u'Listas de Compras'
     nome = models.CharField(max_length=50)
     consumidor = models.ForeignKey(Consumidor)
-    produtos = models.ManyToManyField(ProdutoSupermercado, through='ProdutoLista')
+    produtos = models.ManyToManyField(ProdutoSupermercado,
+                                      through='ProdutoLista')
     data_criacao = models.DateField(auto_now_add=True)
 
     def __unicode__(self):
@@ -119,10 +123,11 @@ class Compra(models.Model):
                          ('ei', 'Entrega Iniciada'),
                          ('et', 'Entrega em Transporte'),
                          ('ee', 'Entrega Entregue'),)
-    
+
     consumidor = models.ForeignKey(Consumidor)
     supermercado = models.ForeignKey(Supermercado)
-    produtos = models.ManyToManyField(ProdutoSupermercado, through='ProdutoCompra')
+    produtos = models.ManyToManyField(ProdutoSupermercado,
+                                      through='ProdutoCompra')
     modo_pagamento = models.CharField(max_length=3,
                                       choices=PAGAMENTOS_POSSIVEIS)
     status_pagamento = models.CharField(max_length=3,
@@ -133,7 +138,7 @@ class Compra(models.Model):
         return "Compra de {} em {} na data {}".format(self.consumidor,
                                                       self.supermercado,
                                                       self.data_compra)
-    
+
     def gerar_botao_pagamento(self):
         context = Context({'carrinho': self})
         return get_template('cliente/_carrinho-form.html').render(context)
@@ -159,9 +164,10 @@ class ProdutoCompra(models.Model):
 class CarrinhoCompras(models.Model):
     supermercado = models.ForeignKey(Supermercado, null=True)
     usuario = models.OneToOneField(User)
-    produtos = models.ManyToManyField(ProdutoSupermercado, through='ProdutoCarrinho')
-    
-    def gerar_lista_compras(self,nome=None):
+    produtos = models.ManyToManyField(ProdutoSupermercado,
+                                      through='ProdutoCarrinho')
+
+    def gerar_lista_compras(self, nome=None):
         if not nome:
             nome = "Lista de " + str(self)
         lista = ListaCompras.objects.create(nome=nome,
@@ -171,9 +177,10 @@ class CarrinhoCompras(models.Model):
                                         produto=p.produto,
                                         quantidade=p.quantidade)
         return lista
-    
+
     def total(self):
         return sum((p.quantidade * p.produto.preco for p in self.produtocarrinho_set.all()))
+
 
 class ProdutoCarrinho(models.Model):
     produto = models.ForeignKey(ProdutoSupermercado)

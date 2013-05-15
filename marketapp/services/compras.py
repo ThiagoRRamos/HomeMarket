@@ -19,6 +19,7 @@ def gerar_compra(consumidor,produtos):
                                      preco_unitario=p.produto.preco)
     return compra
 
+
 def gerar_compra_agendada(consumidor,produtos, data):
     pass
 

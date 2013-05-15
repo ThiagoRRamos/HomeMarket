@@ -1,5 +1,6 @@
 {% extends 'chrome.html' %} {% block title %} Home {% endblock %}
 {% block content %}
+<script src="/static/js/carrinho.js"></script>
 <h4>Produtos de {{supermercado.nome_exibicao}}</h4>
 <div class="accordion" id="lista-categorias">
 	{% for categoria, produtos in categorias.items %}
@@ -14,7 +15,8 @@
 			<div class="accordion-inner">
 				{%for produtosupermercado in produtos %}
 				<div class="span12" style="margin-left: 0px; margin-top: 5px;">
-					<div class="span3">{{produtosupermercado.produto.nome}}</div>
+					<div class="span2">{{produtosupermercado.produto.nome}}</div>
+					<div class="span2">{{produtosupermercado.produto.marca}}</div>
 					<div class="span2">
 						<img src="{{produtosupermercado.produto.imagem.url}}"
 							class="span12"></img>
@@ -24,9 +26,9 @@
 					<div class="span3">
 						<p style="overflow: auto;">{{produtosupermercado.produto.descricao}}</p>
 					</div>
-					<div class="span3">
+					<div class="span2">
 						<a href="/colocar-no-carrinho/{{produtosupermercado.id}}"
-							class="btn btn-info">Adicionar</a>
+							class="btn btn-info" onclick="return adicionarProduto({{produtosupermercado.id}})">Adicionar</a>
 					</div>
 				</div>
 				{% endfor %}

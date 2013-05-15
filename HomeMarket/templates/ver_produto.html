@@ -13,14 +13,14 @@
 		<dd>{{produto.quantidade}} {{produto.quantidade_unidade}}</dd>
 	</dl>
 	<p>{{produto.descricao}}</p>
-	<table class="span12">
+	<table>
 		<tr>
-			<th class="span1">Supermercado</th>
-			<th class="span1">Preco</th>
+			<th class="span5">Supermercado</th>
+			<th class="span4">Preco</th>
 		</tr>
 		{% for ps in pss %}
 		<tr>
-			<td>{{ps.supermercado}}</td>
+			<td><a href="{{ps.supermercado.get_absolute_url}}">{{ps.supermercado}}</a></td>
 			<td>{{ps.preco}}</td>
 		</tr>
 		{% endfor %}

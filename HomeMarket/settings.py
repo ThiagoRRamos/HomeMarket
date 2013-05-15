@@ -177,6 +177,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "allauth.account.context_processors.account",
     'django.contrib.auth.context_processors.auth',
     "allauth.socialaccount.context_processors.socialaccount",
+    'django.contrib.messages.context_processors.messages'
 )
 
 LOGIN_REDIRECT_URL = '/'
@@ -184,6 +185,8 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/contas/login'
 
 ACCOUNT_SIGNUP_FORM_CLASS = 'marketapp.forms.RegistroUsuario'
+
+SOCIALACCOUNT_AUTO_SIGNUP = False
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
