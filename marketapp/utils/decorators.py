@@ -11,7 +11,11 @@ import json
 def jsonify(function=None):
     if function:
         def wrapped(*args, **kwargs):
-            return HttpResponse(json.dumps(function(*args, **kwargs)),
-                                mimetype="application/json")
+            try:
+                return HttpResponse(json.dumps(function(*args, **kwargs)),
+                                    mimetype="application/json")
+            except Exception:
+                return HttpResponse(json.dumps({"ok": False}),
+                                    mimetype="application/json")
         return wrapped
     return jsonify

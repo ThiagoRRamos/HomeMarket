@@ -16,7 +16,6 @@ function adicionarProduto(produtoId){
 		if(result.ok){
 			resultado = true
 			qtdeAdicionados +=1;
-			console.log($('#avisos div'))
 			$('#avisos').html('<div class="alert fade in">'+
             '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
             qtdeAdicionados + ' produto(s) adicionado(s) com sucesso.'+

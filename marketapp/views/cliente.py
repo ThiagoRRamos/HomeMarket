@@ -9,7 +9,8 @@ from marketapp.utils.autorizacao import apenas_cliente
 
 import marketapp.repository.produto as produto_repository
 from marketapp.services.regiao_atendimento import get_supermercados_que_atendem
-from marketapp.services.carrinho import limpar_carrinho
+from marketapp.services.carrinho import limpar_carrinho,\
+    SupermercadoNaoAtendeUsuario, CarrinhoComOutroSupermercado
 from django.http.response import Http404
 from marketapp.utils.decorators import jsonify
 
@@ -47,10 +48,9 @@ def adicionar_produto_carrinho(request, produto_id):
     return redirect('marketapp.views.cliente.ver_carrinho')
 
 
+@apenas_cliente
 @jsonify
 def json_adicionar_produto_carrinho(request, produto_id):
-    if not request.user.is_authenticated():
-        return {"ok": False}
     produto = get_object_or_404(ProdutoSupermercado, id=produto_id)
     carrinho_service.adicionar_produto(request.user, produto)
     return {"ok": True}
