@@ -8,7 +8,10 @@
 {"pk": 6, "model": "auth.user", "fields": {"username": "user-bretas", "first_name": "", "last_name": "", "is_active": true, "is_superuser": false, "is_staff": false, "last_login": "2013-03-31T01:33:51.800Z", "groups": [], "user_permissions": [], "password": "pbkdf2_sha256$10000$FdyxiypoyzrZ$9Wkgn1UrcGSLqzq2r2oK/ZLJZ1WknMjNY4Nrlfrwp/s=", "email": "bretas@email.com", "date_joined": "2013-03-23T06:57:48Z"}},
 {"pk": 7, "model": "auth.user", "fields": {"username": "cliente", "first_name": "", "last_name": "", "is_active": true, "is_superuser": false, "is_staff": false, "last_login": "2013-03-31T01:33:51.800Z", "groups": [], "user_permissions": [], "password": "pbkdf2_sha256$10000$FdyxiypoyzrZ$9Wkgn1UrcGSLqzq2r2oK/ZLJZ1WknMjNY4Nrlfrwp/s=", "email": "cliente@email.com", "date_joined": "2013-03-23T06:57:48Z"}},
 
-{"pk": 1, "model": "marketapp.consumidor", "fields": {"usuario": "7", "cpf": "012.123.123-99", "cep":"55555-500"}},
+{"pk": 1, "model": "marketapp.consumidor", "fields": {"usuario": "7",
+                                                      "cpf": "012.123.123-99",
+                                                      "cep":"55555-500",
+                                                      "telefone":"(12)9876-5432"}},
 
 {"pk": 1, "model": "account.emailaddress", "fields": {"verified": false, "user": 2, "primary": false, "email": "thiagorramos@gmail.com"}},
 

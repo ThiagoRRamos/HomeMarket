@@ -3,12 +3,16 @@
 <table>
 	<tr>
 		<th class="span3">Compra</th>
+		<th class="span2">Comprador</th>
+		<th class="span2">Telefone</th>
 		<th class="span3">Status</th>
 		<th class="span2"></th>
 	</tr>
 	{% for compra in compras %}
 	<tr>
 		<td>{{compra}}</td>
+		<td>{{compra.consumidor}}</td>
+		<td>{{compra.consumidor.telefone}}</td>
 		<td>{{compra.get_status_pagamento_display}}</td>
 		<td>
 		{% if compra.status_pagamento == 'pd' %}
