@@ -49,6 +49,8 @@ def adicionar_produto_carrinho(request, produto_id):
 
 @jsonify
 def json_adicionar_produto_carrinho(request, produto_id):
+    if not request.user.is_authenticated():
+        return {"ok": False}
     produto = get_object_or_404(ProdutoSupermercado, id=produto_id)
     carrinho_service.adicionar_produto(request.user, produto)
     return {"ok": True}

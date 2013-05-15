@@ -14,6 +14,7 @@ function adicionarProduto(produtoId){
 	$.get('/json/colocar-no-carrinho/'+produtoId,function(result){
 		pronto = true
 		if(result.ok){
+			resultado = true
 			qtdeAdicionados +=1;
 			console.log($('#avisos div'))
 			$('#avisos').html('<div class="alert fade in">'+
@@ -21,6 +22,7 @@ function adicionarProduto(produtoId){
             qtdeAdicionados + ' produto(s) adicionado(s) com sucesso.'+
           '</div>')
 		}else{
+			window.location = "/colocar-no-carrinho/"+produtoId
 			resultado = false
 		}
 	})
