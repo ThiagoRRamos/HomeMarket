@@ -1,0 +1,3 @@
+{{ object.descricao }}
+{{ object.nome }}
+{{ object.quanomentidade }} {{object.quantidade_unidade}}
