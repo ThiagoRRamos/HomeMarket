@@ -30,16 +30,9 @@
 </div>
 <!-- End faceting -->
 <div class="span10">
-	<form method="get" action=".">
-		<table>
-			<tbody>
-				{{ form.as_table }}
-				<tr>
-					<td>&nbsp;</td>
-					<td><input type="submit" value="Search"></td>
-				</tr>
-			</tbody>
-		</table>
+	<form method="get" action="." class="form-search">
+		{{ form.q }}
+		<button type="submit" class="btn">Buscar</button>
 	</form>
 	{% if query %}
 	<!-- Display results... -->
