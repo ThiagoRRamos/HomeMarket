@@ -1,15 +1,20 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 import settings
+from haystack.forms import FacetedSearchForm
+from haystack.query import SearchQuerySet
+from haystack.views import FacetedSearchView
 
 
 admin.autodiscover()
 
+sqs = SearchQuerySet().facet('marca').facet('categoria')
+
 urlpatterns = patterns('',
     url(r'^$', 'marketapp.views.geral.home', name='home'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^busca/$', FacetedSearchView(form_class=FacetedSearchForm, searchqueryset=sqs), name='haystack_search'),
     (r'^contas/', include('allauth.urls')),
-    (r'^busca/', include('haystack.urls')),
     url(r'^criar/$',
         'marketapp.views.supermercado.adicionar_produto'),
     url(r'^criar_produto',

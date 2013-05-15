@@ -34,9 +34,16 @@ class TestAddProduto(LiveServerTestCase):
     def test_add_produto(self):
         driver = self.driver
         driver.get(self.base_url + "/criar_produto/")
+        driver.find_element_by_id("id_login").clear()
+        driver.find_element_by_id("id_login").send_keys("super")
+        driver.find_element_by_id("id_password").clear()
+        driver.find_element_by_id("id_password").send_keys("senha")
+        driver.find_element_by_css_selector("button.primaryAction").click()
         driver.find_element_by_id("id_nome").send_keys("Van")
         driver.find_element_by_id("id_descricao").clear()
         driver.find_element_by_id("id_descricao").send_keys("Van muito louca")
+        driver.find_element_by_id("id_marca").clear()
+        driver.find_element_by_id("id_marca").send_keys("Wolks")
         driver.find_element_by_id("id_codigo_de_barras").clear()
         driver.find_element_by_id("id_codigo_de_barras").send_keys("1323214324")
         Select(driver.find_element_by_id("id_categoria")).select_by_visible_text("Categoria Especial")

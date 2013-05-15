@@ -9,8 +9,8 @@ from haystack import indexes
 class ProdutoIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     nome = indexes.CharField(model_attr='categoria')
-    categoria = indexes.CharField(model_attr='categoria')
-    marca = indexes.CharField(model_attr='marca')
+    categoria = indexes.CharField(model_attr='categoria',faceted=True)
+    marca = indexes.CharField(model_attr='marca',faceted=True)
     
     def get_model(self):
         return Produto

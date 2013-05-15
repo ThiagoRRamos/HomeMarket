@@ -49,8 +49,10 @@ def gerar_usuario_cliente(name='usuario',password="senha",cpf = '123456789-98', 
                                    cep = cep,
                                    telefone='1298765432')
         return user
-def gerar_regiao(supermercado = 'supermercado',cep_inicio = '55455-550',cep_final = '57555-556',):
-    return RegiaoAtendida.objects.create(supermercado = supermercado,
-                                         cep_inicio = cep_inicio,
-                                         cep_final = cep_inicio)
+
+def gerar_regiao(supermercado = 'supermercado',cep_inicio = '55455-550',cep_final = '57555-556',preco=5):
+    return RegiaoAtendida.objects.create(supermercado=supermercado,
+                                         cep_inicio=cep_inicio,
+                                         cep_final=cep_inicio,
+                                         preco=preco)
                                          
