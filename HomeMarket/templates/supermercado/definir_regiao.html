@@ -2,8 +2,34 @@
 {% block title %} Definir Região Supermercado {% endblock %}
 {% block center %}
 	<form method="post">
-		{% csrf_token %}
-		{{ formset.as_table }}
+		{{ formset.management_form }} {% csrf_token %}
+    <table>
+        {% for form in formset %}
+        <tr>
+        {{ form.id }}
+            <td>
+                
+                <div class="fieldWrapper pull-left span5">{{ form.cep_inicio.errors }}
+                    {{ form.cep_inicio.label_tag }} {{ form.cep_inicio }}</div>
+            </td>
+            <td>
+                <div class="fieldWrapper pull-left span5">{{ form.cep_final.errors }}
+                {{form.cep_final.label_tag }} {{ form.cep_final }}</div>
+            </td>
+            <td>
+                <div class="fieldWrapper pull-left span5">{{ form.preco.errors }}
+                {{form.preco.label_tag }} {{ form.preco }}</div>
+            </td>
+            <td>
+                <div class="fieldWrapper pull-left span5">{{ form.tempo.errors }}
+                {{form.tempo.label_tag }} {{ form.tempo }}</div>
+            </td>
+            <td>{% if formset.can_delete %}
+                <div class="fieldWrapper pull-left span2">{{ form.DELETE }} Apagar </div> {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 		<input type="submit" value="Adicionar"/>
 	</form>
 {% endblock %}

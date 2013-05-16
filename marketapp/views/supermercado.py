@@ -7,6 +7,7 @@ from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, \
     ProdutoSupermercadoFormPreco
 from marketapp.utils.autorizacao import apenas_supermercado
 import marketapp.repository.produto as produto_repository
+from django import forms
 
 
 @apenas_supermercado
@@ -118,7 +119,9 @@ def definir_regiao_atendida(request):
             formset.save()
     else:
         formset = CFormset(instance=request.user.supermercado)
-
+    for form in formset.forms:
+            form.fields['preco'].widget = forms.TextInput(attrs={'class':'input-small'})
+            form.fields['tempo'].widget = forms.TextInput(attrs={'class':'input-small'})
     return render(request,
                     'supermercado/definir_regiao.html',
                     {'formset': formset})
