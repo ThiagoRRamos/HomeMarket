@@ -11,7 +11,7 @@ from marketapp.tests.utilidades.gerador import gerar_usuario_cliente, \
 
 
 class TestRegiao(TestCase):
-    
+
     def testSuperMarketInRegiao(self):
         usuario = gerar_usuario_cliente()
         supermercado = Supermercado.objects.create(usuario=gerar_usuario_cliente('super'),
@@ -22,6 +22,3 @@ class TestRegiao(TestCase):
         Fim = regiao.cep_final.split("-")
         self.assertTrue(int(Inicio[0]) < int(cep[0]))
         self.assertTrue(int(Fim[0]) < int(cep[0]))
-       
-     
-    

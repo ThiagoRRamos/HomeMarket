@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     'marketapp',
     'haystack',
     'allauth',
+    'taggit',
     'allauth.account',
     'allauth.socialaccount',
     'django_nose',

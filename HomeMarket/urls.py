@@ -4,11 +4,23 @@ import settings
 from haystack.forms import FacetedSearchForm
 from haystack.query import SearchQuerySet
 from haystack.views import FacetedSearchView
+from marketapp.services.analise_produto import is_disponivel
+from marketapp.utils.autorizacao import eh_cliente
 
 
 admin.autodiscover()
 
 sqs = SearchQuerySet().facet('marca').facet('categoria')
+
+
+class FacetedSearchViewComDisponibilidade(FacetedSearchView):
+
+    def extra_context(self):
+        extra = super(FacetedSearchViewComDisponibilidade, self).extra_context()
+        for r in self.results:
+            if eh_cliente(self.request.user):
+                r.object.disp = is_disponivel(r.object, self.request.user.consumidor)
+        return extra
 
 urlpatterns = patterns('',
     #Views gerais
@@ -17,7 +29,8 @@ urlpatterns = patterns('',
         'marketapp.views.geral.ver_produto'),
     (r'^contas/', include('allauth.urls')),
     url(r'^busca/$',
-        FacetedSearchView(form_class=FacetedSearchForm, searchqueryset=sqs),
+        FacetedSearchViewComDisponibilidade(form_class=FacetedSearchForm,
+                                            searchqueryset=sqs),
         name='haystack_search'),
     #Views de admin
     url(r'^admin/', include(admin.site.urls)),

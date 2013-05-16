@@ -41,13 +41,25 @@
 				<div class="span2">
 					<img alt="" src="{{result.object.imagem.url}}"/>
 				</div>
-				<div class="span10">
+				<div class="span7">
 					<h5>
 						<a href="{{ result.object.get_absolute_url }}">
-							{{result.object.nome }}
+							{{result.object.nome}}
 						</a>
 					</h5>
 					<p>{{ result.object.descricao|truncatewords:80 }}</p>
+				</div>
+				<div class="span3">
+					<p>De R$ {{result.object.limites_preco.0|floatformat:2}} a {{result.object.limites_preco.1|floatformat:2}}</p>
+					{% if request.user.consumidor %}
+						<p>
+							{% if result.object.disp %}
+							 	<span class="label label-success"> Alguem pode te entregar</span>
+							{% else %}
+							 	<span class="label label-important">Ninguem pode te entregar</span>
+							{% endif %}
+						</p>
+					{% endif %}
 				</div>
 			</div>
 		{% empty %}

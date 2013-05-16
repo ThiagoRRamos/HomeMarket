@@ -1,7 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.template.context import Context
 from django.template.loader import get_template
+from taggit.managers import TaggableManager
 
 
 class Categoria(models.Model):
@@ -28,12 +29,22 @@ class Produto(models.Model):
     quantidade = models.IntegerField()
     quantidade_unidade = models.CharField(max_length=5,
                                           choices=UNIDADES)
+    tags = TaggableManager(blank=True)
 
     def __unicode__(self):
         return self.nome
 
     def get_absolute_url(self):
         return '/ver-produto/{}'.format(self.id)
+
+    def limites_preco(self):
+        if not ProdutoSupermercado.objects.filter(produto=self).exists():
+            return (0, 0)
+        minimo = min(ProdutoSupermercado.objects.filter(produto=self),
+                     key=lambda x: x.preco).preco
+        maximo = max(ProdutoSupermercado.objects.filter(produto=self),
+                     key=lambda x: x.preco).preco
+        return (minimo, maximo)
 
 
 class Consumidor(models.Model):
@@ -81,6 +92,7 @@ class RegiaoAtendida(models.Model):
     cep_inicio = models.CharField(max_length=10)
     cep_final = models.CharField(max_length=10)
     preco = models.DecimalField(decimal_places=2, max_digits=4)
+    tempo_medio_entrega = models.IntegerField()
 
 
 class ListaCompras(models.Model):

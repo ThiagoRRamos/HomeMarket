@@ -1,3 +1,4 @@
 {{ object.descricao }}
 {{ object.nome }}
-{{ object.quanomentidade }} {{object.quantidade_unidade}}
+{{ object.quantidade }} {{object.quantidade_unidade}}
+{{ object.tags.all }}

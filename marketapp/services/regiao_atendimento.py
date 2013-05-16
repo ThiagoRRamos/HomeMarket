@@ -18,9 +18,17 @@ def atende(supermercado, usuario):
     return RegiaoAtendida.objects.filter(supermercado=supermercado,
                                          cep_inicio__lte=cep,
                                          cep_final__gte=cep).exists()
-                                         
-def preco_frete(supermercado,usuario):
+
+
+def preco_frete(supermercado, usuario):
     cep = usuario.consumidor.cep
-    return RegiaoAtendida.objects.filter(supermercado=supermercado,
-                                         cep_inicio__lte=cep,
-                                         cep_final__gte=cep)[0].preco
+    return RegiaoAtendida.objects.get(supermercado=supermercado,
+                                      cep_inicio__lte=cep,
+                                      cep_final__gte=cep).preco
+
+
+def tempo_entrega(supermercado, usuario):
+    cep = usuario.consumidor.cep
+    return RegiaoAtendida.objects.get(supermercado=supermercado,
+                                      cep_inicio__lte=cep,
+                                      cep_final__gte=cep).tempo_medio_entrega

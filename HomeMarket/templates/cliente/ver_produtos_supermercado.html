@@ -1,4 +1,4 @@
-{% extends 'chrome.html' %} {% block title %} Home {% endblock %}
+{% extends 'chrome.html' %} {% block title %} MyHomeMarket {% endblock %}
 {% block content %}
 <script src="/static/js/carrinho.js"></script>
 <h4>Produtos de {{supermercado.nome_exibicao}}</h4>
@@ -15,7 +15,9 @@
 			<div class="accordion-inner">
 				{%for produtosupermercado in produtos %}
 				<div class="span12" style="margin-left: 0px; margin-top: 5px;">
-					<div class="span2">{{produtosupermercado.produto.nome}}</div>
+					<div class="span2">
+						<a href="{{produtosupermercado.produto.get_absolute_url}}">{{produtosupermercado.produto.nome}}</a>
+					</div>
 					<div class="span2">{{produtosupermercado.produto.marca}}</div>
 					<div class="span2">
 						<img src="{{produtosupermercado.produto.imagem.url}}"

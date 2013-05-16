@@ -10,11 +10,14 @@ from marketapp.services.regiao_atendimento import atende
 class CarrinhoComOutroSupermercado(Exception):
     pass
 
+
 class SupermercadoNaoAtendeUsuario(Exception):
     pass
 
+
 def gerar_lista_de_compras(carrinho, nome=None):
     return carrinho.gerar_lista_compras(nome)
+
 
 def limpar_carrinho(usuario):
     carrinho = get_carrinho_usuario(usuario)
@@ -30,7 +33,7 @@ def adicionar_produto(usuario, produto_supermercado, quantidade=1):
     try:
         carrinho = CarrinhoCompras.objects.get(usuario=usuario)
         if carrinho.supermercado is None:
-            if atende(produto_supermercado.supermercado,usuario):
+            if atende(produto_supermercado.supermercado, usuario):
                 carrinho.supermercado = produto_supermercado.supermercado
                 carrinho.save()
             else:
@@ -40,7 +43,7 @@ def adicionar_produto(usuario, produto_supermercado, quantidade=1):
                                        supermercado=produto_supermercado.supermercado)
     try:
         produto_carrinho = ProdutoCarrinho.objects.get(produto=produto_supermercado,
-                                                          carrinho=carrinho)
+                                                       carrinho=carrinho)
         produto_carrinho.quantidade += quantidade
         produto_carrinho.save()
     except ProdutoCarrinho.DoesNotExist:

@@ -1,4 +1,4 @@
-{% extends 'chrome.html' %} {% block title %} Home {% endblock %}
+{% extends 'chrome.html' %} {% block title %} MyHomeMarket {% endblock %}
 {% block content %}
 <div class="span4">
 	<img alt="" src="{{produto.imagem.url}}" />
@@ -11,19 +11,38 @@
 		<dd>{{produto.marca}}</dd>
 		<dt>Quantidade</dt>
 		<dd>{{produto.quantidade}} {{produto.quantidade_unidade}}</dd>
+		{% if produto.tags.all %}
+		<dt>Tags</dt>
+		{% for tag in produto.tags.all %}
+		<dd>{{tag}}</dd>
+		{% endfor %} {% endif %}
 	</dl>
 	<p>{{produto.descricao}}</p>
-	<table>
-		<tr>
-			<th class="span5">Supermercado</th>
-			<th class="span4">Preco</th>
-		</tr>
-		{% for ps in pss %}
-		<tr>
-			<td><a href="{{ps.supermercado.get_absolute_url}}">{{ps.supermercado}}</a></td>
-			<td>{{ps.preco}}</td>
-		</tr>
-		{% endfor %}
-	</table>
+</div>
+<table class="table">
+	<tr>
+		<th class="span5">Supermercado</th>
+		<th class="span4">Preco</th>
+	</tr>
+	{% for ps in pss %}
+	<tr>
+		<td><a href="{{ps.supermercado.get_absolute_url}}">{{ps.supermercado}}</a></td>
+		<td>R$ {{ps.preco|floatformat:2}}</td>
+	</tr>
+	{% endfor %}
+</table>
+<h4>Produtos similares</h4>
+<div class="span12">
+	{% for p in produto.tags.similar_objects %}
+	<div class="span3 row-fluid">
+		<div class="span6">
+			<img alt="" src="{{p.imagem.url}}"/>
+		</div>
+		<div class="span6">
+			<p>{{p}}</p>
+			<p>{{p.marca}}</p>
+		</div>
+	</div>
+	{% endfor %}
 </div>
 {% endblock %}

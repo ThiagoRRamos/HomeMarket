@@ -34,10 +34,12 @@ def gerar_supermercado(nome_exibicao):
         return Supermercado.objects.create(usuario=gerar_usuario_cliente(nome_exibicao),
                                            nome_exibicao=nome_exibicao)
 
+
 def gerar_categoria(nome, descricao):
     return Categoria.objects.create(nome=nome, descricao=descricao)
 
-def gerar_usuario_cliente(name='usuario',password="senha",cpf = '123456789-98', cep = '55555-555'):
+
+def gerar_usuario_cliente(name='usuario', password="senha", cpf='123456789-98', cep='55555-555'):
         try:
             user = User.objects.get(username=name)
         except User.DoesNotExist:
@@ -45,14 +47,19 @@ def gerar_usuario_cliente(name='usuario',password="senha",cpf = '123456789-98', 
         if hasattr(user, 'consumidor'):
             return user
         Consumidor.objects.create(usuario=user,
-                                   cpf = cpf,
-                                   cep = cep,
+                                   cpf=cpf,
+                                   cep=cep,
                                    telefone='1298765432')
         return user
 
-def gerar_regiao(supermercado = 'supermercado',cep_inicio = '55455-550',cep_final = '57555-556',preco=5):
+
+def gerar_regiao(supermercado='supermercado',
+                 cep_inicio='55455-550',
+                 cep_final='57555-556',
+                 preco=5,
+                 tempo_medio_entrega=5):
     return RegiaoAtendida.objects.create(supermercado=supermercado,
                                          cep_inicio=cep_inicio,
                                          cep_final=cep_inicio,
-                                         preco=preco)
-                                         
+                                         preco=preco,
+                                         tempo_medio_entrega=tempo_medio_entrega)

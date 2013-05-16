@@ -5,6 +5,7 @@ Created on May 9, 2013
 '''
 import requests
 
+
 def validar_entrada(transacao_id, chave_acesso, **kwargs):
     endereco_post = "https://www.bcash.com.br/checkout/verify/"
     kwargs['transacao'] = transacao_id

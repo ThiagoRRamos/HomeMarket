@@ -3,9 +3,10 @@ from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from django.test import LiveServerTestCase
 import unittest
-from marketapp.models import Supermercado, Categoria, Produto
+from marketapp.models import Supermercado, Produto
 from marketapp.tests.utilidades.gerador import gerar_categoria,\
     gerar_usuario_cliente
+
 
 class TestAddProduto(LiveServerTestCase):
     @classmethod
@@ -30,7 +31,7 @@ class TestAddProduto(LiveServerTestCase):
         self.base_url = self.live_server_url
         self.verificationErrors = []
         self.accept_next_alert = True
-    
+
     def test_add_produto(self):
         driver = self.driver
         driver.get(self.base_url + "/criar_produto/")
@@ -51,13 +52,18 @@ class TestAddProduto(LiveServerTestCase):
         driver.find_element_by_id("id_quantidade").send_keys("1")
         Select(driver.find_element_by_id("id_quantidade_unidade")).select_by_visible_text("un")
         driver.find_element_by_css_selector("input[type=\"submit\"]").click()
-        Produto.objects.get(codigo_de_barras="1323214324")
-        
+        try:
+            Produto.objects.get(codigo_de_barras="1323214324")
+        except Produto.DoesNotExist:
+            self.fail("Produto deveria existir")
+
     def is_element_present(self, how, what):
-        try: self.driver.find_element(by=how, value=what)
-        except NoSuchElementException, e: return False
+        try:
+            self.driver.find_element(by=how, value=what)
+        except NoSuchElementException:
+            return False
         return True
-    
+
     def close_alert_and_get_its_text(self):
         try:
             alert = self.driver.switch_to_alert()
@@ -66,8 +72,9 @@ class TestAddProduto(LiveServerTestCase):
             else:
                 alert.dismiss()
             return alert.text
-        finally: self.accept_next_alert = True
-    
+        finally:
+            self.accept_next_alert = True
+
     def tearDown(self):
         self.driver.quit()
         self.assertEqual([], self.verificationErrors)
