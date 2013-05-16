@@ -11,7 +11,8 @@ dependencias = ["django",
                 "requests",
                 "django-allauth",
                 "haystack",
-                "pyelasticsearch"]
+                "pyelasticsearch",
+                "django-taggit"]
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "HomeMarket.settings")
