@@ -1,11 +1,11 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-import settings
 from haystack.forms import FacetedSearchForm
 from haystack.query import SearchQuerySet
 from haystack.views import FacetedSearchView
 from marketapp.services.analise_produto import is_disponivel
 from marketapp.utils.autorizacao import eh_cliente
+import settings
 
 
 admin.autodiscover()
