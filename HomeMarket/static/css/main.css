@@ -97,19 +97,15 @@ textarea {
 	margin-bottom: 10px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+.produto-supermercado {
+	margin-left: 0px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-style: solid;
+	padding: 5px;
+	border-width: 1px;
+	border-color: blue;
+}
 
 /* ==========================================================================
    Helper classes
@@ -118,7 +114,6 @@ textarea {
 /*
  * Image replacement
  */
-
 .ir {
     background-color: transparent;
     border: 0;

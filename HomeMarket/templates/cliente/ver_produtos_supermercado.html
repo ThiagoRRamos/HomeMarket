@@ -14,21 +14,17 @@
 			class="accordion-body collapse">
 			<div class="accordion-inner">
 				{%for produtosupermercado in produtos %}
-				<div class="span12" style="margin-left: 0px; margin-top: 5px;">
-					<div class="span2">
-						<a href="{{produtosupermercado.produto.get_absolute_url}}">{{produtosupermercado.produto.nome}}</a>
-					</div>
-					<div class="span2">{{produtosupermercado.produto.marca}}</div>
-					<div class="span2">
+				<div class="produto-supermercado span6">
+					<div class="span3">
 						<img src="{{produtosupermercado.produto.imagem.url}}"
 							class="span12"></img>
 					</div>
-					<div class="span1">R$
-						{{produtosupermercado.preco|floatformat:2}}</div>
 					<div class="span3">
-						<p style="overflow: auto;">{{produtosupermercado.produto.descricao}}</p>
+						<a href="{{produtosupermercado.produto.get_absolute_url}}">{{produtosupermercado.produto.nome}}</a>
 					</div>
-					<div class="span2">
+					<div class="span3">{{produtosupermercado.produto.marca}}</div>
+					<div class="span3">R$
+						{{produtosupermercado.preco|floatformat:2}}
 						<a href="/colocar-no-carrinho/{{produtosupermercado.id}}"
 							class="btn btn-info" onclick="return adicionarProduto({{produtosupermercado.id}})">Adicionar</a>
 					</div>

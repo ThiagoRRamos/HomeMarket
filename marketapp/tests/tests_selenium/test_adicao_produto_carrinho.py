@@ -45,8 +45,8 @@ class TestAdicaoProduto(LiveServerTestCase):
         driver.get(self.base_url + "")
         driver.find_element_by_link_text("Villa").click()
         driver.find_element_by_link_text("comida").click()
-        produto = driver.find_element_by_xpath("/html/body/div/div/div/div/div/div/div/div[1]").text
-        driver.find_element_by_xpath("/html/body/div/div/div/div/div/div/div/div[6]/a").click()
+        produto = driver.find_element_by_xpath("/html/body/div/div/div/div/div/div/div/div[2]").text
+        driver.find_element_by_xpath("/html/body/div/div/div/div/div/div/div/div[4]/a").click()
         driver.find_element_by_id("id_login").clear()
         driver.find_element_by_id("id_login").send_keys("lucasclient")
         driver.find_element_by_id("id_password").clear()

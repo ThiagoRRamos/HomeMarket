@@ -19,6 +19,7 @@
 	</dl>
 	<p>{{produto.descricao}}</p>
 </div>
+{% if pss %}
 <table class="table">
 	<tr>
 		<th class="span5">Supermercado</th>
@@ -31,12 +32,13 @@
 	</tr>
 	{% endfor %}
 </table>
+{% endif %}
 <h4>Produtos similares</h4>
 <div class="span12">
 	{% for p in produto.tags.similar_objects %}
 	<div class="span3 row-fluid">
 		<div class="span6">
-			<img alt="" src="{{p.imagem.url}}"/>
+			<a href="{{p.get_absolute_url}}"><img alt="" src="{{p.imagem.url}}"/></a>
 		</div>
 		<div class="span6">
 			<p>{{p}}</p>
