@@ -54,23 +54,6 @@ class TestAdicaoProduto(LiveServerTestCase):
         driver.find_element_by_css_selector("button.primaryAction").click()
         assert driver.find_element_by_xpath("//table/tbody/tr[2]/td[1]").text == produto
 
-    def is_element_present(self, how, what):
-        try:
-            self.driver.find_element(by=how, value=what)
-        except NoSuchElementException, e: return False
-        return True
-
-    def close_alert_and_get_its_text(self):
-        try:
-            alert = self.driver.switch_to_alert()
-            if self.accept_next_alert:
-                alert.accept()
-            else:
-                alert.dismiss()
-            return alert.text
-        finally:
-            self.accept_next_alert = True
-
     def tearDown(self):
         self.driver.quit()
         self.assertEqual([], self.verificationErrors)
