@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from marketapp.models import Supermercado, Produto, ProdutoSupermercado
+from marketapp.models import Supermercado, Produto, ProdutoSupermercado,PromocaoCombinacao
 
 
 def home(request):
@@ -14,3 +14,9 @@ def ver_produto(request, produto_id):
                   'ver_produto.html',
                   {'produto': produto,
                    'pss': produtos_supermercados})
+
+def ver_promocao(request, promocaoCombinacao_id):
+    promocao = get_object_or_404(PromocaoCombinacao, id=promocaoCombinacao_id)
+    return render(request,
+                  'ver_promocao.html',
+                  {'promocao': promocao})

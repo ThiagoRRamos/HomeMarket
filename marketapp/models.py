@@ -85,8 +85,45 @@ class ProdutoSupermercado(models.Model):
         return "{} em {} em {}".format(self.produto,
                                        self.supermercado,
                                        self.data_adicao)
+    def get_nome(self):    
+        return self.produto.nome
+    def get_preco(self):
+        return self.preco
+    
+    def get_imagem(self):
+        return self.produto.imagem
+    
+    def get_absolute_url(self):
+        return self.produto.get_absolute_url()
 
+class PromocaoCombinacao(models.Model):
+    nome = models.TextField()
+    produtos = models.ManyToManyField(ProdutoSupermercado)
+    desconto = models.IntegerField()
+    supermercado = models.ForeignKey(Supermercado)
+    quantidade = models.IntegerField()
+    imagem = models.ImageField(upload_to="produtos",
+                               default="examples/produto.jpg")
+    data_adicao = models.DateTimeField(auto_now_add=True)
 
+    def __unicode__(self):
+        return "{} em {} em {}".format(self.nome, self.supermercado,
+                                       self.data_adicao)
+    def get_nome(self):
+        return self.nome
+    def get_preco(self):
+        preco = 0
+        for p in self.produtos.all():
+            preco += p.preco
+        preco *= 1 - self.desconto / 100
+        return preco
+   
+    def get_imagem(self):
+        return self.imagem
+    
+    def get_absolute_url(self):
+        return '/ver-promocao/{}'.format(self.id)
+    
 class RegiaoAtendida(models.Model):
     supermercado = models.ForeignKey(Supermercado)
     cep_inicio = models.CharField(max_length=10)
