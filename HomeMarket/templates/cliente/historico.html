@@ -1,0 +1,20 @@
+{% extends 'chrome.html' %}
+{% block title %} MyHomeMarket {% endblock %}
+{% block content %}
+<dl>
+	<dt>Historico</dt>
+</dl>
+
+<table class="table table-striped">
+	<tr>
+		<th class="span2">Supermercado</th>
+		<th class="span2">Data</th>
+	</tr>
+	{% for comp in compras %}
+	<tr>
+		<td>{{comp.supermercado}}</td>
+		<td>{{comp.data_compra}}</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}

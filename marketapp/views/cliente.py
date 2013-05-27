@@ -25,6 +25,12 @@ def home(request):
                   {'compras': compras,
                    'listas_compras': listas_compras,
                    'supermercados': supermercados})
+    
+def ver_historico_compras(request):
+    compras = Compra.objects.filter(consumidor=request.user.consumidor, status_pagamento='ee').order_by('data_compra')[:10]
+    return render(request,
+                  'cliente/historico.html',
+                  {'compras': compras})
 
 
 def ver_produtos_supermercado(request, nome):

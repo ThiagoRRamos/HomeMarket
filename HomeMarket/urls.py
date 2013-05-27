@@ -82,6 +82,8 @@ urlpatterns = patterns('',
         'marketapp.views.cliente.gerar_lista'),
     url('^completar-compra/(?P<compra_id>\d+)$',
         'marketapp.views.cliente.completar_compra'),
+    url(r'^historico/$',
+        'marketapp.views.cliente.ver_historico_compras'),
 )
 
 if settings.DEBUG:
