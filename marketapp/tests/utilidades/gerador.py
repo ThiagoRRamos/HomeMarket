@@ -11,7 +11,7 @@ import random
 from marketapp.models import RegiaoAtendida
 
 
-def gerar_produto_supermercado(produto, preco=10, quantidade=2, supermercado=None):
+def gerar_produto_supermercado(produto, preco=10, quantidade=20, supermercado=None):
     return ProdutoSupermercado.objects.create(supermercado=supermercado,
                                               produto=produto,
                                               preco=preco,

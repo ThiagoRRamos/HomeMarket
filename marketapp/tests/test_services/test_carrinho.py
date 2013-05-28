@@ -1,14 +1,7 @@
-import datetime
-import random
-
 from django.test import TestCase
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-
+from marketapp.models import Categoria, Supermercado
 from marketapp.services.carrinho import get_carrinho_usuario, adicionar_produto, \
     limpar_carrinho, CarrinhoComOutroSupermercado
-from marketapp.models import Produto, Categoria, Supermercado, \
-    ProdutoSupermercado
 from marketapp.tests.utilidades.gerador import gerar_usuario_cliente, \
     gerar_produto_randomico, gerar_produto_supermercado
 
