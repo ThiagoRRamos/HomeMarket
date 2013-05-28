@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from marketapp.models import Supermercado, ProdutoSupermercado, Compra, \
-    ListaCompras, ProdutoCarrinho, PromocaoCombinacao
+    ListaCompras, ProdutoCarrinho, PromocaoCombinacao, CompraAgendada
 import marketapp.services.carrinho as carrinho_service
 import marketapp.services.compras as compras_service
 from marketapp.utils.autorizacao import apenas_cliente
@@ -13,6 +13,7 @@ from marketapp.services.carrinho import limpar_carrinho,\
     SupermercadoNaoAtendeUsuario, CarrinhoComOutroSupermercado
 from django.http.response import Http404
 from marketapp.utils.decorators import jsonify
+from marketapp import services
 
 
 @apenas_cliente
@@ -32,7 +33,13 @@ def ver_historico_compras(request):
                   'cliente/historico.html',
                   {'compras': compras})
 
-
+@login_required
+def agendar_compra(request):
+    if request.method == 'POST':
+        data = request.POST['dataAgendada']
+        services.compras.gerar_compra_agendada(request.user.consumidor, carrinho_service.get_carrinho_usuario(request.user).produtocarrinho_set.all(), data)
+    return render(request, 'cliente/agendamento.html')
+    
 def ver_produtos_supermercado(request, nome):
     supermercado = get_object_or_404(Supermercado, nome_url=nome)
     produtos = ProdutoSupermercado.objects.filter(supermercado=supermercado)
@@ -128,7 +135,6 @@ def completar_compra(request, compra_id):
     return render(request,
                   'cliente/pagina_compra.html',
                   {'compra': compra})
-
 
 @login_required
 def pagamento_dinheiro(request, compra_id):

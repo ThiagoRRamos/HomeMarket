@@ -3,7 +3,8 @@ Created on May 15, 2013
 
 @author: thiagorramos
 '''
-from marketapp.models import Compra, ProdutoCompra
+from marketapp.models import Compra, ProdutoCompra, CompraAgendada,\
+    ProdutoCompraAgendada
 import marketapp.services.regiao_atendimento as regiao_service
 
 
@@ -22,7 +23,18 @@ def gerar_compra(consumidor, produtos):
 
 
 def gerar_compra_agendada(consumidor, produtos, data):
-    pass
+    supermercado = produtos[0].produto.supermercado
+    compra = CompraAgendada.objects.create(modo_pagamento='nn',
+                                   status_pagamento='pn',
+                                   consumidor=consumidor,
+                                   supermercado=supermercado,
+                                   data_entrega=data)
+    for p in produtos:
+        ProdutoCompraAgendada.objects.create(compra=compra,
+                                     produto=p.produto,
+                                     quantidade=p.quantidade,
+                                     preco_unitario=p.produto.preco)
+    return compra
 
 
 def gerar_compra_recorrente(consumidor, produtos):

@@ -1,0 +1,13 @@
+{% extends 'chrome.html' %}
+{% block title %} MyHomeMarket {% endblock %}
+{% block content %}
+<dl>
+	<dt>Agendamento</dt>
+</dl>
+
+<form action="" method="post">
+  {% csrf_token %}
+  <input type="text" name="dataAgendada" />
+  Digite data de agendamento: <input type="submit" value="Agendar"><br>
+</form>
+{% endblock %}

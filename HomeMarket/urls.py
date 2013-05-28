@@ -8,6 +8,7 @@ from marketapp.utils.autorizacao import eh_cliente
 import settings
 
 
+
 admin.autodiscover()
 
 sqs = SearchQuerySet().facet('marca').facet('categoria')
@@ -84,6 +85,8 @@ urlpatterns = patterns('',
         'marketapp.views.cliente.completar_compra'),
     url(r'^historico/$',
         'marketapp.views.cliente.ver_historico_compras'),
+    url(r'^agendamento/$',
+        'marketapp.views.cliente.agendar_compra'), 
 )
 
 if settings.DEBUG:

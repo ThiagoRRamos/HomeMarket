@@ -192,12 +192,59 @@ class Compra(models.Model):
         context = Context({'carrinho': self})
         return get_template('cliente/_carrinho-form.html').render(context)
 
+class CompraAgendada(models.Model):
+    PAGAMENTOS_POSSIVEIS = (('cc', u'Cartao de Credito'),
+                            ('cd', u'Cartao de Debito'),
+                            ('di', u'Dinheiro'),
+                            ('nn', u'Nao definido'))
+    STATUS_PAGAMENTOS = (('pn', 'Pagamento nao iniciado'),
+                         ('pi', 'Pagamento Iniciado'),
+                         ('pa', 'Pagamento Aprovado'),
+                         ('pc', 'Pagamento Cancelado'),
+                         ('pd', 'Pagamento em Dinheiro'),
+                         ('ei', 'Entrega Iniciada'),
+                         ('et', 'Entrega em Transporte'),
+                         ('ee', 'Entrega Entregue'),)
+
+    consumidor = models.ForeignKey(Consumidor)
+    supermercado = models.ForeignKey(Supermercado)
+    produtos = models.ManyToManyField(ProdutoSupermercado,
+                                      through='ProdutoCompraAgendada')
+    modo_pagamento = models.CharField(max_length=3,
+                                      choices=PAGAMENTOS_POSSIVEIS)
+    status_pagamento = models.CharField(max_length=3,
+                                        choices=STATUS_PAGAMENTOS)
+    data_compra = models.DateField(auto_now_add=True)
+    data_entrega = models.DateField();
+
+    def __unicode__(self):
+        return "Compra de {} em {} na data {}".format(self.consumidor,
+                                                      self.supermercado,
+                                                      self.data_compra)
+
+
 
 class ProdutoCompra(models.Model):
     class Meta:
         verbose_name = u'Produto Comprado'
         verbose_name_plural = u'Produtos Comprados'
     compra = models.ForeignKey(Compra)
+    produto = models.ForeignKey(ProdutoSupermercado)
+    quantidade = models.IntegerField()
+    preco_unitario = models.DecimalField(decimal_places=2, max_digits=5)
+
+    def __unicode__(self):
+        return "{} na compra {}".format(self.produto,
+                                        self.compra.id)
+
+    def preco_total(self):
+        return self.preco_unitario * self.quantidade
+
+class ProdutoCompraAgendada(models.Model):
+    class Meta:
+        verbose_name = u'Produto Comprado'
+        verbose_name_plural = u'Produtos Comprados'
+    compra = models.ForeignKey(CompraAgendada)
     produto = models.ForeignKey(ProdutoSupermercado)
     quantidade = models.IntegerField()
     preco_unitario = models.DecimalField(decimal_places=2, max_digits=5)
