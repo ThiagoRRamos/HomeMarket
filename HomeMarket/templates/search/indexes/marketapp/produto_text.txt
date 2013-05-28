@@ -2,3 +2,5 @@
 {{ object.nome }}
 {{ object.quantidade }} {{object.quantidade_unidade}}
 {{ object.tags.all }}
+{{ object.marca }}
+{{ object.categoria }}
