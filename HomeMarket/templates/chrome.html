@@ -27,7 +27,9 @@
                 {% if request.user.supermercado %}
                     <li><a href="/home-supermercado">Home</a></li>
                 {% else %}
-                    <li><a href="/home-cliente">Home</a></li>
+                    {% if request.user.consumidor %}
+                    	<li><a href="/home-cliente">Home</a></li>
+                    {% endif %}
                 {% endif %}
                 <li><a href="/busca">Busca</a></li>
             </ul>
