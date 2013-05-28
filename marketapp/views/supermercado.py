@@ -5,9 +5,11 @@ from marketapp.models import Produto, ProdutoSupermercado, RegiaoAtendida, \
     Supermercado, Compra
 from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, \
     ProdutoSupermercadoFormPreco
-from marketapp.utils.autorizacao import apenas_supermercado
+from marketapp.utils.autorizacao import apenas_supermercado, apenas_cliente
 import marketapp.repository.produto as produto_repository
 from django import forms
+from marketapp import services
+from marketapp.services import supermercado
 
 
 @apenas_supermercado
@@ -41,7 +43,13 @@ def criar_produto(request):
                             codigo=produto.codigo_de_barras)
     return render(request, 'supermercado/criacao_produto.html',
                   {'form': form})
-
+@apenas_cliente
+def avaliar_supermercado(request,id_supermercado):   
+    if request.method == 'POST':
+        nota = request.POST['nota']
+        avaliacao = request.POST['avaliacao']
+        services.supermercado.gerar_avaliacao_supermercado(nota, avaliacao, id_supermercado,request.user.consumidor)
+    return render(request, 'supermercado/avaliacao_supermercado.html')
 
 def adicionar_produto_existente(request, codigo):
     form = ProdutoSupermercadoForm()

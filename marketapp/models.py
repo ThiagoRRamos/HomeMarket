@@ -248,3 +248,9 @@ class ProdutoCarrinho(models.Model):
     produto = models.ForeignKey(ProdutoSupermercado)
     carrinho = models.ForeignKey(CarrinhoCompras)
     quantidade = models.IntegerField()
+
+class AvaliacaoSupermercado(models.Model):
+    nota = models.FloatField()
+    avaliacao = models.TextField()
+    supermercado = models.ForeignKey(Supermercado)
+    consumidor = models.ForeignKey(Consumidor)

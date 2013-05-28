@@ -86,6 +86,8 @@ urlpatterns = patterns('',
         'marketapp.views.cliente.ver_historico_compras'),
     url(r'^agendamento/$',
         'marketapp.views.cliente.agendar_compra'), 
+    url(r'^avaliacao/(?P<id_supermercado>\d+)$',
+        'marketapp.views.supermercado.avaliar_supermercado'),
 )
 
 if settings.DEBUG:

@@ -1,0 +1,17 @@
+{% extends 'chrome.html' %}
+{% block title %} MyHomeMarket {% endblock %}
+{% block content %}
+<dl>
+	<dt>Avaliacao</dt>
+</dl>
+
+<form action="" method="post">
+  {% csrf_token %}
+ <p> nota do supermercado: <input type="text" name="nota" /> </p>
+  <p> avaliacao do supermercado: 
+  <textarea rows = "4" cols = "20" name="avaliacao">
+  </textarea> 
+  </p>
+  <input type="submit" value="Avaliar"><br>
+</form>
+{% endblock %}

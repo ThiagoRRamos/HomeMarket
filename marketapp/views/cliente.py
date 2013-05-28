@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from marketapp.models import Supermercado, ProdutoSupermercado, Compra, \
-    ListaCompras, ProdutoCarrinho, PromocaoCombinacao, CompraAgendada
+    ListaCompras, ProdutoCarrinho, CompraAgendada
 
 import marketapp.services.carrinho as carrinho_service
 import marketapp.services.compras as compras_service
