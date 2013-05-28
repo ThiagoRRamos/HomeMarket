@@ -10,7 +10,7 @@ dependencias = ["django",
                 "django-nose",
                 "requests",
                 "django-allauth",
-                "haystack",
+                "django-haystack",
                 "pyelasticsearch",
                 "django-taggit"]
 

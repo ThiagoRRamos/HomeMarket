@@ -2,14 +2,14 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from marketapp.models import Supermercado, ProdutoSupermercado, Compra, \
-    ListaCompras, ProdutoCarrinho, PromocaoCombinacao
+    ListaCompras, ProdutoCarrinho
 import marketapp.services.carrinho as carrinho_service
 import marketapp.services.compras as compras_service
 from marketapp.utils.autorizacao import apenas_cliente
 
 import marketapp.repository.produto as produto_repository
 from marketapp.services.regiao_atendimento import get_supermercados_que_atendem
-from marketapp.services.carrinho import limpar_carrinho,\
+from marketapp.services.carrinho import limpar_carrinho, \
     SupermercadoNaoAtendeUsuario, CarrinhoComOutroSupermercado
 from django.http.response import Http404
 from marketapp.utils.decorators import jsonify
@@ -36,11 +36,7 @@ def ver_historico_compras(request):
 def ver_produtos_supermercado(request, nome):
     supermercado = get_object_or_404(Supermercado, nome_url=nome)
     produtos = ProdutoSupermercado.objects.filter(supermercado=supermercado)
-    produtos_promocao = PromocaoCombinacao.objects.filter(supermercado=supermercado)
     categorias = {}
-    categorias["Promocao"]=[]
-    for p in produtos_promocao:
-        categorias["Promocao"].append(p)
     for p in produtos:
         if p.produto.categoria not in categorias:
             categorias[p.produto.categoria] = []
