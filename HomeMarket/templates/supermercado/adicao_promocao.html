@@ -1,0 +1,9 @@
+{% extends 'supermercado/chrome.html' %}
+{% block title %} Criacao de produto {% endblock %}
+{% block center %}
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Submit"/>
+</form>
+{% endblock %}

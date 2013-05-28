@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.forms.models import inlineformset_factory
+from django.forms.models import inlineformset_factory, ModelForm
 
 from marketapp.models import Produto, ProdutoSupermercado, RegiaoAtendida, \
-    Supermercado, Compra
+    Supermercado, Compra, PromocaoCombinacao
 from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, \
     ProdutoSupermercadoFormPreco
 from marketapp.utils.autorizacao import apenas_supermercado, apenas_cliente
@@ -150,3 +150,24 @@ def atualizar_status(request, compra_id):
     compra.status_pagamento = request.GET['status']
     compra.save()
     return redirect('/status-compras')
+
+
+@apenas_supermercado
+def adicionar_promocoes(request):
+    class Promo(ModelForm):
+        class Meta:
+            model = PromocaoCombinacao
+            exclude = ['supermercado']
+    if request.method == 'POST':
+        form = Promo(request.POST)
+        if form.is_valid():
+            pro = form.save(commit=False)
+            pro.supermercado = request.user.supermercado
+            pro.save()
+            form.save_m2m()
+    else:
+        form = Promo()
+        form.fields['produtos'].queryset = ProdutoSupermercado.objects.filter(supermercado=request.user.supermercado)
+    return render(request,
+                  'supermercado/adicao_promocao.html',
+                  {'form': form})

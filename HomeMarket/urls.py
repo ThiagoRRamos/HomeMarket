@@ -57,6 +57,8 @@ urlpatterns = patterns('',
         'marketapp.views.supermercado.status_compras'),
     url(r'^atualizar-compra/(?P<compra_id>\d+)$',
         'marketapp.views.supermercado.atualizar_status'),
+    url(r'^promocoes/$',
+        'marketapp.views.supermercado.adicionar_promocoes'),
     #Views de clientes
     url(r'^home-cliente/$',
         'marketapp.views.cliente.home'),
