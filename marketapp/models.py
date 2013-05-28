@@ -3,6 +3,8 @@ from django.db import models
 from django.template.context import Context
 from django.template.loader import get_template
 from taggit.managers import TaggableManager
+from marketapp.services.analisador_promocoes import promocoes_aplicaveis, \
+    desconto_promocoes
 
 
 class Categoria(models.Model):
@@ -125,6 +127,14 @@ class ProdutoLista(models.Model):
     quantidade = models.IntegerField()
 
 
+class PromocaoCombinacao(models.Model):
+    supermercado = models.ForeignKey(Supermercado)
+    produtos = models.ManyToManyField(ProdutoSupermercado)
+    desconto_percentual = models.IntegerField()
+    cumulativa = models.BooleanField(default=False)
+    data_adicao = models.DateField(auto_now_add=True)
+
+
 class Compra(models.Model):
     PAGAMENTOS_POSSIVEIS = (('cc', u'Cartao de Credito'),
                             ('cd', u'Cartao de Debito'),
@@ -158,6 +168,7 @@ class Compra(models.Model):
         context = Context({'carrinho': self})
         return get_template('cliente/_carrinho-form.html').render(context)
 
+
 class CompraAgendada(models.Model):
     PAGAMENTOS_POSSIVEIS = (('cc', u'Cartao de Credito'),
                             ('cd', u'Cartao de Debito'),
@@ -189,7 +200,6 @@ class CompraAgendada(models.Model):
                                                       self.data_compra)
 
 
-
 class ProdutoCompra(models.Model):
     class Meta:
         verbose_name = u'Produto Comprado'
@@ -205,6 +215,7 @@ class ProdutoCompra(models.Model):
 
     def preco_total(self):
         return self.preco_unitario * self.quantidade
+
 
 class ProdutoCompraAgendada(models.Model):
     class Meta:
@@ -241,13 +252,17 @@ class CarrinhoCompras(models.Model):
         return lista
 
     def total(self):
-        return sum((p.quantidade * p.produto.preco for p in self.produtocarrinho_set.all()))
+        preco = sum((p.quantidade * p.produto.preco for p in self.produtocarrinho_set.all()))
+        promocoes = list(promocoes_aplicaveis(self.produtocarrinho_set.all(), self.supermercado))
+        desconto = desconto_promocoes(promocoes, self.produtocarrinho_set.all())
+        return float(preco) - desconto
 
 
 class ProdutoCarrinho(models.Model):
     produto = models.ForeignKey(ProdutoSupermercado)
     carrinho = models.ForeignKey(CarrinhoCompras)
     quantidade = models.IntegerField()
+
 
 class AvaliacaoSupermercado(models.Model):
     nota = models.FloatField()
