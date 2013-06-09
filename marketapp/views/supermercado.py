@@ -2,15 +2,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.forms.models import inlineformset_factory, ModelForm
 
 from marketapp.models import Produto, ProdutoSupermercado, RegiaoAtendida, \
-    Supermercado, Compra, PromocaoCombinacao
+    Supermercado, Compra, PromocaoCombinacao, AvaliacaoSupermercado
 from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, \
     ProdutoSupermercadoFormPreco
 from marketapp.utils.autorizacao import apenas_supermercado, apenas_cliente
 import marketapp.repository.produto as produto_repository
 from django import forms
+from django.http.response import HttpResponse
+from django.core import serializers
 from marketapp import services
 from marketapp.services import supermercado
-
 
 @apenas_supermercado
 def home(request):
@@ -171,3 +172,23 @@ def adicionar_promocoes(request):
     return render(request,
                   'supermercado/adicao_promocao.html',
                   {'form': form})
+
+def json_informacoes_supermercado(request):
+    supermercados = Supermercado.objects.all()
+    json = '{'
+    json += '"supermercados" : ['
+    for mercado in supermercados:
+        json += '{'
+        json += '"nome_exibicao" : '
+        json += '"'+mercado.nome_exibicao + '", '
+        regioes = RegiaoAtendida.objects.filter(supermercado=mercado)
+        data = serializers.serialize("json", regioes, fields=('cep_inicio', 'cep_final', 'preco', 'tempo'))
+        json += data
+        avaliacoes = AvaliacaoSupermercado.objects.filter(supermercado=mercado)
+        json += ','
+        data = serializers.serialize("json", avaliacoes, fields=('nota', 'avaliacao', 'consumidor'))
+        json += data
+        json += '}, '
+    json = json[:-2]
+    json += '] }'
+    return HttpResponse(json,mimetype="application/json")

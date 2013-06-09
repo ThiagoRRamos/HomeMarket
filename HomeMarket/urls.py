@@ -59,6 +59,8 @@ urlpatterns = patterns('',
         'marketapp.views.supermercado.atualizar_status'),
     url(r'^promocoes/$',
         'marketapp.views.supermercado.adicionar_promocoes'),
+    url(r'^json/supermercado/$',
+        'marketapp.views.supermercado.json_informacoes_supermercado'),
     #Views de clientes
     url(r'^home-cliente/$',
         'marketapp.views.cliente.home'),
