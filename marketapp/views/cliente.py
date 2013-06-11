@@ -180,11 +180,11 @@ def json_informacoes_supermercado(request):
                                                             'cep_final',
                                                             'preco',
                                                             'tempo'))
-        mercadoJson["regioes"] = data[0]
+        mercadoJson["regioes"] = data[1:-1]
         avaliacoes = AvaliacaoSupermercado.objects.filter(supermercado=mercado)
         data = serializers.serialize("json", avaliacoes, fields=('nota',
                                                                  'avaliacao',
                                                                  'consumidor'))
-        mercadoJson["avaliacoes"] = data[0]
+        mercadoJson["avaliacoes"] = data[1:-1]
         jsonDic['supermercados'].append(mercadoJson)
     return jsonDic
