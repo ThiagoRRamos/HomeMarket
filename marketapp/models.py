@@ -192,7 +192,7 @@ class CompraAgendada(models.Model):
     status_pagamento = models.CharField(max_length=3,
                                         choices=STATUS_PAGAMENTOS)
     data_compra = models.DateField(auto_now_add=True)
-    data_entrega = models.DateField();
+    data_entrega = models.TextField();
 
     def __unicode__(self):
         return "Compra de {} em {} na data {}".format(self.consumidor,
