@@ -14,7 +14,8 @@ def jsonify(function=None):
             try:
                 return HttpResponse(json.dumps(function(*args, **kwargs)),
                                     mimetype="application/json")
-            except Exception:
+            except Exception, e:
+                raise e
                 return HttpResponse(json.dumps({"ok": False}),
                                     mimetype="application/json")
         return wrapped

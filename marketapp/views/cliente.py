@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-
+from django.core import serializers
 from marketapp.models import Supermercado, ProdutoSupermercado, Compra, \
-    ListaCompras, ProdutoCarrinho, CompraAgendada
+    ListaCompras, ProdutoCarrinho, CompraAgendada, RegiaoAtendida, \
+    AvaliacaoSupermercado
 
 import marketapp.services.carrinho as carrinho_service
 import marketapp.services.compras as compras_service
@@ -165,3 +166,25 @@ def ver_lista_compras(request, lista_id):
     return render(request,
                   '',
                   {'lista': lista})
+
+@jsonify
+def json_informacoes_supermercado(request):
+    supermercados = Supermercado.objects.all()
+    jsonDic = {}
+    jsonDic['supermercados'] = []
+    for mercado in supermercados:
+        mercadoJson = {}
+        mercadoJson["nome_exibicao"] = mercado.nome_exibicao
+        regioes = RegiaoAtendida.objects.filter(supermercado=mercado)
+        data = serializers.serialize("json", regioes, fields=('cep_inicio',
+                                                            'cep_final',
+                                                            'preco',
+                                                            'tempo'))
+        mercadoJson["regioes"] = data
+        avaliacoes = AvaliacaoSupermercado.objects.filter(supermercado=mercado)
+        data = serializers.serialize("json", avaliacoes, fields=('nota',
+                                                                 'avaliacao',
+                                                                 'consumidor'))
+        mercadoJson["avaliacoes"] = data
+        jsonDic['supermercados'].append(mercadoJson)
+    return jsonDic

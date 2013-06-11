@@ -1,5 +1,4 @@
 from django import forms
-from django.core import serializers
 from django.forms.models import inlineformset_factory, ModelForm
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -198,29 +197,3 @@ def adicionar_promocoes(request):
     return render(request,
                   'supermercado/adicao_promocao.html',
                   {'form': form})
-
-
-def json_informacoes_supermercado(request):
-    supermercados = Supermercado.objects.all()
-    json = '{'
-    json += '"supermercados" : ['
-    for mercado in supermercados:
-        json += '{'
-        json += '"nome_exibicao" : '
-        json += '"' + mercado.nome_exibicao + '", '
-        regioes = RegiaoAtendida.objects.filter(supermercado=mercado)
-        data = serializers.serialize("json", regioes, fields=('cep_inicio',
-                                                              'cep_final',
-                                                              'preco',
-                                                              'tempo'))
-        json += data
-        avaliacoes = AvaliacaoSupermercado.objects.filter(supermercado=mercado)
-        json += ','
-        data = serializers.serialize("json", avaliacoes, fields=('nota',
-                                                                 'avaliacao',
-                                                                 'consumidor'))
-        json += data
-        json += '}, '
-    json = json[:-2]
-    json += '] }'
-    return HttpResponse(json, mimetype="application/json")
