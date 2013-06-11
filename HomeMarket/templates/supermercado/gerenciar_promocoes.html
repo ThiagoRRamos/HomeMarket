@@ -12,13 +12,10 @@ Supermercado {% endblock %} {% block center %}
 		<td>Combinação</td>
 		<td>{{promocao}}</td>
 		<td>
-			<div class="btn-group">
-				<button class="btn btn-success">Ver</button>
-				<button class="btn btn-info">Editar</button>
-				<button class="btn btn-danger">Remover</button>
-			</div>
+			<a href="/ver-promocao/{{promocao.id}}" class="btn btn-success">Ver</a>
 		</td>
 	</tr>
 	{% endfor %}
 </table>
+<a href="/adicionar-promocao" class="btn btn-info pull-right">Adicionar</a>
 {% endblock %}

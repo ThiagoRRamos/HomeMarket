@@ -65,6 +65,12 @@ urlpatterns = patterns('',
         'marketapp.views.supermercado.compras_agendadas'),
     url(r'^compras-recorrentes/$',
         'marketapp.views.supermercado.compras_recorrentes'),
+    url(r'^historico-vendas/$',
+        'marketapp.views.supermercado.ver_historico_vendas'),
+    url(r'^ver-promocao/(?P<promocao_id>\d+)$',
+        'marketapp.views.supermercado.ver_promocao'),
+    url(r'^apagar-promocao/(?P<promocao_id>\d+)$',
+        'marketapp.views.supermercado.apagar_promocao'),
     #Views de clientes
     url(r'^home-cliente/$',
         'marketapp.views.cliente.home'),
@@ -100,8 +106,6 @@ urlpatterns = patterns('',
         'marketapp.views.supermercado.avaliar_supermercado'),
     url(r'^json/supermercado/$',
         'marketapp.views.cliente.json_informacoes_supermercado'),
-    url(r'^historico-vendas/$',
-        'marketapp.views.supermercado.ver_historico_vendas'),
 )
 
 if settings.DEBUG:

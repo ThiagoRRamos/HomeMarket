@@ -207,3 +207,17 @@ def ver_historico_vendas(request):
                   'supermercado/historico_vendas.html',
                   {'vendas': vendas,
                    'produtos': produtos_vendidos})
+
+
+@apenas_supermercado
+def ver_promocao(request, promocao_id):
+    promocao = PromocaoCombinacao.objects.get(id=promocao_id)
+    return render(request,
+                  'supermercado/ver_promocao.html',
+                  {'promocao': promocao})
+
+
+@apenas_supermercado
+def apagar_promocao(request, promocao_id):
+    PromocaoCombinacao.objects.filter(id=promocao_id).delete()
+    return redirect('/promocoes')

@@ -1,0 +1,21 @@
+{% extends 'supermercado/chrome.html' %} {% block title %} Home
+Supermercado {% endblock %} {% block center %} {{promocao}}
+<dl>
+	<dl>
+		<dt>Produtos</dt>
+		<dd>
+			{% for produto in promocao.produtos.all %}
+			<li>{{produto}}</li> {% endfor %}
+		</dd>
+		<dt>Desconto Percentual</dt>
+		<dd>{{promocao.desconto_percentual}} %</dd>
+		<dt>Cumulativo?</dt>
+			{% if promocao.cumulativo %}
+				<dd>Sim</dd>
+			{% else %}
+				<dd>Não</dd>
+			{% endif %}
+	</dl>
+</dl>
+<a class="pull-right btn btn-danger" href="/apagar-promocao/{{promocao.id}}">Apagar</a>
+{% endblock %}
