@@ -3,7 +3,6 @@ Created on May 27, 2013
 
 @author: thiagorramos
 '''
-from collections import Counter
 
 
 def promocoes_supermercado(supermercado):

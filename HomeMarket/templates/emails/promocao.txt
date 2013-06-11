@@ -1,1 +1,12 @@
-AAAAAAAAAAA
+Caro {{consumidor}},
+
+Veja esta promoção que está disponível para você.
+
+{{promocao.supermercado}}
+
+{% for promocao in promocoes %}
+{{promocao}}
+{% endfor %}
+
+Abraço,
+Equipe HomeMarket
