@@ -187,41 +187,46 @@ class CompraAgendada(CompraAbstrata):
 
 
 class CompraRecorrente(CompraAbstrata):
-    pass
+    produtos = models.ManyToManyField(ProdutoSupermercado,
+                                      through='ProdutoCompraRecorrente')
+    frequencia = models.CharField(max_length=30)
 
 
-class ProdutoCompra(models.Model):
+class ProdutoCompraAbstrata(models.Model):
+    produto = models.ForeignKey(ProdutoSupermercado)
+    quantidade = models.IntegerField()
+    preco_unitario = models.DecimalField(decimal_places=2, max_digits=5)
+
+    def preco_total(self):
+        return self.preco_unitario * self.quantidade
+
+
+class ProdutoCompra(ProdutoCompraAbstrata):
     class Meta:
         verbose_name = u'Produto Comprado'
         verbose_name_plural = u'Produtos Comprados'
+
     compra = models.ForeignKey(Compra)
-    produto = models.ForeignKey(ProdutoSupermercado)
-    quantidade = models.IntegerField()
-    preco_unitario = models.DecimalField(decimal_places=2, max_digits=5)
 
     def __unicode__(self):
         return "{} na compra {}".format(self.produto,
                                         self.compra.id)
 
-    def preco_total(self):
-        return self.preco_unitario * self.quantidade
 
-
-class ProdutoCompraAgendada(models.Model):
+class ProdutoCompraAgendada(ProdutoCompraAbstrata):
     class Meta:
         verbose_name = u'Produto Comprado'
         verbose_name_plural = u'Produtos Comprados'
+
     compra = models.ForeignKey(CompraAgendada)
-    produto = models.ForeignKey(ProdutoSupermercado)
-    quantidade = models.IntegerField()
-    preco_unitario = models.DecimalField(decimal_places=2, max_digits=5)
 
     def __unicode__(self):
         return "{} na compra {}".format(self.produto,
                                         self.compra.id)
 
-    def preco_total(self):
-        return self.preco_unitario * self.quantidade
+
+class ProdutoCompraRecorrente(ProdutoCompraAbstrata):
+    compra = models.ForeignKey(CompraRecorrente)
 
 
 class CarrinhoCompras(models.Model):
