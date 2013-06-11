@@ -28,28 +28,35 @@ def home(request):
                   {'compras': compras,
                    'listas_compras': listas_compras,
                    'supermercados': supermercados})
-    
+
+
 def ver_historico_compras(request):
     compras = Compra.objects.filter(consumidor=request.user.consumidor, status_pagamento='ee').order_by('data_compra')[:10]
     return render(request,
                   'cliente/historico.html',
                   {'compras': compras})
 
+
 @login_required
 def agendar_compra(request):
     if request.method == 'POST':
         data = request.POST['dataAgendada']
-        services.compras.gerar_compra_agendada(request.user.consumidor, carrinho_service.get_carrinho_usuario(request.user).produtocarrinho_set.all(), data)
+        services.compras.gerar_compra_agendada(request.user.consumidor,
+                                               carrinho_service.get_carrinho_usuario(request.user).produtocarrinho_set.all(),
+                                               data)
     return render(request, 'cliente/agendamento.html')
+
 
 @login_required
 def agendar_compra_frequencia(request):
     if request.method == 'POST':
-        data = request.POST['frequenciaAgendada']
-        services.compras.gerar_compra_agendada(request.user.consumidor, carrinho_service.get_carrinho_usuario(request.user).produtocarrinho_set.all(), data)
+        frequencia = request.POST['frequenciaAgendada']
+        services.compras.gerar_compra_recorrente(request.user.consumidor,
+                                               carrinho_service.get_carrinho_usuario(request.user).produtocarrinho_set.all(),
+                                               frequencia)
     return render(request, 'cliente/agendamento_frequencia.html')
 
-    
+
 def ver_produtos_supermercado(request, nome):
     supermercado = get_object_or_404(Supermercado, nome_url=nome)
     produtos = ProdutoSupermercado.objects.filter(supermercado=supermercado)

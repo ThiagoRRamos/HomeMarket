@@ -197,6 +197,9 @@ class ProdutoCompraAbstrata(models.Model):
     quantidade = models.IntegerField()
     preco_unitario = models.DecimalField(decimal_places=2, max_digits=5)
 
+    class Meta:
+        abstract = True
+
     def preco_total(self):
         return self.preco_unitario * self.quantidade
 

@@ -376,5 +376,9 @@
 {"pk": 33, "model": "taggit.taggeditem", "fields": {"tag": 22, "content_type": 9, "object_id": 2}}, 
 {"pk": 34, "model": "taggit.taggeditem", "fields": {"tag": 22, "content_type": 9, "object_id": 1}}, 
 {"pk": 35, "model": "taggit.taggeditem", "fields": {"tag": 19, "content_type": 9, "object_id": 5}}, 
-{"pk": 36, "model": "taggit.taggeditem", "fields": {"tag": 20, "content_type": 9, "object_id": 5}}
-]
+{"pk": 36, "model": "taggit.taggeditem", "fields": {"tag": 20, "content_type": 9, "object_id": 5}},
+{"pk": 1, "model": "marketapp.avaliacaosupermercado", "fields": {"supermercado": 1, "nota": 7.0, "avaliacao": "musica carteada!!!", "consumidor": 1}},
+{"pk": 2, "model": "marketapp.avaliacaosupermercado", "fields": {"supermercado": 2, "nota": 8.0, "avaliacao": "entrega r\u00e1pida, por\u00e9m esqueceu um produto!!!", "consumidor": 1}},
+{"pk": 3, "model": "marketapp.avaliacaosupermercado", "fields": {"supermercado": 3, "nota": 4.0, "avaliacao": "N\u00e3o tinha muitos produtos anunciados!!!!", "consumidor": 2}},
+{"pk": 4, "model": "marketapp.avaliacaosupermercado", "fields": {"supermercado": 4, "nota": 9.0, "avaliacao": "Entrega r\u00e1pida e produtos em \u00f3timo estado!!!", "consumidor": 2}},
+{"pk": 5, "model": "marketapp.avaliacaosupermercado", "fields": {"supermercado": 1, "nota": 2.0, "avaliacao": "Muito Carooooooooooo!!!!", "consumidor": 1}}]
