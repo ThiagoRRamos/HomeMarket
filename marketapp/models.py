@@ -135,7 +135,7 @@ class PromocaoCombinacao(models.Model):
     data_adicao = models.DateField(auto_now_add=True)
 
 
-class Compra(models.Model):
+class CompraAbstrata(models.Model):
     PAGAMENTOS_POSSIVEIS = (('cc', u'Cartao de Credito'),
                             ('cd', u'Cartao de Debito'),
                             ('di', u'Dinheiro'),
@@ -151,13 +151,19 @@ class Compra(models.Model):
 
     consumidor = models.ForeignKey(Consumidor)
     supermercado = models.ForeignKey(Supermercado)
-    produtos = models.ManyToManyField(ProdutoSupermercado,
-                                      through='ProdutoCompra')
     modo_pagamento = models.CharField(max_length=3,
                                       choices=PAGAMENTOS_POSSIVEIS)
     status_pagamento = models.CharField(max_length=3,
                                         choices=STATUS_PAGAMENTOS)
     data_compra = models.DateField(auto_now_add=True)
+
+    class Meta:
+        abstract = True
+
+
+class Compra(CompraAbstrata):
+    produtos = models.ManyToManyField(ProdutoSupermercado,
+                                      through='ProdutoCompra')
 
     def __unicode__(self):
         return "Compra de {} em {} na data {}".format(self.consumidor,
@@ -169,35 +175,19 @@ class Compra(models.Model):
         return get_template('cliente/_carrinho-form.html').render(context)
 
 
-class CompraAgendada(models.Model):
-    PAGAMENTOS_POSSIVEIS = (('cc', u'Cartao de Credito'),
-                            ('cd', u'Cartao de Debito'),
-                            ('di', u'Dinheiro'),
-                            ('nn', u'Nao definido'))
-    STATUS_PAGAMENTOS = (('pn', 'Pagamento nao iniciado'),
-                         ('pi', 'Pagamento Iniciado'),
-                         ('pa', 'Pagamento Aprovado'),
-                         ('pc', 'Pagamento Cancelado'),
-                         ('pd', 'Pagamento em Dinheiro'),
-                         ('ei', 'Entrega Iniciada'),
-                         ('et', 'Entrega em Transporte'),
-                         ('ee', 'Entrega Entregue'),)
-
-    consumidor = models.ForeignKey(Consumidor)
-    supermercado = models.ForeignKey(Supermercado)
+class CompraAgendada(CompraAbstrata):
     produtos = models.ManyToManyField(ProdutoSupermercado,
                                       through='ProdutoCompraAgendada')
-    modo_pagamento = models.CharField(max_length=3,
-                                      choices=PAGAMENTOS_POSSIVEIS)
-    status_pagamento = models.CharField(max_length=3,
-                                        choices=STATUS_PAGAMENTOS)
-    data_compra = models.DateField(auto_now_add=True)
-    data_entrega = models.TextField();
+    data_entrega = models.DateField()
 
     def __unicode__(self):
-        return "Compra de {} em {} na data {}".format(self.consumidor,
+        return "Compra Agendada de {} em {} na data {}".format(self.consumidor,
                                                       self.supermercado,
                                                       self.data_compra)
+
+
+class CompraRecorrente(CompraAbstrata):
+    pass
 
 
 class ProdutoCompra(models.Model):

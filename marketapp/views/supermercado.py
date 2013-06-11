@@ -1,17 +1,19 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django import forms
+from django.core import serializers
 from django.forms.models import inlineformset_factory, ModelForm
-
-from marketapp.models import Produto, ProdutoSupermercado, RegiaoAtendida, \
-    Supermercado, Compra, PromocaoCombinacao, AvaliacaoSupermercado
+from django.http.response import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from marketapp import services
 from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, \
     ProdutoSupermercadoFormPreco
+from marketapp.models import Produto, ProdutoSupermercado, RegiaoAtendida, \
+    Supermercado, Compra, PromocaoCombinacao, AvaliacaoSupermercado, CompraAgendada, \
+    CompraRecorrente
+from marketapp.services import supermercado
+from marketapp.services.analisador_promocoes import promocoes_supermercado
 from marketapp.utils.autorizacao import apenas_supermercado, apenas_cliente
 import marketapp.repository.produto as produto_repository
-from django import forms
-from django.http.response import HttpResponse
-from django.core import serializers
-from marketapp import services
-from marketapp.services import supermercado
+
 
 @apenas_supermercado
 def home(request):
@@ -45,11 +47,11 @@ def criar_produto(request):
     return render(request, 'supermercado/criacao_produto.html',
                   {'form': form})
 @apenas_cliente
-def avaliar_supermercado(request,id_supermercado):   
+def avaliar_supermercado(request, id_supermercado):   
     if request.method == 'POST':
         nota = request.POST['nota']
         avaliacao = request.POST['avaliacao']
-        services.supermercado.gerar_avaliacao_supermercado(nota, avaliacao, id_supermercado,request.user.consumidor)
+        services.supermercado.gerar_avaliacao_supermercado(nota, avaliacao, id_supermercado, request.user.consumidor)
     return render(request, 'supermercado/avaliacao_supermercado.html')
 
 def adicionar_produto_existente(request, codigo):
@@ -154,6 +156,30 @@ def atualizar_status(request, compra_id):
 
 
 @apenas_supermercado
+def compras_recorrentes(request):
+    recorrentes = CompraRecorrente.objects.filter(supermercado=request.user.supermercado)
+    return render(request,
+                  'supermercado/compras_recorrentes.html',
+                  {'compras_recorrentes': recorrentes})
+
+
+@apenas_supermercado
+def compras_agendadas(request):
+    agendadas = CompraAgendada.objects.filter(supermercado=request.user.supermercado)
+    return render(request,
+                  'supermercado/compras_agendadas.html',
+                  {'compras_agendadas': agendadas})
+
+
+@apenas_supermercado
+def gerenciar_promocoes(request):
+    promocoes = promocoes_supermercado(request.user.supermercado)
+    return render(request,
+                  'supermercado/gerenciar_promocoes.html',
+                  {'promocoes': promocoes})
+
+
+@apenas_supermercado
 def adicionar_promocoes(request):
     class Promo(ModelForm):
         class Meta:
@@ -173,6 +199,7 @@ def adicionar_promocoes(request):
                   'supermercado/adicao_promocao.html',
                   {'form': form})
 
+
 def json_informacoes_supermercado(request):
     supermercados = Supermercado.objects.all()
     json = '{'
@@ -180,15 +207,20 @@ def json_informacoes_supermercado(request):
     for mercado in supermercados:
         json += '{'
         json += '"nome_exibicao" : '
-        json += '"'+mercado.nome_exibicao + '", '
+        json += '"' + mercado.nome_exibicao + '", '
         regioes = RegiaoAtendida.objects.filter(supermercado=mercado)
-        data = serializers.serialize("json", regioes, fields=('cep_inicio', 'cep_final', 'preco', 'tempo'))
+        data = serializers.serialize("json", regioes, fields=('cep_inicio',
+                                                              'cep_final',
+                                                              'preco',
+                                                              'tempo'))
         json += data
         avaliacoes = AvaliacaoSupermercado.objects.filter(supermercado=mercado)
         json += ','
-        data = serializers.serialize("json", avaliacoes, fields=('nota', 'avaliacao', 'consumidor'))
+        data = serializers.serialize("json", avaliacoes, fields=('nota',
+                                                                 'avaliacao',
+                                                                 'consumidor'))
         json += data
         json += '}, '
     json = json[:-2]
     json += '] }'
-    return HttpResponse(json,mimetype="application/json")
+    return HttpResponse(json, mimetype="application/json")

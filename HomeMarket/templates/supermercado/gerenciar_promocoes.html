@@ -1,0 +1,24 @@
+{% extends 'supermercado/chrome.html' %} {% block title %} Home
+Supermercado {% endblock %} {% block center %}
+<table class="table">
+	<tr>
+		<th>Tipo Promocao</th>
+		<th>Promocao</th>
+		<th></th>
+		<th></th>
+	</tr>
+	{% for promocao in promocoes %}
+	<tr>
+		<td>Combinação</td>
+		<td>{{promocao}}</td>
+		<td>
+			<div class="btn-group">
+				<button class="btn btn-success">Ver</button>
+				<button class="btn btn-info">Editar</button>
+				<button class="btn btn-danger">Remover</button>
+			</div>
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}

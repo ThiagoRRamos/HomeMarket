@@ -1,0 +1,7 @@
+{% extends 'supermercado/chrome.html' %}
+{% block title %} Home Supermercado {% endblock %}
+{% block center %}
+{% for compra in compras_recorrentes %}
+	{{compra}}
+{% endfor %}
+{% endblock %}
