@@ -170,6 +170,9 @@ class Compra(CompraAbstrata):
                                                       self.supermercado,
                                                       self.data_compra)
 
+    def preco(self):
+        return sum(produto.preco_total() for produto in self.produtocompra_set.all())
+
     def gerar_botao_pagamento(self):
         context = Context({'carrinho': self})
         return get_template('cliente/_carrinho-form.html').render(context)

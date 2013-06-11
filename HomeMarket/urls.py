@@ -100,7 +100,7 @@ urlpatterns = patterns('',
         'marketapp.views.supermercado.avaliar_supermercado'),
     url(r'^json/supermercado/$',
         'marketapp.views.cliente.json_informacoes_supermercado'),
-    url(r'^historico_vendas/$',
+    url(r'^historico-vendas/$',
         'marketapp.views.supermercado.ver_historico_vendas'),
 )
 

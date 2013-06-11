@@ -1,21 +1,42 @@
 {% extends 'supermercado/chrome.html' %}
 {% block title %} MyHomeMarket {% endblock %}
-{% block content %}
-<dl>
-	<dt>Historico de Vendas</dt>
-</dl>
+{% block center %}
 
-<table>
+<h4>Historico de Vendas</h4>
+
+<table class="table">
+	<tr>
+		<th>Venda</th>
+		<th>Data</th>
+		<th>Quantidade de produtos</th>
+		<th>Valor da venda</th>
+	</tr>
+	{% for vend in vendas %}
+	{% with vend.produtos.all as esses_produtos %}
+	<tr>
+		<td>{{vend}}</td>
+		<td>{{vend.data_compra|date:"d/m/y"}}</td>
+		<td>{{esses_produtos|length}}</td>
+		<td>R$ {{vend.preco|floatformat:2}}</td>
+	</tr>
+	{% endwith %}
+	{% endfor %}
+</table>
+
+<h4>Produtos vendidos</h4>
+
+<table class="table">
 	<tr>
 		<th>Produto</th>
-		<th>Data</th>
-	</tr><td>
-	{% for vend in vendas %}
+		<th>Quantidade vendida</th>
 	<tr>
-		<td>{{vend.produto.produto}}</td>
-		<td>{{vend.compra.data_compra}}</td>
-	</tr><td>
+	{% for produto in produtos %}
+	<tr>
+		<td>{{produto.produto__produto__nome}}</td>
+		<td>{{produto.quantidade_total}}</td>
+	</tr>
 	{% endfor %}
-</td></td></table>
+</table>
 {% endblock %}
-</body></html>
+</body>
+</html>

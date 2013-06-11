@@ -1,14 +1,14 @@
 from django import forms
+from django.db.models import Count
+from django.db.models.aggregates import Sum
 from django.forms.models import inlineformset_factory, ModelForm
-from django.http.response import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from marketapp import services
 from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, \
     ProdutoSupermercadoFormPreco
 from marketapp.models import Produto, ProdutoSupermercado, RegiaoAtendida, \
-    Supermercado, Compra, PromocaoCombinacao, AvaliacaoSupermercado, CompraAgendada, \
-    CompraRecorrente, ProdutoCompra
-from marketapp.services import supermercado
+    Supermercado, Compra, PromocaoCombinacao, CompraAgendada, CompraRecorrente, \
+    ProdutoCompra
 from marketapp.services.analisador_promocoes import promocoes_supermercado
 from marketapp.utils.autorizacao import apenas_supermercado, apenas_cliente
 import marketapp.repository.produto as produto_repository
@@ -198,9 +198,12 @@ def adicionar_promocoes(request):
                   'supermercado/adicao_promocao.html',
                   {'form': form})
 
+
 @apenas_supermercado
 def ver_historico_vendas(request):
-    vendas = ProdutoCompra.objects.filter(produto = ProdutoSupermercado.objects.filter(supermercado = request.user.supermercado), compra = Compra.objects.filter(supermercado=request.user.supermercado, status_pagamento='ee').order_by('data_compra')[:10] )
+    vendas = Compra.objects.filter(supermercado=request.user.supermercado)
+    produtos_vendidos = ProdutoCompra.objects.filter(compra__supermercado=request.user.supermercado).values('produto__produto__nome').annotate(quantidade_total=Sum('quantidade'))
     return render(request,
                   'supermercado/historico_vendas.html',
-                  {'vendas': vendas})
+                  {'vendas': vendas,
+                   'produtos': produtos_vendidos})
