@@ -7,7 +7,7 @@ from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, \
     ProdutoSupermercadoFormPreco
 from marketapp.models import Produto, ProdutoSupermercado, RegiaoAtendida, \
     Supermercado, Compra, PromocaoCombinacao, AvaliacaoSupermercado, CompraAgendada, \
-    CompraRecorrente
+    CompraRecorrente, ProdutoCompra
 from marketapp.services import supermercado
 from marketapp.services.analisador_promocoes import promocoes_supermercado
 from marketapp.utils.autorizacao import apenas_supermercado, apenas_cliente
@@ -197,3 +197,10 @@ def adicionar_promocoes(request):
     return render(request,
                   'supermercado/adicao_promocao.html',
                   {'form': form})
+
+@apenas_supermercado
+def ver_historico_vendas(request):
+    vendas = ProdutoCompra.objects.filter(produto = ProdutoSupermercado.objects.filter(supermercado = request.user.supermercado), compra = Compra.objects.filter(supermercado=request.user.supermercado, status_pagamento='ee').order_by('data_compra')[:10] )
+    return render(request,
+                  'supermercado/historico_vendas.html',
+                  {'vendas': vendas})

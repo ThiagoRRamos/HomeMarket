@@ -1,0 +1,21 @@
+{% extends 'supermercado/chrome.html' %}
+{% block title %} MyHomeMarket {% endblock %}
+{% block content %}
+<dl>
+	<dt>Historico de Vendas</dt>
+</dl>
+
+<table>
+	<tr>
+		<th>Produto</th>
+		<th>Data</th>
+	</tr><td>
+	{% for vend in vendas %}
+	<tr>
+		<td>{{vend.produto.produto}}</td>
+		<td>{{vend.compra.data_compra}}</td>
+	</tr><td>
+	{% endfor %}
+</td></td></table>
+{% endblock %}
+</body></html>
