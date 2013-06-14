@@ -1,7 +1,20 @@
 {% extends 'supermercado/chrome.html' %}
 {% block title %} Home Supermercado {% endblock %}
 {% block center %}
-{% for compra in compras_recorrentes %}
-	{{compra}}
-{% endfor %}
+<table>
+	<tr>
+		<th class="span3">Compra</th>
+		<th class="span2">Comprador</th>
+		<th class="span2">Telefone</th>
+		<th class="span3">Frequencia</th>
+	</tr>
+	{% for compra in compras_recorrentes %}
+	<tr>
+		<td>{{compra}}</td>
+		<td>{{compra.consumidor}}</td>
+		<td>{{compra.consumidor.telefone}}</td>
+		<td>{{compra.frequencia}}</td>
+	</tr>
+	{% endfor %}
+</table>
 {% endblock %}

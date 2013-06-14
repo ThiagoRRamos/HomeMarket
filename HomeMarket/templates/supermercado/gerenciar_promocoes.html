@@ -11,11 +11,15 @@ Supermercado {% endblock %} {% block center %}
 	<tr>
 		<td>Combinação</td>
 		<td>{{promocao}}</td>
-		<td>
-			<a href="/ver-promocao/{{promocao.id}}" class="btn btn-success">Ver</a>
-		</td>
+		<td><a href="{{promocao.get_absolute_url}}"
+			class="btn btn-success">Ver</a></td>
 	</tr>
 	{% endfor %}
 </table>
-<a href="/adicionar-promocao" class="btn btn-info pull-right">Adicionar</a>
+<div class="btn-group pull-right">
+	<a href="/adicionar-promocao" class="btn btn-info ">Adicionar Combinação</a>
+	<a href="/adicionar-promocao-simples" class="btn btn-success">Adicionar Simples</a>
+	<a href="/adicionar-promocao-atacado" class="btn btn-danger">Adicionar Atacado</a>
+</div>
+
 {% endblock %}

@@ -53,3 +53,8 @@ def adicionar_produto(usuario, produto_supermercado, quantidade=1):
                                                   quantidade=quantidade)
         else:
             raise CarrinhoComOutroSupermercado
+
+
+def carregar_carrinho(usuario, produto_supermercado_map):
+    for psm in produto_supermercado_map:
+        adicionar_produto(usuario, psm, produto_supermercado_map[psm])

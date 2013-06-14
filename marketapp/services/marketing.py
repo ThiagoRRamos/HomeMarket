@@ -17,10 +17,10 @@ def consumidores_promocao(promocao):
     for reg in regioes_atendidas:
         cep_inicio = reg.cep_inicio
         cep_final = reg.cep_final
-        consumidores = Consumidor.objects.filter(cep__gte=cep_inicio,
-                                                 cep__lte=cep_final)
+        consumidores = Consumidor.objects.filter(cep__gte=cep_inicio)
         for consumidor in consumidores:
-            yield consumidor
+            if consumidor.cep <= cep_final:
+                yield consumidor
 
 
 def selecionar_promocoes():

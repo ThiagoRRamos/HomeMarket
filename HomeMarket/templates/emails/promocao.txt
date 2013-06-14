@@ -6,6 +6,7 @@ Veja esta promoção que está disponível para você.
 
 {% for promocao in promocoes %}
 {{promocao}}
+{{promocao.produtos.all}}
 {% endfor %}
 
 Abraço,

@@ -5,6 +5,7 @@ from django.template.loader import get_template
 from taggit.managers import TaggableManager
 from marketapp.services.analisador_promocoes import promocoes_aplicaveis, \
     desconto_promocoes
+import datetime
 
 
 class Categoria(models.Model):
@@ -127,12 +128,54 @@ class ProdutoLista(models.Model):
     quantidade = models.IntegerField()
 
 
-class PromocaoCombinacao(models.Model):
+class Promocao(models.Model):
     supermercado = models.ForeignKey(Supermercado)
-    produtos = models.ManyToManyField(ProdutoSupermercado)
     desconto_percentual = models.IntegerField()
     cumulativa = models.BooleanField(default=False)
     data_adicao = models.DateField(auto_now_add=True)
+
+    def se_aplica(self, mapa_produtos):
+        raise NotImplementedError
+
+    def get_produtos(self):
+        raise NotImplementedError
+
+    class Meta:
+        abstract = True
+
+
+class PromocaoCombinacao(Promocao):
+    produtos = models.ManyToManyField(ProdutoSupermercado)
+
+    def se_aplica(self, mapa_produtos):
+        for produto in self.produtos.all():
+            if not produto in mapa_produtos or mapa_produtos[produto] <= 0:
+                return False
+        return True
+
+    def get_produtos(self):
+        return self.produtos.all()
+
+
+class PromocaoSimples(Promocao):
+    produto = models.ForeignKey(ProdutoSupermercado)
+
+    def se_aplica(self, mapa_produtos):
+        return self.produto in mapa_produtos and mapa_produtos[self.produto] > 0
+
+    def get_produtos(self):
+        return [self.produto]
+
+
+class PromocaoAtacado(Promocao):
+    produto = models.ForeignKey(ProdutoSupermercado)
+    quantidade = models.IntegerField()
+
+    def se_aplica(self, mapa_produtos):
+        return self.produto in mapa_produtos and mapa_produtos[self.produto] >= self.quantidade
+
+    def get_produtos(self):
+        return [self.produto] * self.quantidade
 
 
 class CompraAbstrata(models.Model):
@@ -165,6 +208,9 @@ class Compra(CompraAbstrata):
     produtos = models.ManyToManyField(ProdutoSupermercado,
                                       through='ProdutoCompra')
 
+    def get_absolute_url(self):
+        return "/compra/{}".format(self.id)
+
     def __unicode__(self):
         return "Compra de {} em {} na data {}".format(self.consumidor,
                                                       self.supermercado,
@@ -183,16 +229,31 @@ class CompraAgendada(CompraAbstrata):
                                       through='ProdutoCompraAgendada')
     data_entrega = models.DateField()
 
+    def get_absolute_url(self):
+        return "/compra-agendada/{}".format(self.id)
+
     def __unicode__(self):
-        return "Compra Agendada de {} em {} na data {}".format(self.consumidor,
-                                                      self.supermercado,
-                                                      self.data_compra)
+        return "Compra de {} para entrega em {}".format(self.consumidor,
+                                                     self.data_entrega)
 
 
 class CompraRecorrente(CompraAbstrata):
+    OPCOES = (('di', 'Diariamente'),
+              ('se', 'Semanalmente'),
+              ('qu', 'Quinzenalmente'),
+              ('me', 'Mensalmente'),
+              ('bi', 'Bimestralmente'))
     produtos = models.ManyToManyField(ProdutoSupermercado,
                                       through='ProdutoCompraRecorrente')
-    frequencia = models.CharField(max_length=30)
+    frequencia = models.CharField(max_length=30,
+                                  choices=OPCOES)
+
+    def get_absolute_url(self):
+        return "/compra-recorrente/{}".format(self.id)
+    
+    def __unicode__(self):
+        return "Compra de {} {}".format(self.consumidor,
+                                        self.get_frequencia_display())
 
 
 class ProdutoCompraAbstrata(models.Model):
@@ -243,7 +304,7 @@ class CarrinhoCompras(models.Model):
 
     def gerar_lista_compras(self, nome=None):
         if not nome:
-            nome = "Lista de " + str(self)
+            nome = "Lista de " + datetime.datetime.utcnow()
         lista = ListaCompras.objects.create(nome=nome,
                                             consumidor=self.usuario.consumidor)
         for p in self.produtocarrinho_set.all():
@@ -254,7 +315,8 @@ class CarrinhoCompras(models.Model):
 
     def total(self):
         preco = sum((p.quantidade * p.produto.preco for p in self.produtocarrinho_set.all()))
-        promocoes = list(promocoes_aplicaveis(self.produtocarrinho_set.all(), self.supermercado))
+        promocoes = list(promocoes_aplicaveis(self.produtocarrinho_set.all(),
+                                              self.supermercado))
         desconto = desconto_promocoes(promocoes, self.produtocarrinho_set.all())
         return float(preco) - desconto
 

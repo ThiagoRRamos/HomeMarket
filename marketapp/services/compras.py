@@ -8,7 +8,13 @@ from marketapp.models import Compra, ProdutoCompra, CompraAgendada, \
 import marketapp.services.regiao_atendimento as regiao_service
 
 
+class CompraVazia(Exception):
+    pass
+
+
 def gerar_compra(consumidor, produtos):
+    if len(produtos) == 0:
+        raise CompraVazia
     supermercado = produtos[0].produto.supermercado
     compra = Compra.objects.create(modo_pagamento='nn',
                                    status_pagamento='pn',
@@ -23,6 +29,8 @@ def gerar_compra(consumidor, produtos):
 
 
 def gerar_compra_agendada(consumidor, produtos, data):
+    if len(produtos) == 0:
+        raise CompraVazia
     supermercado = produtos[0].produto.supermercado
     compra = CompraAgendada.objects.create(modo_pagamento='nn',
                                    status_pagamento='pn',
@@ -38,6 +46,8 @@ def gerar_compra_agendada(consumidor, produtos, data):
 
 
 def gerar_compra_recorrente(consumidor, produtos, frequencia):
+    if len(produtos) == 0:
+        raise CompraVazia
     supermercado = produtos[0].produto.supermercado
     compra = CompraRecorrente.objects.create(modo_pagamento='nn',
                                    status_pagamento='pn',

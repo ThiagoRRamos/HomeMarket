@@ -2,8 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core import serializers
 from marketapp.models import Supermercado, ProdutoSupermercado, Compra, \
-    ListaCompras, ProdutoCarrinho, CompraAgendada, RegiaoAtendida, \
-    AvaliacaoSupermercado
+    ListaCompras, ProdutoCarrinho, RegiaoAtendida, \
+    AvaliacaoSupermercado, CompraRecorrente, CompraAgendada
 
 import marketapp.services.carrinho as carrinho_service
 import marketapp.services.compras as compras_service
@@ -11,8 +11,7 @@ from marketapp.utils.autorizacao import apenas_cliente
 
 import marketapp.repository.produto as produto_repository
 from marketapp.services.regiao_atendimento import get_supermercados_que_atendem
-from marketapp.services.carrinho import limpar_carrinho, \
-    SupermercadoNaoAtendeUsuario, CarrinhoComOutroSupermercado
+from marketapp.services.carrinho import limpar_carrinho
 from django.http.response import Http404
 from marketapp.utils.decorators import jsonify
 from marketapp import services
@@ -22,12 +21,16 @@ from marketapp import services
 def home(request):
     compras = Compra.objects.filter(consumidor=request.user.consumidor)
     listas_compras = ListaCompras.objects.filter(consumidor=request.user.consumidor)
+    compras_recorrentes = CompraRecorrente.objects.filter(consumidor=request.user.consumidor)
+    compras_agendadas = CompraAgendada.objects.filter(consumidor=request.user.consumidor)
     supermercados = get_supermercados_que_atendem(request.user)
     return render(request,
                   'cliente/home.html',
                   {'compras': compras,
                    'listas_compras': listas_compras,
-                   'supermercados': supermercados})
+                   'supermercados': supermercados,
+                   'compras_agendadas': compras_agendadas,
+                   'compras_recorrentes':compras_recorrentes})
 
 
 def ver_historico_compras(request):

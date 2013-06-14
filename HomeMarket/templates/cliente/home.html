@@ -1,54 +1,84 @@
-{% extends 'chrome.html' %} {% block title %} MyHomeMarket {% endblock %} {% block content %}
+{% extends 'chrome.html' %} {% block title %} MyHomeMarket
+{% endblock %} {% block content %}
 <table class="table table-hover table-bordered">
-    <thead>
-        <tr>
-            <th>Supermercados disponíveis</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for supermerc in supermercados%}
-        <tr>
-            <td><a href="{{supermerc.get_absolute_url}}">{{supermerc}}</a></td>
-        </tr>
-        {% endfor %}
-    </tbody>
+	<thead>
+		<tr>
+			<th>Supermercados disponíveis</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for supermerc in supermercados%}
+		<tr>
+			<td><a href="{{supermerc.get_absolute_url}}">{{supermerc}}</a></td>
+		</tr>
+		{% endfor %}
+	</tbody>
 </table>
+	<div class="row-fluid">
+		<table class="table table-hover table-bordered span4">
+			<thead>
+				<tr>
+					<th class="span12">Listas de Compras</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for lista_compra in listas_compras%}
+				<tr>
+					<td>{{lista_compra.nome}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<table class="table table-hover table-bordered span4">
+			<thead>
+				<tr>
+					<th class="span12">Compras Agendadas</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for lista_compra in compras_agendadas%}
+				<tr>
+					<td>{{lista_compra}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<table class="table table-bordered table-hover span4">
+			<thead>
+				<tr>
+					<th class="span12">Compras Recorrentes</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for lista_compra in compras_recorrentes%}
+				<tr>
+					<td>{{lista_compra}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 <table class="table table-hover table-bordered">
-    <thead>
-        <tr>
-            <th>Listas de Compras</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for lista_compra in listas_compras%}
-        <tr>
-            <td>{{lista_compra.nome}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<table class="table table-hover table-bordered">
-    <thead>
-        <tr>
-            <th>Compras feitas</th>
-            <th>Status</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for compra in compras%}
-        <tr>
-            <td>Compra em {{compra.supermercado}} em {{compra.data_compra|date:"c"}}</td>
-            <td>{{compra.get_status_pagamento_display}}</td>
-            <td>
-            {% if compra.status_pagamento == 'pn' %}
-				<a href="/completar-compra/{{compra.id}}" class="btn btn-info">Pagar</a>
-			{% elif compra.status_pagamento == 'ee' %}
-				<a href="" class="btn btn-success">Avaliar Compra</a>
-			{% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
+	<thead>
+		<tr>
+			<th>Compras feitas</th>
+			<th>Status</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for compra in compras%}
+		<tr>
+			<td>Compra em {{compra.supermercado}} em
+				{{compra.data_compra|date:"c"}}</td>
+			<td>{{compra.get_status_pagamento_display}}</td>
+			<td>{% if compra.status_pagamento == 'pn' %} <a
+				href="/completar-compra/{{compra.id}}" class="btn btn-info">Pagar</a>
+				{% elif compra.status_pagamento == 'ee' %} <a href=""
+				class="btn btn-success">Avaliar Compra</a> {% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
 </table>
 {% endblock %}
