@@ -24,7 +24,7 @@
 			<tbody>
 				{% for lista_compra in listas_compras%}
 				<tr>
-					<td>{{lista_compra.nome}}</td>
+					<td><a href="{{lista_compra.get_absolute_url}}">{{lista_compra.nome}}</a></td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -38,7 +38,7 @@
 			<tbody>
 				{% for lista_compra in compras_agendadas%}
 				<tr>
-					<td>{{lista_compra}}</td>
+					<td><a href="{{lista_compra.get_absolute_url}}">{{lista_compra}}</a></td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -52,7 +52,7 @@
 			<tbody>
 				{% for lista_compra in compras_recorrentes%}
 				<tr>
-					<td>{{lista_compra}}</td>
+					<td><a href="{{lista_compra.get_absolute_url}}">{{lista_compra}}</a></td>
 				</tr>
 				{% endfor %}
 			</tbody>

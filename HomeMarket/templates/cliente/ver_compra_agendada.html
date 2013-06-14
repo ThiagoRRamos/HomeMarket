@@ -1,0 +1,31 @@
+{% extends 'chrome.html' %}
+{% block title %} MyHomeMarket {% endblock %} {% block content %}
+{% if compra.supermercado %}
+<dl>
+	<dt>Supermercado</dt>
+	<dd>
+		<a href="{{compra.supermercado.get_absolute_url}}">{{compra.supermercado}}</a>
+	</dd>
+</dl>
+{% endif %}
+
+<table class="table table-striped">
+	<tr>
+		<th class="span3">Nome</th>
+		<th class="span2">Categoria</th>
+		<th class="span1">Preço</th>
+		<th class="span1">Quantidade</th>
+		<th class="span1"></th>
+	</tr>
+	{% for produto in compra.produtocompraagendada_set.all %}
+	<tr>
+		<td>{{produto.produto.produto}}</td>
+		<td>{{produto.produto.produto.categoria}}</td>
+		<td>R$ {{produto.produto.preco|floatformat:2}}</td>
+		<td>{{produto.quantidade}}</td>
+		<td></td>
+	</tr>
+	{% endfor %}
+</table>
+<p>Custo: R$ {{compra.preco|floatformat:2}}</p>
+{% endblock %}

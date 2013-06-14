@@ -106,6 +106,14 @@ urlpatterns = patterns('',
         'marketapp.views.supermercado.avaliar_supermercado'),
     url(r'^json/supermercado/$',
         'marketapp.views.cliente.json_informacoes_supermercado'),
+    url(r'^ver-compra-agendada/(?P<compra_id>\d+)$',
+        'marketapp.views.cliente.ver_compra_agendada'),
+    url(r'^ver-compra/(?P<compra_id>\d+)$',
+        'marketapp.views.cliente.ver_compra'),
+    url(r'^ver-compra-recorrente/(?P<compra_id>\d+)$',
+        'marketapp.views.cliente.ver_compra_recorrente'),
+    url(r'^ver-lista/(?P<lista_id>\d+)$',
+        'marketapp.views.cliente.ver_lista_compras'),
 )
 
 if settings.DEBUG:

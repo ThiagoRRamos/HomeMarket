@@ -116,7 +116,7 @@ class ListaCompras(models.Model):
                                          self.data_criacao)
 
     def get_absolute_url(self):
-        return '/minhas-listas/{}'.format(self.id)
+        return '/ver-lista/{}'.format(self.id)
 
 
 class ProdutoLista(models.Model):
@@ -209,7 +209,7 @@ class Compra(CompraAbstrata):
                                       through='ProdutoCompra')
 
     def get_absolute_url(self):
-        return "/compra/{}".format(self.id)
+        return "/ver-compra/{}".format(self.id)
 
     def __unicode__(self):
         return "Compra de {} em {} na data {}".format(self.consumidor,
@@ -230,7 +230,7 @@ class CompraAgendada(CompraAbstrata):
     data_entrega = models.DateField()
 
     def get_absolute_url(self):
-        return "/compra-agendada/{}".format(self.id)
+        return "/ver-compra-agendada/{}".format(self.id)
 
     def __unicode__(self):
         return "Compra de {} para entrega em {}".format(self.consumidor,
@@ -249,7 +249,7 @@ class CompraRecorrente(CompraAbstrata):
                                   choices=OPCOES)
 
     def get_absolute_url(self):
-        return "/compra-recorrente/{}".format(self.id)
+        return "/ver-compra-recorrente/{}".format(self.id)
     
     def __unicode__(self):
         return "Compra de {} {}".format(self.consumidor,

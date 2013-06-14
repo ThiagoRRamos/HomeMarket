@@ -174,8 +174,33 @@ def gerar_lista(request):
 def ver_lista_compras(request, lista_id):
     lista = get_object_or_404(ListaCompras, id=lista_id)
     return render(request,
-                  '',
+                  'cliente/ver_lista_compras.html',
                   {'lista': lista})
+
+
+@apenas_cliente
+def ver_compra(request, compra_id):
+    compra = get_object_or_404(Compra, id=compra_id)
+    return render(request,
+                  'cliente/ver_compra.html',
+                  {'compra': compra})
+
+
+@apenas_cliente
+def ver_compra_agendada(request, compra_id):
+    lista = get_object_or_404(CompraAgendada, id=compra_id)
+    return render(request,
+                  'cliente/ver_compra_agendada.html',
+                  {'compra': lista})
+
+
+@apenas_cliente
+def ver_compra_recorrente(request, compra_id):
+    lista = get_object_or_404(CompraRecorrente, id=compra_id)
+    return render(request,
+                  'cliente/ver_compra_recorrente.html',
+                  {'compra': lista})
+
 
 @jsonify
 def json_informacoes_supermercado(request):
