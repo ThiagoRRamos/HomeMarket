@@ -9,7 +9,7 @@ from marketapp.models import RegiaoAtendida
 def get_supermercados_que_atendem(usuario):
     cep = usuario.consumidor.cep
     for f in RegiaoAtendida.objects.filter(cep_inicio__lte=cep,
-                                           cep_final__gte=cep):
+                                           cep_final__gte=cep).distinct('supermercado'):
         yield f.supermercado
 
 
