@@ -3,7 +3,7 @@ from django.db.models import Count
 from django.db.models.aggregates import Sum
 from django.forms.models import inlineformset_factory, ModelForm
 from django.shortcuts import render, redirect, get_object_or_404
-from marketapp import services
+import marketapp.services.supermercado as supermercado_service
 from marketapp.forms import ProdutoForm, ProdutoSupermercadoForm, \
     ProdutoSupermercadoFormPreco
 from marketapp.models import Produto, ProdutoSupermercado, RegiaoAtendida, \
@@ -50,7 +50,7 @@ def avaliar_supermercado(request, id_supermercado):
     if request.method == 'POST':
         nota = request.POST['nota']
         avaliacao = request.POST['avaliacao']
-        services.supermercado.gerar_avaliacao_supermercado(nota, avaliacao, id_supermercado, request.user.consumidor)
+        supermercado_service.gerar_avaliacao_supermercado(nota, avaliacao, id_supermercado, request.user.consumidor)
     return render(request, 'supermercado/avaliacao_supermercado.html')
 
 def adicionar_produto_existente(request, codigo):
