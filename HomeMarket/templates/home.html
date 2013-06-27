@@ -1,10 +1,17 @@
 {% extends 'chrome.html' %}
 {% block title %} Home {% endblock %}
 {% block content %}
+
+	<div class="hero-unit">
+		<h1 class="brand" style="color:#538FD6;">My<span style="color:#923130;">Home</span>Market</h1>
+		<h3>Faça suas compras de supermercado online!</h3>
+		<h4>Para começar clique em <span style="color:#5BB75B">comprar</span> <i class="icon-shopping-cart" style="vertical-align:middle;"></i></h4>
+	</div>
 	<div class="container">
 		<table class="table table-hover table-bordered">
 			<thead>
 				<tr>
+					<td></td>
 					<td>
 						Supermercados disponíveis
 					</td>
@@ -13,10 +20,13 @@
 			<tbody>
 				{% for supermerc in supermercados%}
 					<tr>
-						<td>
-							<a href="/supermercado/{{ supermerc.nome_url }}">{{ supermerc.nome_exibicao }}</a>
+						<td class="span1">
+							<a class="btn btn-success" href="/supermercado/{{ supermerc.nome_url }}"><i class="icon-shopping-cart"></i>Comprar</a>
 						</td>
-						<td>
+						<td style="vertical-align:middle">
+							{{ supermerc.nome_exibicao }}
+						</td>
+						<td style="vertical-align:middle">
 							<a class="btn" = href="/avaliacao/{{supermerc.id}}">Avaliar</a>
 						</td>
 					</tr>
