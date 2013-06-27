@@ -304,7 +304,7 @@ class CarrinhoCompras(models.Model):
 
     def gerar_lista_compras(self, nome=None):
         if not nome:
-            nome = "Lista de " + datetime.datetime.utcnow()
+            nome = "Lista de " + str(datetime.datetime.utcnow())
         lista = ListaCompras.objects.create(nome=nome,
                                             consumidor=self.usuario.consumidor)
         for p in self.produtocarrinho_set.all():
