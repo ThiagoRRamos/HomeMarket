@@ -69,13 +69,11 @@
 	<tbody>
 		{% for compra in compras%}
 		<tr>
-			<td>Compra em {{compra.supermercado}} em
-				{{compra.data_compra|date:"c"}}</td>
+			<td><a href="{{compra.get_absolute_url}}">Compra em {{compra.supermercado}} em
+				{{compra.data_compra|date:"c"}}</a></td>
 			<td>{{compra.get_status_pagamento_display}}</td>
 			<td>{% if compra.status_pagamento == 'pn' %} <a
-				href="/completar-compra/{{compra.id}}" class="btn btn-info">Pagar</a>
-				{% elif compra.status_pagamento == 'ee' %} <a href=""
-				class="btn btn-success">Avaliar Compra</a> {% endif %}
+				href="/completar-compra/{{compra.id}}" class="btn btn-info">Pagar</a> {% endif %}
 			</td>
 		</tr>
 		{% endfor %}
