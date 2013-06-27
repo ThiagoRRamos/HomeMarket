@@ -4,10 +4,15 @@
 <dl>
 	<dt>Agendamento</dt>
 </dl>
-
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <form action="" method="post">
   {% csrf_token %}
-  <input type="date" name="dataAgendada" />
-  Digite data de agendamento: <input type="submit" value="Agendar"><br>
+  {{form}}
+  <input type="submit" class="btn" value="Agendar"/>
 </form>
+<script type="text/javascript">
+$('#id_data_agendamento').datepicker({ dateFormat: "dd/mm/yy" });
+</script>
 {% endblock %}

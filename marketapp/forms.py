@@ -6,6 +6,11 @@ Created on Apr 3, 2013
 from marketapp.models import ProdutoSupermercado, Produto, Consumidor
 from django.forms.models import ModelForm
 from django import forms
+from django.forms.extras.widgets import SelectDateWidget
+
+
+class DataAgendamento(forms.Form):
+    data_agendamento = forms.DateField(input_formats=('%d/%m/%Y', '%Y/%m/%d'))
 
 
 class RegistroUsuario(forms.Form):

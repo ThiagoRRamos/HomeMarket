@@ -15,6 +15,7 @@ from marketapp.services.carrinho import limpar_carrinho
 from django.http.response import Http404
 from marketapp.utils.decorators import jsonify
 from marketapp import services
+from marketapp.forms import DataAgendamento
 
 
 @apenas_cliente
@@ -42,12 +43,17 @@ def ver_historico_compras(request):
 
 @login_required
 def agendar_compra(request):
+    form = DataAgendamento()
     if request.method == 'POST':
-        data = request.POST['dataAgendada']
-        services.compras.gerar_compra_agendada(request.user.consumidor,
+        form = DataAgendamento(request.POST)
+        if form.is_valid():
+            services.compras.gerar_compra_agendada(request.user.consumidor,
                                                carrinho_service.get_carrinho_usuario(request.user).produtocarrinho_set.all(),
-                                               data)
-    return render(request, 'cliente/agendamento.html')
+                                               form.cleaned_data['data_agendamento'])
+            return redirect('/home-cliente')
+    return render(request,
+                  'cliente/agendamento.html',
+                  {'form': form})
 
 
 @login_required
@@ -151,6 +157,7 @@ def completar_compra(request, compra_id):
     return render(request,
                   'cliente/pagina_compra.html',
                   {'compra': compra})
+
 
 @login_required
 def pagamento_dinheiro(request, compra_id):
