@@ -230,3 +230,8 @@ def json_informacoes_supermercado(request):
         mercadoJson["avaliacoes"] = data[1:-1]
         jsonDic['supermercados'].append(mercadoJson)
     return jsonDic
+
+
+def faq(request):
+    return render(request,
+                  'faq.html')

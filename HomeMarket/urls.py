@@ -114,6 +114,8 @@ urlpatterns = patterns('',
         'marketapp.views.cliente.ver_compra_recorrente'),
     url(r'^ver-lista/(?P<lista_id>\d+)$',
         'marketapp.views.cliente.ver_lista_compras'),
+    url(r'^faq/$',
+        'marketapp.views.cliente.faq'),
 )
 
 if settings.DEBUG:

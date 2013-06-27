@@ -1,5 +1,5 @@
 
-<input name="email_loja" type="hidden" value="{{carrinho.supermercado.usuario.email}}" />
+<input name="email_loja" type="hidden" value="thiagorramos@gmail.com" />
 {% for produto in carrinho.produtocompra_set.all %}
 <input name="produto_codigo_{{forloop.counter}}" type="hidden"
     value="{{produto.produto.id}}" />
