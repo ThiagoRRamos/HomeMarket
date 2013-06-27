@@ -5,6 +5,7 @@
 		<table class="table table-hover table-bordered">
 			<thead>
 				<tr>
+					<td></td>
 					<td>
 						Supermercados disponíveis
 					</td>
@@ -13,10 +14,13 @@
 			<tbody>
 				{% for supermerc in supermercados%}
 					<tr>
-						<td>
-							<a href="/supermercado/{{ supermerc.nome_url }}">{{ supermerc.nome_exibicao }}</a>
+						<td class="span1">
+							<a class="btn btn-success" href="/supermercado/{{ supermerc.nome_url }}"><i class="icon-shopping-cart"></i>Comprar</a>
 						</td>
-						<td>
+						<td style="vertical-align:middle">
+							{{ supermerc.nome_exibicao }}
+						</td>
+						<td style="vertical-align:middle">
 							<a class="btn" = href="/avaliacao/{{supermerc.id}}">Avaliar</a>
 						</td>
 					</tr>
